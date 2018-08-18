@@ -8,6 +8,7 @@ module.exports = (app) => {
             const {email, password}  = usuario;
             if(email && password){
                 usuario.contatos = [];
+                req.session.usuario = usuario;
                 res.redirect('/escolha');
             }else{
                 res.redirect('/');
