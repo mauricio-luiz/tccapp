@@ -1,0 +1,22 @@
+<% include ../partials/header %>
+<header>
+    <h1>Quase lá</h1>
+    <h4>Defina seu perfil!</h4>
+</header>
+<section>
+    <form action="/escolha" method="post">
+        <input type="text" name="tipo[nome]" id="usuario" placeholder="Nome">
+        <br>
+        <label>
+            Professor
+            <input type="radio" name="tipo[perfil]" value="professor">
+        </label>
+
+        <label>
+            Aluno
+            <input type="radio" name="tipo[perfil]" value="aluno">
+        </label>
+        <input type="submit" value="Pronto">
+    </form>
+</section>
+<% include ../partials/footer %>
