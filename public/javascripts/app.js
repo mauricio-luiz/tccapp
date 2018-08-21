@@ -3,5 +3,5 @@ const $ = document.querySelector.bind(document);
 
 document
     $('#botao-adicionaOpcao')
-    .addEventListener('click', opcao.nova.bind(opcao));
+    .addEventListener('click', opcao.adiciona.bind(opcao));
 

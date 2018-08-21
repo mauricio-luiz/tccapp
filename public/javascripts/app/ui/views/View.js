@@ -4,13 +4,8 @@ class View{
         this._seletor = document.querySelector(seletor);
     }
 
-    nova(model){
-        console.log(this._seletor);
-        this._seletor.innerHTML = this.textareaTemplate(model);
-    }
-
     update(model){
-        this._seletor.innerHtml = this.template(model);
+        this._seletor.innerHTML = this.template(model);
     }
     
     template(model){

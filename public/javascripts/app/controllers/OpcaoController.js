@@ -6,9 +6,9 @@ class OpcaoController{
         this._opcoesView = new OpcoesView('#listaOpcoes');
     }
 
-    nova(){
+    adiciona(){
         this._opcoes.adiciona(this._criaOpcao("", this._opcoes.numero()));
-        this._opcoesView.nova(this._opcoes);
+        this._opcoesView.update(this._opcoes);
     }
 
     _criaOpcao(texto, numero){
