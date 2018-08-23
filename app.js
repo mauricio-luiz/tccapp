@@ -5,8 +5,13 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
 const methodOverride = require('method-override');
+const mongoose = require('mongoose');
+const bluebird = require('bluebird');
 const error = require('./middlewares/error');
 const app = express();
+mongoose.Promise = bluebird;
+var db = mongoose.connect('mongodb://localhost:27017/tcc', { useNewUrlParser: true });
+global.db = mongoose.connection;
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');

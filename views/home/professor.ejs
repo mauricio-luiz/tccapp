@@ -1,0 +1,17 @@
+<% include ../partials/header %>
+<header>
+    <h1>TCC</h1>
+    <h4>Bem Vindo!</h4>
+</header>
+<section>
+    <form action="/registrar" method="post">
+        <input type="text" name="usuario[nome]" id="nome" placeholder="Nome">
+        <br>
+        <input type="text" name="usuario[email]" id="email" placeholder="Email">
+        <br>
+        <input type="password" name="usuario[password]" id="password" placeholder="Password">
+        <br>
+        <input type="submit" value="Registrar">
+    </form>
+</section>
+<% include ../partials/footer %>
