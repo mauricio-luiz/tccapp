@@ -1,17 +1,46 @@
 <% include ../partials/header %>
-<header>
-    <h1>TCC</h1>
-    <h4>Bem Vindo!</h4>
-</header>
-<section>
-    <form action="/registrar" method="post">
-        <input type="text" name="usuario[nome]" id="nome" placeholder="Nome">
-        <br>
-        <input type="text" name="usuario[email]" id="email" placeholder="Email">
-        <br>
-        <input type="password" name="usuario[password]" id="password" placeholder="Password">
-        <br>
-        <input type="submit" value="Registrar">
-    </form>
-</section>
+<div class="row" >
+    <div id="cbox">
+        <section class="cboxPf">
+            <div class="row" >
+                <div class="col s12 center-align" >
+                    <header>
+                        <h1 class="flow-text">TCC</h1>
+                        <h4 class="flow-text">Registrar Professor</h4>
+                    </header>
+                </div>
+            </div>
+            <div class="row">
+                <form class="col s12 center-align" action="/registrar" method="post">
+                    <div class="row">
+                        <div class="input-field col s10 offset-s1">
+                        <input type="text" name="usuario[nome]" id="nomecompleto"  >
+                            <label for="nomecompleto" >Nome Completo:</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s10  offset-s1">                   
+                            <input type="text" name="usuario[email]" id="email" >
+                            <label for="email">Email:</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s10  offset-s1">                   
+                        <input type="password" name="usuario[password]" id="password" >
+                            <label for="password">Senha:</label>
+                        </div>
+                    </div>
+                    <div class="row" >
+                        <div class="col s12" >
+                            <button class="btn waves-effect waves-light blue lighten-2" type="submit" name="action">Registrar
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+
 <% include ../partials/footer %>

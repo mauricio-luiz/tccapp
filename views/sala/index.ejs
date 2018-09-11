@@ -1,5 +1,40 @@
 <% include ../partials/headerProfessor %>
+<header>
+    <a href="/sala/criar" class="btn-floating btn-large waves-effect waves-light blue lighten-2">
+        <i class="material-icons">add</i>
+    </a>
+</header>
 <section>
-    <a href="/salas/criar" >Criar Salas</a>
+    <div class="row">
+        <% salas.forEach(function(sala) { %>
+            <div class="col s12 m3">
+                <div class="card">
+                    <div class="card-image waves-effect waves-block waves-light">
+                        <i class="material-icons left grey-text lighten-2">local_library</i>
+                    </div>
+                    <div class="card-content">
+                        <span class="card-title activator grey-text text-darken-4"><%- sala.nome %><i class="material-icons right">more_vert</i></span>
+                        <p><a href="#"> <i class="material-icons left blue-text lighten-2">trending_up</i>Visualizar Sala</a></p>
+                    </div>
+                    <div class="card-reveal">
+                        <span class="card-title grey-text text-darken-4"><%- sala.nome %><i class="material-icons right">close</i></span>
+                        <div class="col s12" >
+                            <form action="/sala/<%- sala._id %>?_method=delete" method="post" >
+                                <a href="/sala/<%- sala.id %>/editar" class="btn-floating btn-large waves-effect waves-light grey btn-small tooltipped" data-position="bottom" data-tooltip="Editar"><i class="material-icons">edit</i></a>
+                                <a href="/sala/<%- sala.id %>/editar" class="btn-floating btn-large waves-effect waves-light blue btn-small tooltipped" data-position="bottom" data-tooltip="Disponibilizar"><i class="material-icons">share</i></a>
+                                <button class="btn-floating btn-large waves-effect waves-light red btn-small tooltipped" data-position="bottom" data-tooltip="Remover"><i class="material-icons">remove</i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% }) %>
+    </div>
 </section>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.tooltipped');
+    var instances = M.Tooltip.init(elems, []);
+  });
+</script>
 <% include ../partials/footerProfessor %>
