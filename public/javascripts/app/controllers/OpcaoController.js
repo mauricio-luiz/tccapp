@@ -4,11 +4,15 @@ class OpcaoController{
         const $ = document.querySelector.bind(document);
         this._opcoes = new Opcoes();
         this._opcoesView = new OpcoesView('#listaOpcoes');
+        this._texto = $("#opcao");
     }
 
     adiciona(){
-        this._opcoes.adiciona(this._criaOpcao("", this._opcoes.numero()));
+        this._opcao = this._criaOpcao(this._texto.value, this._opcoes.letra());
+        this._opcoes.adiciona(this._opcao);
         this._opcoesView.update(this._opcoes);
+        this._opcoesView.updateTextarea(this._opcoes);
+        this._limpar();
     }
 
     _criaOpcao(texto, numero){
@@ -16,5 +20,10 @@ class OpcaoController{
             texto,
             numero
         );
+    }
+
+    _limpar(){
+        this._texto.value = "";
+        M.textareaAutoResize(this._texto);
     }
 }

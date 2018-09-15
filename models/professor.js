@@ -12,8 +12,12 @@ module.exports = () => {
             required : true
         },
         correta : {
-            type : Number,
+            type : String,
             required : true
+        },
+        status : {
+            type: String,
+            required: true
         }
     });
 

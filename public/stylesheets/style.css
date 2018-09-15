@@ -3,6 +3,10 @@
   left: 0;
   bottom:0;
 }
+.alerta {
+  padding: 10px;
+}
+
 @media (min-width: 768px) {
   .cboxPf{
     webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
@@ -33,4 +37,8 @@ input:not([type]):focus:not([readonly]), input[type="text"]:not(.browser-default
 
 .top-20{
   margin-top:20px
+}
+
+.left-20 {
+  margin-left:20px;
 }

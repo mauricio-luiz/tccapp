@@ -1,14 +1,29 @@
 class OpcoesView extends View{
 
     template(model){
-        return  `<div>
-                    ${model.paraArray().map( opcao =>
-                        `
-                            <label for="${opcao.name}">${opcao.label}</label>
-                            <br>
-                            <textarea rows="3" cols="100" name="${opcao.name}" placeholder="${opcao.placeholder}"  >${opcao.texto}</textarea><br>
+        return  `${model.paraArray().map( opcao =>
+                        `<div class="row" >
+                            <div class="valign-wrapper" >
+                                <div class="input-field col s8">
+                                    <textarea  class="materialize-textarea" name="${opcao.name}" id="${opcao.id}" >${opcao.texto}</textarea>
+                                    <label for="${opcao.name}" class="active">${opcao.label}</label>
+                                </div>
+                                <div class="col s4">
+                                    <label >
+                                        <input class="with-gap" name="resposta" type="radio" value="${opcao.id}" />
+                                        <span>Resposta Correta?</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                         `).join('')}
-                </div>`;
+                   `;
                 
+    }
+
+    updateTextarea(model){
+        model.paraArray().map( opcao => {
+            M.textareaAutoResize(document.querySelector(`#${opcao.id}`));
+        });
     }
 }
