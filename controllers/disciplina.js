@@ -2,68 +2,68 @@ const { Types: { ObjectId } } = require ( 'mongoose' );
 
 module.exports = (app) => {
     const Professor = app.models.professor;
-    const SalaController = {
+    const DisciplinaController = {
         index(req, res){
             const { _id } = req.session.usuario;
             Professor.findById( _id )
                 .then((professor) => {
-                    const { salas } = professor;
-                    res.render('sala/index', { salas } );
+                    const { disciplinas } = professor;
+                    res.render('disciplina/index', { disciplinas } );
                 }).catch( () => res.redirect('/'));            
         },
         create(req,res){
             const { usuario } = req.session;
-            res.render('sala/create', { usuario });
+            res.render('disciplina/create', { usuario });
         },
         edit(req, res){
             const { _id } = req.session.usuario;
-            const salaId = req.params.id;
+            const disciplinaId = req.params.id;
             Professor.findById(_id)
                 .then((professor) => {
-                    const { salas } = professor;
-                    const sala = salas.find((sl) => {
-                        return sl._id.toString() === salaId;
+                    const { disciplinas } = professor;
+                    const disciplina = disciplinas.find((dc) => {
+                        return dc._id.toString() === disciplinaId;
                     });
-                    res.render('sala/edit', {sala});
+                    res.render('disciplina/edit', {disciplina});
                 })
             ;
         },
         update(req,res){
-            const salaId = req.params.id;
-            const { sala } = req.body;
+            const disciplinaId = req.params.id;
+            const { disciplina } = req.body;
             const { usuario } = req.session;
-            const where = { _id : usuario._id, 'salas._id': salaId };
-            const set = { $set: { 'salas.$': sala } };
+            const where = { _id : usuario._id, 'disciplinas._id': disciplinaId };
+            const set = { $set: { 'disciplinas.$': disciplina } };
             Professor.update(where, set)
-                .then( () => res.redirect('/salas'))
+                .then( () => res.redirect('/disciplinas'))
                 .catch( () => res.redirect('/'))
             ;
         },
         save(req, res){
-            const { sala } = req.body;
+            const { disciplina } = req.body;
             const { _id } = req.session.usuario;
-            const { nome, password } = sala;
+            const { nome } = disciplina;
             
-            const set = { $push : { salas : { nome, password, quizzes : [] }}};
+            const set = { $push : { disciplinas : { nome, exercicios : [] }}};
             Professor.findByIdAndUpdate(_id, set)
-                .then(() => res.redirect('/salas'))
-                .catch(() => res.redirect('/salas/create'))
+                .then(() => res.redirect('/disciplinas'))
+                .catch(() => res.redirect('/disciplinas/create'))
             ;
         },
         destroy(req, res){
-            const salaId = req.params.id;
+            const disciplinaId = req.params.id;
             const { _id } = req.session.usuario;
             const where = { _id };
             const set = {
                 $pull: {
-                    salas: { _id: ObjectId(salaId) }
+                    disciplinas: { _id: ObjectId(disciplinaId) }
                 }
             };
             Professor.update(where, set)
-                .then( () => res.redirect('/salas'))
+                .then( () => res.redirect('/disciplinas'))
                 .catch( () => res.redirect('/') )
             ;
         }
     };
-    return SalaController;
+    return DisciplinaController;
 }

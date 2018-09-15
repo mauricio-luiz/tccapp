@@ -3,6 +3,9 @@
   left: 0;
   bottom:0;
 }
+.bt-6{
+  padding:6px 0;
+}
 .alerta {
   padding: 10px;
 }

@@ -3,26 +3,22 @@
     <header>
         <div class="row" >
             <div class="col s12" >
-                <h1 class="flow-text">Editar Sala</h1>
+                <h1 class="flow-text">Editar Disciplina</h1>
             </div>
         </div>
     </header>
     <main>
         <section>
             <div class="row">
-                <form class="col s12" action="/sala/<%- sala._id %>?_method=put" method="post">
+                <form class="col s12" action="/disciplina/<%- disciplina._id %>?_method=put" method="post">
                     <div class="row">
                         <div class="col s12 m6" >
                             <div class="input-field col s12">
-                                <input id="nome" type="text" name="sala[nome]" value="<%- sala.nome %>" class="validate" >
+                                <input id="nome" type="text" name="disciplina[nome]" value="<%- disciplina.nome %>" class="validate" >
                                 <label for="nome">Nome</label>
                             </div>        
-                            <div class="input-field col s12">
-                                <input id="senha" type="text" name="sala[password]" value="<%- sala.password %>" >
-                                <label for="senha">Senha</label>
-                            </div>
                             <div class="col s4" >
-                                <a class="btn waves-effect waves-light grey" href="/salas" >Voltar
+                                <a class="btn waves-effect waves-light grey" href="/disciplinas" >Voltar
                                     <i class="material-icons left" >arrow_back</i>
                                 </a>
                             </div>

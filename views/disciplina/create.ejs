@@ -3,23 +3,19 @@
     <header>
         <div class="row" >
             <div class="col s12" >
-                <h1 class="flow-text">Criar Sala</h1>
+                <h1 class="flow-text">Criar Disciplina</h1>
             </div>
         </div>
     </header>
     <main>
         <section>
             <div class="row">
-                <form class="col s12" action="/sala" method="post">
+                <form class="col s12" action="/disciplina" method="post">
                     <div class="row">
                         <div class="col s12 m6" >
                             <div class="input-field col s12">
-                                <input id="nome" type="text" name="sala[nome]" class="validate" >
+                                <input id="nome" type="text" name="disciplina[nome]" class="validate" >
                                 <label for="nome">Nome</label>
-                            </div>        
-                            <div class="input-field col s12">
-                                <input id="senha" type="text" name="sala[password]" >
-                                <label for="senha">Senha</label>
                             </div>
                             <div class="col s4" >
                                 <a class="btn waves-effect waves-light grey" href="/salas" >Voltar

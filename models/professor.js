@@ -1,8 +1,8 @@
 const Schema = require('mongoose').Schema;
 
 module.exports = () => {
-
-    const quiz = Schema({
+    
+    const questao = Schema({        
         questao : {
             type : String,
             required : true
@@ -14,23 +14,27 @@ module.exports = () => {
         correta : {
             type : String,
             required : true
+        }
+    });
+
+    const exercicio = Schema({
+        nome : {
+            type : String,
+            required : true
         },
         status : {
             type: String,
             required: true
-        }
+        },
+        questoes : [questao],
     });
 
-    const sala = Schema({
+    const disciplina = Schema({
         nome : {
             type : String,
-            required : true,
-        } ,
-        senha : {
-            type : String,
-            required : true,
+            required : true
         },
-        quizzes : [quiz]
+        exercicios : [exercicio]
     });
 
     const professor = Schema({
@@ -46,7 +50,7 @@ module.exports = () => {
             type : String,
             required : true
         },
-        salas : [sala]
+        disciplinas : [disciplina]
     });
     
     return db.model('professor', professor);
