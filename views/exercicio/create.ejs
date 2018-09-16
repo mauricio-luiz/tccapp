@@ -1,0 +1,38 @@
+<% include ../partials/headerProfessor %>
+<div class="container" >
+    <header>
+        <div class="row" >
+            <div class="col s12" >
+                <h1 class="flow-text">Criar Exercício</h1>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section>
+            <div class="row">
+                <form class="col s12" action="/exercicio" method="post">
+                    <input type="hidden" name="exercicio[identificador]" value="<%- disciplinaId %>" >
+                    <div class="row">
+                        <div class="col s12 m6" >
+                            <div class="input-field col s12">
+                                <input id="nome" type="text" name="exercicio[nome]" class="validate" >
+                                <label for="nome">Nome</label>
+                            </div>
+                            <div class="col s4" >
+                                <a class="btn waves-effect waves-light grey" href="/exercicios" >Voltar
+                                    <i class="material-icons left" >arrow_back</i>
+                                </a>
+                            </div>
+                            <div class="col s4" >
+                                <button class="btn waves-effect waves-light teal lighten-2" type="submit" name="action">Salvar
+                                    <i class="material-icons right">save</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+</div>
+<% include ../partials/footerProfessor %>

@@ -1,40 +1,12 @@
 const Schema = require('mongoose').Schema;
 
-module.exports = () => {
-    
-    const questao = Schema({        
-        questao : {
-            type : String,
-            required : true
-        },
-        opcoes : {
-            type : Array,
-            required : true
-        },
-        correta : {
-            type : String,
-            required : true
-        }
-    });
-
-    const exercicio = Schema({
-        nome : {
-            type : String,
-            required : true
-        },
-        status : {
-            type: String,
-            required: true
-        },
-        questoes : [questao],
-    });
+module.exports = () => {    
 
     const disciplina = Schema({
         nome : {
             type : String,
             required : true
-        },
-        exercicios : [exercicio]
+        }
     });
 
     const professor = Schema({
