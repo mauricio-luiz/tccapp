@@ -1,4 +1,5 @@
 const opcao = new OpcaoController();
+const questao = new QuestaoController();
 const $ = document.querySelector.bind(document);
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -11,6 +12,12 @@ if( $('#botao-adicionaOpcao') !== null){
     document
     $('#botao-adicionaOpcao')
     .addEventListener('click', opcao.adiciona.bind(opcao));
+}
+
+if( $('#salvaQuestao') !== null){
+    document
+    $('#salvaQuestao')
+    .addEventListener('click', questao.adiciona.bind(questao));
 }
 
 document.addEventListener('DOMContentLoaded', function() {

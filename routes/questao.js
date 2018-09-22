@@ -5,6 +5,6 @@ module.exports = (app) => {
     app.get('/questoes/:id/criar', autenticar, questao.create);
     app.post('/questao/salvar', autenticar, questao.save);
     app.get('/questao/:id/editar', autenticar, questao.edit);
-    app.put('/questao/mostrar/:id', autenticar, questao.update);
+    app.put('/questao/:id', autenticar, questao.update);
     app.delete('/questao/:id', autenticar, questao.destroy);
 }

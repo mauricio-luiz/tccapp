@@ -5,12 +5,12 @@ class OpcoesView extends View{
                         `<div class="row" >
                             <div class="valign-wrapper" >
                                 <div class="input-field col s8">
-                                    <textarea  class="materialize-textarea" name="${opcao.name}" id="${opcao.id}" >${opcao.texto}</textarea>
+                                    <textarea  class="materialize-textarea" name="enunciado[opcoes][]" id="${opcao.id}" >${opcao.texto}</textarea>
                                     <label for="${opcao.name}" class="active">${opcao.label}</label>
                                 </div>
                                 <div class="col s4">
                                     <label >
-                                        <input class="with-gap" name="resposta" type="radio" value="${opcao.id}" />
+                                        <input class="with-gap" name="enunciado[resposta]" type="radio" value="${opcao.id}" />
                                         <span>Resposta Correta?</span>
                                     </label>
                                 </div>

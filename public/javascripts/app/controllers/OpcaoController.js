@@ -15,6 +15,15 @@ class OpcaoController{
         this._limpar();
     }
 
+    opcoes(){
+        console.log(this);
+        return this._opcoes;
+    }
+
+    limparOpcoes(){
+        this._opcoes.esvazia();
+    }
+
     _criaOpcao(texto, numero){
         return new Opcao(
             texto,
