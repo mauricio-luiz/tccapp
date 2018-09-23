@@ -18,8 +18,8 @@ class QuestaoController{
 
     adiciona(){
         const respostas = document.querySelectorAll("#listaOpcoes input[type=radio]");
-        respostas.forEach( (input) => {
-            if(input.checked)  this._resposta = input.value;
+        respostas.forEach( (input, indice) => {
+            if(input.checked)  this._resposta = indice;
         });
         
         this._questoes.adiciona(

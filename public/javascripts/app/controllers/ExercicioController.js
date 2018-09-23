@@ -13,10 +13,9 @@ class ExercicioController{
     adiciona(questoes){
         if(questoes.length == 0) return;
 
-        questoes.forEach(questao => {
-            let opcoes = questao.opcoes.shift();
+        questoes.forEach(questao => {            
             this._exercicios.adiciona(
-                new Questao(questao.questao, questao.correta, opcoes._opcoes )
+                new Questao(questao.questao, questao.correta, questao.opcoes, questao._id, questao.exercicio )
             );    
         });
 

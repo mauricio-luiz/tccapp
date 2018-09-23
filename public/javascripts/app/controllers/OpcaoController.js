@@ -15,8 +15,20 @@ class OpcaoController{
         this._limpar();
     }
 
+    adicionaOpcao( listaOpcoes, correta ){
+        if(listaOpcoes.length == 0) return;
+      
+        const self = this;
+        listaOpcoes.forEach( (opcao, indice) => {
+            let resposta =  correta == indice ? true : false;
+            self._opcao = self._criaOpcao(opcao, self._opcoes.letra(), resposta);
+            self._opcoes.adiciona(self._opcao);
+            self._opcoesView.update(self._opcoes);
+            self._opcoesView.updateTextarea(self._opcoes);        
+        });
+    }
+
     opcoes(){
-        console.log(this);
         return this._opcoes;
     }
 
@@ -24,10 +36,11 @@ class OpcaoController{
         this._opcoes.esvazia();
     }
 
-    _criaOpcao(texto, numero){
+    _criaOpcao(texto, numero, correta){
         return new Opcao(
             texto,
-            numero
+            numero,
+            correta
         );
     }
 

@@ -14,6 +14,10 @@ module.exports = () => {
         correta : {
             type : String,
             required : true
+        },
+        exercicio : {
+            type : Schema.Types.ObjectId,
+            required : true
         }
     });
     

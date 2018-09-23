@@ -33,3 +33,7 @@ if(typeof questoes != 'undefined'){
     exercicio.adiciona(questoes);
 }
 
+if(typeof listaOpcoes != 'undefined' && typeof opcaoCorreta != 'undefined'){
+    opcao.adicionaOpcao(listaOpcoes, opcaoCorreta);
+}
+
