@@ -3,6 +3,8 @@ module.exports = (app) => {
     app.get('/', home.index);
     app.post('/entrar', home.login);
     app.get('/registrar/professor', home.professor);
-    app.post('/registrar', home.register);
+    app.get('/registrar/aluno', home.aluno);
+    app.post('/registrar-professor', home.registrarProfessor);
+    app.post('/registrar-aluno', home.registrarAluno);
     app.get('/sair', home.logout);
 }

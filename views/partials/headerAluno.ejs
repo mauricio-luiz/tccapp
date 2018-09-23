@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>TCC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+</head>
+<body>
+   
+   
+    <nav class="nav-extended">
+        <div class="nav-wrapper blue lighten-2">
+            <a href="#!" class="brand-logo">Logo</a>
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>           
+            <ul class="right hide-on-med-and-down">
+                <li><a href="/aluno"><i class="material-icons left">home</i>Início</a></li>
+                <li><a href="/cadernos"><i class="material-icons left">library_books</i>Cadernos</a></li>
+                <li><a href="/sair"><i class="material-icons left" >power_settings_new</i>Sair</a></li>
+            </ul>
+        </div>
+        <div class="nav-content grey lighten-4">
+            <ul class="tabs tabs-transparent">
+                <li class="tab"><a class="black-text" href="/disciplina/criar">Criar Disciplina</a></li>
+                <% if(typeof menu_extra !== 'undefined'){ %>
+                    <% menu_extra.forEach(function(menu) { %>
+                    <li class="tab"><a class="black-text" href="<%- menu.url %>"><%- menu.nome %></a></li>
+                    <% }) %>
+                <% } %>
+            </ul>
+        </div>
+    </nav>
+
+    <ul class="sidenav" id="mobile-demo">
+        <li><a href="/professor">Início</a></li>
+        <li><a href="/disciplinas">Disciplinas</a></li>
+        <li><a href="/exercicio/criar">Criar Exercicio</a></li>    
+        <li><a href="/sair">Sair</a></li>
+    </ul>

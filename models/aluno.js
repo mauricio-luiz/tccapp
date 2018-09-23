@@ -1,21 +1,21 @@
 const Schema = require('mongoose').Schema;
 
-module.exports = () => {    
+module.exports = () => {
 
-    const disciplina = Schema({
+    const caderno = Schema({
         nome : {
             type : String,
             required : true
-        }
+        }        
     });
 
-    const professor = Schema({
+    const aluno = Schema({
         usuario : {
             type : Schema.Types.ObjectId,
             required : true
         },
-        disciplinas : [disciplina]
+        cadernos : [caderno]
     });
     
-    return db.model('professor', professor);
+    return db.model('aluno', aluno);
 }

@@ -4,7 +4,8 @@ module.exports = (app) => {
     const Professor = app.models.professor;
     const DisciplinaController = {
         index(req, res){
-            const { _id } = req.session.usuario;
+            const { _id } = req.session.professor;
+            console.log( _id );
             Professor.findById( _id )
                 .then((professor) => {
                     const { disciplinas } = professor;
@@ -16,7 +17,7 @@ module.exports = (app) => {
             res.render('disciplina/create', { usuario });
         },
         edit(req, res){
-            const { _id } = req.session.usuario;
+            const { _id } = req.session.professor;
             const disciplinaId = req.params.id;
             Professor.findById(_id)
                 .then((professor) => {
@@ -31,8 +32,8 @@ module.exports = (app) => {
         update(req,res){
             const disciplinaId = req.params.id;
             const { disciplina } = req.body;
-            const { usuario } = req.session;
-            const where = { _id : usuario._id, 'disciplinas._id': disciplinaId };
+            const { professor } = req.session;
+            const where = { _id : professor._id, 'disciplinas._id': disciplinaId };
             const set = { $set: { 'disciplinas.$': disciplina } };
             Professor.update(where, set)
                 .then( () => res.redirect('/disciplinas'))
@@ -41,7 +42,7 @@ module.exports = (app) => {
         },
         save(req, res){
             const { disciplina } = req.body;
-            const { _id } = req.session.usuario;
+            const { _id } = req.session.professor;
             const { nome } = disciplina;
             
             const set = { $push : { disciplinas : { nome, exercicios : [] }}};
@@ -52,7 +53,7 @@ module.exports = (app) => {
         },
         destroy(req, res){
             const disciplinaId = req.params.id;
-            const { _id } = req.session.usuario;
+            const { _id } = req.session.professor;
             const where = { _id };
             const set = {
                 $pull: {
