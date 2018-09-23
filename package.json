@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "nodemon app.js"
   },
   "dependencies": {
     "bluebird": "^3.5.1",
@@ -17,5 +17,8 @@
     "md5": "^2.2.1",
     "method-override": "^3.0.0",
     "mongoose": "^5.2.9"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.4"
   }
 }
