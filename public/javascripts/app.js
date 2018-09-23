@@ -1,5 +1,6 @@
 const opcao = new OpcaoController();
 const questao = new QuestaoController();
+const exercicio = new ExercicioController();
 const $ = document.querySelector.bind(document);
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -27,4 +28,8 @@ document.addEventListener('DOMContentLoaded', function() {
         constrainWidth : false
     });
 });
+
+if(typeof questoes != 'undefined'){
+    exercicio.adiciona(questoes);
+}
 

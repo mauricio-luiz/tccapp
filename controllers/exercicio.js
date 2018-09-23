@@ -1,11 +1,9 @@
 const { Types: { ObjectId } } = require('mongoose');
 
-module.exports = (app) => {
-    const Professor = app.models.professor;
+module.exports = (app) => {    
     const Exercicio = app.models.exercicio;
     const ExercicioController = {        
-        index(req, res){            
-            const { _id } = req.session.usuario;
+        index(req, res){
             const disciplinaId = req.params.id;
             Exercicio.find( { disciplina : disciplinaId } )
                 .then((exercicios) => {
@@ -29,6 +27,14 @@ module.exports = (app) => {
                 .then(() => res.redirect(`/exercicios/${disciplinaId}/disciplina`))
                 .catch((e) => { console.log(e); res.redirect('/') })
             ;            
+        },
+        show(req, res){
+            const exercicioId = req.params.id;
+            Exercicio.findOne( { _id : exercicioId } )
+            .then((exercicio) => {
+                const quantidade_exercicio = exercicio.questoes.length;
+                res.render('exercicio/show', { exercicio, quantidade_exercicio, questoes : exercicio.questoes});
+            }).catch( (e) => { console.log(e); res.redirect('/'); }); 
         },
         edit(req, res){
             const id  = req.params.id;        

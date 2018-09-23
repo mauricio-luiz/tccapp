@@ -1,0 +1,32 @@
+<% include ../partials/headerProfessor %>
+<div class="container" >
+    <header>
+        <div class="row" >
+            <div class="col s12"  >
+                <h3 class="flow-text" ><%- exercicio.nome %><span class="new badge" data-badge-caption="Questões">
+                    <span id="questaoAtual">1</span>
+                    <span>/</span>
+                    <span id="quantidadeQuestao"><%- quantidade_exercicio %></span>
+                </h3>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section >
+            <div id="exercicio" ></div>
+            <div class="row" >
+                <div class="col s12" >                   
+                    <a id="proximo" class="waves-effect waves-light btn right left-20 <%- quantidade_exercicio > 1 ? '' : 'disabled' %>" data-proximo="1"><i class="material-icons left">arrow_forward</i>Proximo</a>
+                    <a id="anterior" class="waves-effect waves-light btn left-20 right disabled" data-anterior="1"><i class="material-icons left">arrow_back</i>Anterior</a>
+                    <a href="/exercicios/<%- exercicio.disciplina %>/disciplina" class="waves-effect waves-light btn right" ><i class="material-icons left">navigate_before</i>Voltar</a>
+                </div>
+            </div>
+        </section>  
+    </main>
+</div>
+
+
+<script>    
+    const questoes = <%- JSON.stringify(questoes) %>;
+</script>
+<% include ../partials/footerProfessor %>

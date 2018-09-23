@@ -8,6 +8,7 @@ class QuestaoController{
         this._enunciado = $("#enunciado");
         this._quantidadeQuestao = $("#quantidadeQuestao");
         this._exercicio = $("#exercicio");
+        this._verQuestoes = $("#verQuestoes");
 
         this._questoes = new Questoes();        
         this._mensagemView = new MensagemView("#listaOpcoes");
@@ -43,6 +44,7 @@ class QuestaoController{
                 this._incrementaQuestao();
                 this._limpar();
                 opcao.limparOpcoes();
+                this._verQuestoes.classList.remove('disabled');
             })
             .catch( (e) => { console.log(e)} );
 
