@@ -25,7 +25,7 @@ module.exports = (app) => {
                 }else if (usuarioDoc.tipo == 'a'){
                     req.session.usuario = usuarioDoc;
                     Aluno.findOne( { usuario : usuarioDoc._id }).exec( (err, aluno) => {
-                        req.session.professor = aluno;
+                        req.session.aluno = aluno;
                         res.redirect('/aluno');
                     }); 
                 }else{

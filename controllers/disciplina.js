@@ -5,7 +5,6 @@ module.exports = (app) => {
     const DisciplinaController = {
         index(req, res){
             const { _id } = req.session.professor;
-            console.log( _id );
             Professor.findById( _id )
                 .then((professor) => {
                     const { disciplinas } = professor;
