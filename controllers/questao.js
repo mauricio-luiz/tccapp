@@ -12,8 +12,7 @@ module.exports = (app) => {
             Exercicio.findOne( { _id : id } )
             .then((exercicio) => {
                 const quantidade_exercicio = exercicio.questoes.length;
-                const menu_extra = [{nome : 'Finalizar Criação', url : `/questao/salvar`}];
-                res.render('questao/create', {id, menu_extra, quantidade_exercicio });
+                res.render('questao/create', { id, quantidade_exercicio });
             }).catch( (e) => { console.log(e); res.redirect('/'); });
         },
         save(req, res){
