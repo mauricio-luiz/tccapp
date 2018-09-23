@@ -13,7 +13,9 @@
     </header>
     <main>
         <section >
-            <div id="exercicio" ></div>
+            <div id="exercicio" >
+                <%- include('../partials/messages', {message: 'Nenhuma questão cadastrada! :(', color: 'orange lighten-2' }); %>
+            </div>
             <div class="row" >
                 <div class="col s12" >
                     <a id="proximo" class="waves-effect waves-light btn right left-20 <%- quantidade_exercicio > 1 ? '' : 'disabled' %>" data-proximo="1"><i class="material-icons left">arrow_forward</i>Proximo</a>

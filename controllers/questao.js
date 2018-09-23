@@ -1,3 +1,5 @@
+const { Types: { ObjectId } } = require ( 'mongoose' );
+
 module.exports = (app) => {
     const Exercicio = app.models.exercicio;
     const QuestaoController = {
@@ -64,7 +66,6 @@ module.exports = (app) => {
             
             Exercicio.update( where, set )
                   .then( (exercicio) => { 
-                        console.log(exercicio); 
                         const { questoes } = exercicio;
                         res.redirect(`/exercicio/${questao.exercicio}/mostrar`) 
                     })
@@ -72,8 +73,17 @@ module.exports = (app) => {
             ;
         },
         destroy(req, res){
-            const usuario = req.session;
-            res.render('questao/index');
+            const {id, exercicio} = req.params;
+            const where = {  _id : exercicio };
+            const set = {
+                $pull: {
+                    questoes : { _id: ObjectId(id) }
+                }
+            };
+            Exercicio.update(where, set)
+                .then( () => res.redirect(`/exercicio/${exercicio}/mostrar`) )
+                .catch( () => res.redirect('/') )
+            ;
         }
     };
     return QuestaoController;
