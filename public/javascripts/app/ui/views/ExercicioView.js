@@ -1,6 +1,5 @@
 class ExercicioView extends View{
-    template(model){
-        console.log(model);
+    template(model){        
         return  `
                 <div class="row">
                     <div class="col s12" >                        

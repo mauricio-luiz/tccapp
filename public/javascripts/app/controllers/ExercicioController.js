@@ -3,7 +3,7 @@ class ExercicioController{
     constructor(){
         const $ = document.querySelector.bind(document);
         this._exercicios = new Exercicios();    
-        this._exercicioView = new ExercicioView('#exercicio');
+        this._exercicioView = new ExercicioAlunoView('#exercicio');
         this._proximo = $("#proximo");
         this._anterior = $("#anterior");
         this._quantidadeQuestao = $("#quantidadeQuestao");
@@ -24,6 +24,18 @@ class ExercicioController{
         const self = this;
         this._proximo.addEventListener('click', () => self.proximo() );
         this._anterior.addEventListener('click', () => self.anterior() );
+    }
+
+    adicionaAlunoQuestoes(questoes){
+        if(questoes.length == 0) return;
+
+        questoes.forEach(questao => {            
+            this._exercicios.adiciona(
+                new Questao(questao.questao, questao.correta, questao.opcoes, questao._id, questao.exercicio )
+            );    
+        });
+
+        this._exercicioView.update(this._exercicios.exercicio(0));
     }
 
     proximo(){

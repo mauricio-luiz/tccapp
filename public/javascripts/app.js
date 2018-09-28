@@ -33,6 +33,10 @@ if(typeof questoes != 'undefined'){
     exercicio.adiciona(questoes);
 }
 
+if(typeof alunoQuestoes != 'undefined'){
+    exercicio.adicionaAlunoQuestoes(alunoQuestoes);
+}
+
 if(typeof listaOpcoes != 'undefined' && typeof opcaoCorreta != 'undefined'){
     opcao.adicionaOpcao(listaOpcoes, opcaoCorreta);
 }

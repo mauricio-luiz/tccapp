@@ -1,5 +1,7 @@
 const express = require('express');
 const path = require('path');
+const http = require('http');
+const socketIO = require('socket.io');
 const consign = require('consign');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -8,7 +10,11 @@ const methodOverride = require('method-override');
 const mongoose = require('mongoose');
 const bluebird = require('bluebird');
 const error = require('./middlewares/error');
+
 const app = express();
+const server = http.Server(app);
+const io = socketIO(server);
+
 mongoose.Promise = bluebird;
 var db = mongoose.connect('mongodb://localhost:27017/tcc', { useNewUrlParser: true });
 global.db = mongoose.connection;
@@ -29,9 +35,19 @@ consign({})
   .into(app)
 ;
 
+io.on('connection', (cliente) => {
+  console.log('conectou');
+  cliente.on('send-server', (data) => {
+    console.log('send-server');
+    const resposta = `<b>${data.nome}:</b> ${data.msg}<br>`;
+    cliente.emit('send-client', resposta);
+    cliente.broadcast.emit('send-client', resposta);
+  });
+});
+
 app.use(error.notFound);
 app.use(error.serverError);
 
-app.listen(3000, () => {
+server.listen(3000, () => {
   console.log('tcc app no ar');
 })

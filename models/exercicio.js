@@ -34,6 +34,10 @@ module.exports = () => {
             type : String,
             required : true
         },
+        status :  {
+            type: Boolean,
+            default: false
+        },
         questoes : [questao],
     });
     

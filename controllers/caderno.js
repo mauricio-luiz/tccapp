@@ -1,5 +1,4 @@
 const { Types: { ObjectId } } = require ( 'mongoose' );
-
 module.exports = (app) => {
     const Aluno = app.models.aluno;
     const CadernoController = {
@@ -15,6 +14,9 @@ module.exports = (app) => {
         create(req,res){
             const { usuario } = req.session;
             res.render('caderno/create', { usuario });
+        },
+        show(req, res){
+            res.render('caderno/show');
         },
         edit(req, res){
             const { _id } = req.session.aluno;

@@ -40,7 +40,6 @@ class QuestaoController{
         
         fetch(this._url, request)
             .then( (response) => {
-                console.log('response', response);
                 this._incrementaQuestao();
                 this._limpar();
                 opcao.limparOpcoes();
