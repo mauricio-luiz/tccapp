@@ -8,7 +8,16 @@
                 </h3>
             </div>
         </div>
-        <div class="row" >
+    </header>
+    <section>
+        <section>
+            <pre id="chat"></pre>
+            <input type="text" id="msg" placeholder="Mensagem" >
+            <button type="button" onclick="enviar();">Enviar</button>
+        </section>
+    </section>
+        <header>
+            <div class="row" >
                 <div class="col s12"  >
                     <h3 class="flow-text" ><i class="material-icons left" >assignment</i><%- exercicio.nome %><span class="new badge" data-badge-caption="Questões">
                         <span id="questaoAtual">1</span>
@@ -17,8 +26,8 @@
                     </h3>
                 </div>
             </div>
-    </header>
-    <main>
+        </header>
+        <main>
         <section >
             <div id="exercicio" >
                 <%- include('../partials/messages', {message: 'Nenhuma questão cadastrada! :(', color: 'orange lighten-2' }); %>
@@ -40,15 +49,16 @@
 <script src="/socket.io/socket.io.js" ></script>
 <script>
     const socket = io();
+    const sala = '<%- sala %>';
+    socket.emit('create-room', sala);
     socket.on('send-client', (msg) => {
         console.log(msg);
         console.log(document.getElementById('chat'));
         document.getElementById('chat').innerHTML += msg;
     });
-    const enviar = () => {
-        const nome = document.getElementById('nome').value;
+    const enviar = () => {    
         const msg = document.getElementById('msg').value;
-        socket.emit('send-server', {nome, msg});
+        socket.emit('send-server', sala, msg);
     };
 </script>
 <% include ../partials/footerAluno %>

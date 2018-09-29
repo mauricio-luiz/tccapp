@@ -21,17 +21,11 @@ module.exports = (app) => {
 
             const { _questoes } = questoes;
             const questao = _questoes.shift();
-            const { _enunciado, _resposta, _opcoes } = questao;
-
-            const postOpcoes = _opcoes._opcoes;
-            let opcoes = [];
-            postOpcoes.map( (opcao) => {
-                opcoes.push(opcao._texto);
-            });
+            const { _enunciado, _resposta, _opcoes } = questao;                
 
             const set = { 
                 $push : { 
-                    questoes : { questao : _enunciado, opcoes : opcoes, correta : _resposta, exercicio : exercicio }
+                    questoes : { questao : _enunciado, opcoes : _opcoes, correta : _resposta, exercicio : exercicio }
                 }
             };
 

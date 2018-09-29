@@ -10,7 +10,7 @@ class QuestaoController{
         this._exercicio = $("#exercicio");
         this._verQuestoes = $("#verQuestoes");
 
-        this._questoes = new Questoes();        
+        this._questoes = new Questoes();
         this._mensagemView = new MensagemView("#listaOpcoes");
         this._mensagem = new Mensagem("Nenhuma opção cadastrada! :(", "orange lighten-2");
         this._url = '/questao/salvar';
@@ -22,8 +22,12 @@ class QuestaoController{
             if(input.checked)  this._resposta = indice;
         });
         
+        const listaOpcoes = document.querySelectorAll("#listaOpcoes textarea");
+        listaOpcoes.forEach( (textarea, indice) => {
+            this._opcoes.push(textarea.value);
+        });
         this._questoes.adiciona(
-            this._criaQuestao(this._enunciado.value, this._resposta, opcao.opcoes())
+            this._criaQuestao(this._enunciado.value, this._resposta, this._opcoes)
         );
 
         const request = {
@@ -42,7 +46,6 @@ class QuestaoController{
             .then( (response) => {
                 this._incrementaQuestao();
                 this._limpar();
-                opcao.limparOpcoes();
                 this._verQuestoes.classList.remove('disabled');
             })
             .catch( (e) => { console.log(e)} );

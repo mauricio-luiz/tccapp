@@ -1,4 +1,5 @@
-const opcao = new OpcaoController();
+const chart = require('chart.js');
+const opcoes = new OpcaoController();
 const questao = new QuestaoController();
 const exercicio = new ExercicioController();
 const $ = document.querySelector.bind(document);
@@ -12,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
 if( $('#botao-adicionaOpcao') !== null){
     document
     $('#botao-adicionaOpcao')
-    .addEventListener('click', opcao.adiciona.bind(opcao));
+    .addEventListener('click', opcoes.adiciona.bind(opcoes));
 }
 
 if( $('#salvaQuestao') !== null){
@@ -38,6 +39,7 @@ if(typeof alunoQuestoes != 'undefined'){
 }
 
 if(typeof listaOpcoes != 'undefined' && typeof opcaoCorreta != 'undefined'){
-    opcao.adicionaOpcao(listaOpcoes, opcaoCorreta);
+    opcoes.adicionaOpcao(listaOpcoes, opcaoCorreta);
 }
+
 
