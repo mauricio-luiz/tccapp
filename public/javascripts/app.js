@@ -1,4 +1,3 @@
-const chart = require('chart.js');
 const opcoes = new OpcaoController();
 const questao = new QuestaoController();
 const exercicio = new ExercicioController();
@@ -32,10 +31,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 if(typeof questoes != 'undefined'){
     exercicio.adiciona(questoes);
-}
-
-if(typeof alunoQuestoes != 'undefined'){
-    exercicio.adicionaAlunoQuestoes(alunoQuestoes);
 }
 
 if(typeof listaOpcoes != 'undefined' && typeof opcaoCorreta != 'undefined'){

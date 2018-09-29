@@ -8,4 +8,5 @@ module.exports = (app) => {
     app.put('/sala/:id', autenticar, professorMiddleware, sala.finalizar);
     app.post('/sala/entrar', autenticar, alunoMiddleware, sala.entrar);
     app.get('/sala/:id/aluno', autenticar, alunoMiddleware, sala.aluno);
+    app.post('/aluno/responder', autenticar, alunoMiddleware, sala.responder);
 }

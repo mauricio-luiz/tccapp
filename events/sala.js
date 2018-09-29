@@ -4,12 +4,12 @@ module.exports = (app, io) => {
         const { session } = cliente.handshake;
         const { usuario } = session;
 
-        onlines[usuario.email] = { nome : usuario.nome, email : usuario.email };
-
-        for( let online in onlines){
-            cliente.emit('notify-onlines', onlines[online]);
-            cliente.broadcast.emit('notify-onlines', onlines[online]);
-        }
+        onlines[usuario.email] = { nome : usuario.nome, email : usuario.email, tipo : usuario.tipo };
+        
+        if(onlines[usuario.email].tipo != 'p'){
+            cliente.emit('notify-onlines',  onlines[usuario.email]);
+            cliente.broadcast.emit('notify-onlines', onlines[usuario.email]);
+        }        
 
         cliente.on('send-server', (hashDaSala, msg) => {
             const novaMensagem = { email : usuario.email, sala : hashDaSala };

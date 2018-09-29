@@ -19,11 +19,24 @@ class Salas{
 
     remove(email){
         this._salas.map( (aluno,indice) => {            
-            if(aluno.email == email){
+            if(aluno.email == email && typeof this._salas[indice] != null){
                 delete this._salas[indice];
                 this._salas.length = this._salas.length - 1;
             }
+        });       
+    }
+
+    tamanho(){
+        return this._salas.length;
+    }
+
+    temAluno(email){
+        let achei = false;
+        this._salas.forEach( (aluno,indice) => { 
+            if(aluno.email == email){
+                achei = true;
+            }
         });
-        console.log(this._salas);
+        return achei;
     }
 }

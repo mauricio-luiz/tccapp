@@ -65,6 +65,11 @@ module.exports = (app) => {
                     res.render('sala/aluno', {usuario, exercicio, quantidade_exercicio, questoes : exercicio.questoes, sala : hashDaSala});
                 })
             ;
+        },
+        responder(req, res){
+            const { resposta } = req.body;
+            console.log('here');
+            return res.json({ status: "success", message: "Resposta Correta", tipo : 1 });
         }
     };
     return SalaController;

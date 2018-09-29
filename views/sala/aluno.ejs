@@ -9,13 +9,7 @@
             </div>
         </div>
     </header>
-    <section>
-        <section>
-            <pre id="chat"></pre>
-            <input type="text" id="msg" placeholder="Mensagem" >
-            <button type="button" onclick="enviar();">Enviar</button>
-        </section>
-    </section>
+   
         <header>
             <div class="row" >
                 <div class="col s12"  >
@@ -34,28 +28,38 @@
             </div>
             <div class="row" >
                 <div class="col s12" >
-                    <a id="responder" class="waves-effect waves-light btn right left-20" data-proximo="1"><i class="material-icons left">check</i>Responder</a>
+                    <a id="responder" onclick="responder(this)" class="waves-effect waves-light btn right left-20" data-proximo="1"><i class="material-icons left">check</i>Responder</a>
                 </div>
             </div>
         </section>  
     </main>
 </div>
 
-
-<script>    
-    const alunoQuestoes = <%- JSON.stringify(questoes) %>;
-</script>
 </div>
 <script src="/socket.io/socket.io.js" ></script>
+<script src="/javascripts/app/domain/Alunos/AlunoQuestao.js" ></script>
+<script src="/javascripts/app/domain/Alunos/AlunoQuestoes.js" ></script>
+<script src="/javascripts/app/controllers/AlunoController.js" ></script>
+<script src="/javascripts/app/ui/views/ExercicioAlunoView.js"></script>
 <script>
-    const socket = io();
+    const socket = io({transports: ['websocket'], upgrade: false});
     const sala = '<%- sala %>';
+    const alunoQuestoes = <%- JSON.stringify(questoes) %>;
+    const alunoController = new AlunoController();
+    alunoController.adiciona(alunoQuestoes);
     socket.emit('create-room', sala);
     socket.on('send-client', (msg) => {
-        console.log(msg);
-        console.log(document.getElementById('chat'));
         document.getElementById('chat').innerHTML += msg;
     });
+    const responder = (btnResponder) => {
+        btnResponder.classList = "waves-effect waves-light btn right left-20 hide";
+        const resposta = document.querySelector('#opcoes input[type="radio"]:checked').value;
+        alunoController.reponder(resposta).then( (response) => {
+            const toastHTML = `<span class="white-text"><b>${response.message}<b></span>`;
+            const toastClass = response.tipo == 1 ? 'green' : 'red';
+            M.toast({html: toastHTML , classes: toastClass, displayLength: 1500, completeCallback : alunoController.proximo() })
+        });
+    };
     const enviar = () => {    
         const msg = document.getElementById('msg').value;
         socket.emit('send-server', sala, msg);

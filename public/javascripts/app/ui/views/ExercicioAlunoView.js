@@ -1,5 +1,5 @@
 class ExercicioAlunoView extends View{
-    template(model){        
+    template(model){
         return  `
                 <div class="row" >
                     <div id="enunciado" class="col s12" >
@@ -11,12 +11,18 @@ class ExercicioAlunoView extends View{
                         ${model.opcoes.map( (opcao, indice) =>
                             `<p>
                                 <label>
-                                    <input type="radio" name="opcao"  />
+                                    <input type="radio" name="opcao" value="${indice}${model.exercicioId}"  />
                                     <span>${opcao}</span>
                                 </label>
                             </p>`).join('')}
                     </div>
                 </div>`;
-    }    
+    }
+    
+    preloader(){
+        this._seletor.innerHTML = `<div class="progress">
+            <div class="indeterminate"></div>
+        </div>`;
+    }
 }
 
