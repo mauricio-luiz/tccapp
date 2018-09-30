@@ -12,7 +12,7 @@ module.exports = () => {
             required : true
         },
         correta : {
-            type : String,
+            type : Number,
             required : true
         },
         exercicio : {

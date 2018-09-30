@@ -3,6 +3,7 @@ class ExercicioController{
     constructor(){
         const $ = document.querySelector.bind(document);
         this._exercicios = new Exercicios();
+        this._exercicioView = new ExercicioView("#exercicio");
         this._proximo = $("#proximo");
         this._anterior = $("#anterior");
         this._quantidadeQuestao = $("#quantidadeQuestao");

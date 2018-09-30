@@ -50,7 +50,7 @@
         document.getElementById('chat').innerHTML += msg;
     });
 
-    socket.on('send-answer', (aluno, questao, resposta) => {
+    socket.on('resposta', (sala, aluno, questao, resposta) => {
         salaController.adicionaResposta(aluno,questao,resposta);
     });
 

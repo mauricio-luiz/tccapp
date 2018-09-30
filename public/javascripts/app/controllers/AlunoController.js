@@ -12,9 +12,9 @@ class AlunoController{
     adiciona(questoes){
         if(questoes.length == 0) return;
 
-        questoes.forEach(questao => {            
+        questoes.forEach( (questao, indice) => {
             this._alunoQuestoes.adiciona(
-                new AlunoQuestao(questao.questao, questao.correta, questao.opcoes, questao._id, questao.exercicio )
+                new AlunoQuestao(questao.questao, questao.correta, questao.opcoes, questao._id, questao.exercicio, indice )
             );    
         });
 

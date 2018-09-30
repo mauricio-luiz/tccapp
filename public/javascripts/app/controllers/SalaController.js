@@ -19,10 +19,9 @@ class SalaController{
     }
 
     adicionaResposta(aluno = '', questao = '', resposta = ''){
-        this._aluno = 'luiz@gmail.com';
-        this._questao = 1;
-        this._resposta = 1;
-
+        this._aluno = aluno;
+        this._questao = questao;
+        this._resposta = resposta;
         this._respostasView.adicionaResposta(this._aluno, this._questao, this._resposta);
     }
 

@@ -4,24 +4,17 @@ module.exports = (app) => {
     const SalaController = {
         professor(req, res){
             const { id } = req.params;
-            const usuario = req.session.usuario;    
-            Exercicio.findById(id)
-                .then((exercicio) => {                    
-                    exercicio.status = true;
-                    exercicio.update( (err) => {
-                        if(err) {
-                            console.log(err);
-                        }
-                        
-                        const sala = req.query;
-                        let hashDaSala = sala;
-                        if( ! hashDaSala.length > 0  ){
-                            const md5 = crypto.createHash('md5');
-                            hashDaSala = md5.update(usuario.email).digest('hex');
-                        }
-                        const quantidade_exercicio = exercicio.questoes.length;
-                        res.render('sala/professor', {usuario, exercicio, sala : hashDaSala, quantidade_exercicio, email : usuario.email});
-                    });
+            const usuario = req.session.usuario;          
+            Exercicio.findOneAndUpdate(id, {status : true}, { new : true})
+                .then((exercicio) => {
+                    const sala = req.query;
+                    let hashDaSala = sala;
+                    if( ! hashDaSala.length > 0  ){
+                        const md5 = crypto.createHash('md5');
+                        hashDaSala = md5.update(usuario.email).digest('hex');
+                    }
+                    const quantidade_exercicio = exercicio.questoes.length;
+                    res.render('sala/professor', {usuario, exercicio, sala : hashDaSala, quantidade_exercicio, email : usuario.email});
                 })
             ;
         },
@@ -60,16 +53,36 @@ module.exports = (app) => {
                         const md5 = crypto.createHash('md5');
                         hashDaSala = md5.update(exercicio.quem).digest('hex');
                     }
-                    console.log('Aluno', hashDaSala);
                     const quantidade_exercicio = exercicio.questoes.length;
-                    res.render('sala/aluno', {usuario, exercicio, quantidade_exercicio, questoes : exercicio.questoes, sala : hashDaSala});
+                    res.render('sala/aluno', {usuario, exercicio, quantidade_exercicio, questoes : exercicio.questoes, sala : hashDaSala, email : usuario.email});
                 })
             ;
         },
         responder(req, res){
             const { resposta } = req.body;
-            console.log('here');
-            return res.json({ status: "success", message: "Resposta Correta", tipo : 1 });
+            const resposta_A = resposta.split("&");
+
+            const numero = resposta_A.shift();
+            const resposta_aluno = resposta_A.shift();
+            const id = resposta_A.shift();
+            const questao = resposta_A.shift();
+
+            Exercicio.findById(id)
+                .then((exercicio) => {
+                    let acertou = 0;
+                    let message = "Resposta Incorreta";
+                    const { questoes } = exercicio;
+                    const questao_corrente = questoes.find((qst) => {
+                        return qst._id.toString() === questao;
+                    });
+
+                    if(questao_corrente.correta == resposta_aluno){
+                        acertou = 1;
+                        message = "Resposta Correta";    
+                    }
+                    return res.json({ status: "success", message: message, questao : numero, resposta : acertou });
+                })
+            ;
         }
     };
     return SalaController;

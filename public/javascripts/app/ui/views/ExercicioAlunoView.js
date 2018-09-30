@@ -8,10 +8,10 @@ class ExercicioAlunoView extends View{
                 </div>
                 <div class="row" >
                     <div id="opcoes" class="col s12" >
-                        ${model.opcoes.map( (opcao, indice) =>
+                        ${model.opcoes.map( (opcao, numero_opcao) =>
                             `<p>
                                 <label>
-                                    <input type="radio" name="opcao" value="${indice}${model.exercicioId}"  />
+                                    <input type="radio" name="opcao" value="${model.numero}&${numero_opcao}&${model.exercicioId}&${model.id}"  />
                                     <span>${opcao}</span>
                                 </label>
                             </p>`).join('')}

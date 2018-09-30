@@ -9,7 +9,13 @@
             </div>
         </div>
     </header>
-   
+    <section>
+    <section>
+        <pre id="chat"></pre>
+        <input type="text" id="msg" placeholder="Mensagem" >
+        <button type="button" onclick="enviar();">Enviar</button>
+    </section>
+</section>
         <header>
             <div class="row" >
                 <div class="col s12"  >
@@ -46,6 +52,7 @@
     const sala = '<%- sala %>';
     const alunoQuestoes = <%- JSON.stringify(questoes) %>;
     const alunoController = new AlunoController();
+    const usuario = '<%- email %>';
     alunoController.adiciona(alunoQuestoes);
     socket.emit('create-room', sala);
     socket.on('send-client', (msg) => {
@@ -56,11 +63,15 @@
         const resposta = document.querySelector('#opcoes input[type="radio"]:checked').value;
         alunoController.reponder(resposta).then( (response) => {
             const toastHTML = `<span class="white-text"><b>${response.message}<b></span>`;
-            const toastClass = response.tipo == 1 ? 'green' : 'red';
+            const toastClass = response.resposta == 1 ? 'green' : 'red';
             M.toast({html: toastHTML , classes: toastClass, displayLength: 1500, completeCallback : alunoController.proximo() })
+            const { questao, resposta } = response;
+            console.log('sala responder', sala);
+            socket.emit('responder', sala, usuario, questao, resposta );
         });
     };
     const enviar = () => {    
+        console.log('sala chat', sala);
         const msg = document.getElementById('msg').value;
         socket.emit('send-server', sala, msg);
     };
