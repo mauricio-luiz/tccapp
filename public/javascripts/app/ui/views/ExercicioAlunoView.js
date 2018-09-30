@@ -18,6 +18,10 @@ class ExercicioAlunoView extends View{
                     </div>
                 </div>`;
     }
+
+    fim(){
+        this._seletor.innerHTML = '<div>Fim</div>';
+    }
     
     preloader(){
         this._seletor.innerHTML = `<div class="progress">

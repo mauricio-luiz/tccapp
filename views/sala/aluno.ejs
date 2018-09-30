@@ -60,14 +60,16 @@
     });
     const responder = (btnResponder) => {
         btnResponder.classList = "waves-effect waves-light btn right left-20 hide";
-        const resposta = document.querySelector('#opcoes input[type="radio"]:checked').value;
-        alunoController.reponder(resposta).then( (response) => {
+        const selecionado = document.querySelector('#opcoes input[type="radio"]:checked').value;
+        alunoController.reponder(selecionado).then( (response) => {
             const toastHTML = `<span class="white-text"><b>${response.message}<b></span>`;
             const toastClass = response.resposta == 1 ? 'green' : 'red';
             M.toast({html: toastHTML , classes: toastClass, displayLength: 1500, completeCallback : alunoController.proximo() })
             const { questao, resposta } = response;
-            console.log('sala responder', sala);
             socket.emit('responder', sala, usuario, questao, resposta );
+            return { selecionado : selecionado, acerto : resposta };
+        }).then( (response) => {
+            alunoController.salva(response);
         });
     };
     const enviar = () => {    

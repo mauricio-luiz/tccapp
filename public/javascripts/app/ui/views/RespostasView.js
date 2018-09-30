@@ -6,7 +6,6 @@ class RespostasView extends View{
 
     adicionaResposta(aluno, questao, resposta){
         const local = this._seletor.querySelector(`tr[data-aluno="${aluno}"] td[class="td-${questao}"]`);
-        console.log(local, aluno, questao);
         const tipo_resposta = resposta === 0 ? '<i class="material-icons small red-text">clear</i>' :
                                           '<i class="material-icons small green-text">done</i>';
 

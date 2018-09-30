@@ -1,6 +1,7 @@
 const crypto = require('crypto');
 module.exports = (app) => {
     const Exercicio = app.models.exercicio;
+    const Resultado = app.models.resultado;
     const SalaController = {
         professor(req, res){
             const { id } = req.params;
@@ -80,10 +81,59 @@ module.exports = (app) => {
                         acertou = 1;
                         message = "Resposta Correta";    
                     }
+
                     return res.json({ status: "success", message: message, questao : numero, resposta : acertou });
                 })
             ;
+        },
+        salvar(req, res){
+            const { selecionado, acerto } = req.body;
+            const selecionado_A = selecionado.split("&");
+            const { usuario } = req.session;
+
+            const numero = selecionado_A.shift();
+            const resposta_aluno = selecionado_A.shift();
+            const exercicio = selecionado_A.shift();
+            const questao = selecionado_A.shift();
+            const where = { aluno : usuario._id, exercicio};
+
+            const resposta = {
+                questao : questao,
+                numero : numero,
+                acertou : acerto,
+                marcada : resposta_aluno
+            };
+            const resultado = {
+                aluno : usuario._id,
+                exercicio : exercicio,
+                questoes : []
+            };
+
+            const options = {
+                upsert : true, runValidator : true, new : true
+            };
+
+            const set = {
+                $setOnInsert: resultado
+            };
+
+            Resultado.findOneAndUpdate(where, set, options)
+                .then((resultado) => {
+                    console.log('resultado 1', resultado);
+                    resultado.questoes.push(resposta);
+                    resultado.save( (err) => {
+                        if(err)
+                            console.log('Ocorreu um erro ao salvar');
+                    });
+                    return res.json({ status: "success", message : 'resposta salva com sucesso' });
+                })
+                .catch( (e) => { 
+                    console.log(e);
+                    res.redirect('/registrar/aluno', {message : e.message});
+                });
+
         }
+
     };
     return SalaController;
 }
