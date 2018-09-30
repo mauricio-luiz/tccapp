@@ -15,9 +15,6 @@ module.exports = (app) => {
             const { usuario } = req.session;
             res.render('caderno/create', { usuario });
         },
-        show(req, res){
-            res.render('caderno/show');
-        },
         edit(req, res){
             const { _id } = req.session.aluno;
             const cadernoId = req.params.id;
@@ -66,6 +63,13 @@ module.exports = (app) => {
                 .then( () => res.redirect('/cadernos'))
                 .catch( () => res.redirect('/') )
             ;
+        },
+        exercicio(req, res){
+            const cadernoId = req.params.id;
+            res.render('caderno/exercicio', { caderno : cadernoId });
+        },
+        show(req, res){
+            res.render('caderno/show');
         }
     };
     return CadernoController;

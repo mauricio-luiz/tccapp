@@ -32,15 +32,15 @@ module.exports = (app) => {
             ;
         },
         entrar(req,res){
-            const { email } = req.body.sala;
+            const { email, caderno } = req.body.sala;
             Exercicio.findOne({ quem: email, status: true }, (err, exercicio) => {
                 if(err) return handleError(err);
                 const exercicioId = exercicio._id;
-                res.redirect(`${exercicioId}/aluno`);
+                res.redirect(`${exercicioId}/${caderno}/aluno`);
             });
         },
         aluno(req, res){
-            const { id } = req.params;
+            const { id, caderno } = req.params;
             const usuario = req.session.usuario;
             Exercicio.findById(id, 'nome quem questoes')
                 .then((exercicio) => {
@@ -55,7 +55,15 @@ module.exports = (app) => {
                         hashDaSala = md5.update(exercicio.quem).digest('hex');
                     }
                     const quantidade_exercicio = exercicio.questoes.length;
-                    res.render('sala/aluno', {usuario, exercicio, quantidade_exercicio, questoes : exercicio.questoes, sala : hashDaSala, email : usuario.email});
+                    res.render('sala/aluno', {
+                        usuario,
+                        exercicio,
+                        quantidade_exercicio,
+                        questoes : exercicio.questoes,
+                        sala : hashDaSala,
+                        email : usuario.email,
+                        caderno : caderno
+                    });
                 })
             ;
         },
@@ -87,51 +95,60 @@ module.exports = (app) => {
             ;
         },
         salvar(req, res){
-            const { selecionado, acerto } = req.body;
+            const { selecionado, acerto, caderno } = req.body;
             const selecionado_A = selecionado.split("&");
             const { usuario } = req.session;
 
+            console.log('req.body', req.body);
+            console.log('caderno', caderno);
+
             const numero = selecionado_A.shift();
             const resposta_aluno = selecionado_A.shift();
-            const exercicio = selecionado_A.shift();
-            const questao = selecionado_A.shift();
-            const where = { aluno : usuario._id, exercicio};
+            const exercicioReferencia = selecionado_A.shift();
+            const questaoId = selecionado_A.shift();
 
-            const resposta = {
-                questao : questao,
-                numero : numero,
-                acertou : acerto,
-                marcada : resposta_aluno
-            };
-            const resultado = {
-                aluno : usuario._id,
-                exercicio : exercicio,
-                questoes : []
-            };
+            Exercicio.findById(exercicioReferencia)
+                .then((exercicio) => {
 
-            const options = {
-                upsert : true, runValidator : true, new : true
-            };
-
-            const set = {
-                $setOnInsert: resultado
-            };
-
-            Resultado.findOneAndUpdate(where, set, options)
-                .then((resultado) => {
-                    console.log('resultado 1', resultado);
-                    resultado.questoes.push(resposta);
-                    resultado.save( (err) => {
-                        if(err)
-                            console.log('Ocorreu um erro ao salvar');
+                    const { questoes } = exercicio;
+                    const questao_corrente = questoes.find((qst) => {
+                        return qst._id.toString() === questaoId;
                     });
-                    return res.json({ status: "success", message : 'resposta salva com sucesso' });
-                })
-                .catch( (e) => { 
-                    console.log(e);
-                    res.redirect('/registrar/aluno', {message : e.message});
-                });
 
+                    const resposta = {
+                        questao : questao_corrente.questao,
+                        opcoes : questao_corrente.opcoes,
+                        numero : numero,
+                        acertou : acerto,
+                        marcada : resposta_aluno
+                    };
+                    const resultado = {
+                        aluno : usuario._id,
+                        exercicio : exercicio.nome,
+                        exercicioReferencia : exercicioReferencia,
+                        caderno : caderno,
+                        questoes : []
+                    };
+
+                    const where = { aluno : usuario._id, caderno, exercicioReferencia};
+                    const options = { upsert : true, runValidator : true, new : true };
+                    const set = { $setOnInsert: resultado };
+
+                    Resultado.findOneAndUpdate(where, set, options)
+                        .then((resultado) => {
+                            console.log('resultado 1', resultado);
+                            resultado.questoes.push(resposta);
+                            resultado.save( (err) => {
+                                if(err) throw err;
+                            });
+                            return res.json({ status: "success", message : 'resposta salva com sucesso' });
+                        })
+                        .catch( (e) => { 
+                            console.log(e);
+                            res.redirect('/registrar/aluno', {message : e.message});
+                        });
+                })
+            ;
         }
 
     };

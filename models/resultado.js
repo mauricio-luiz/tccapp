@@ -4,7 +4,11 @@ module.exports = () => {
 
     const resposta = Schema({
         questao : {
-            type : Schema.Types.ObjectId,
+            type : String,
+            required : true
+        },
+        opcoes : {
+            type : Array,
             required : true
         },
         numero : {
@@ -18,7 +22,7 @@ module.exports = () => {
         marcada : {
             type : Number,
             required : true
-        }        
+        }
     });
 
     const resultado = Schema(
@@ -27,8 +31,16 @@ module.exports = () => {
                 type : Schema.Types.ObjectId,
                 required : true
             },
-            exercicio : {
+            caderno : {
                 type : Schema.Types.ObjectId,
+                required : true
+            },
+            exercicioReferencia : {
+                type : Schema.Types.ObjectId,
+                required : true
+            },
+            exercicio : {
+                type : String,
                 required : true
             },
             questoes : [resposta]
