@@ -1,0 +1,39 @@
+<% include ../partials/headerAluno %>
+<div class="container" >
+    <header>
+        <div class="row" >
+            <div class="col s12" >
+                <h1 class="flow-text"><i class="material-icons left">books</i>Exercícios</h1>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section>
+            <% questoes.forEach(function(questao, indice) { %>
+                <div class="row" >
+                    <div id="enunciado" class="col s12" >
+                        <p>
+                            <span class="left right-0">(</span>
+                            <i class="material-icons left right-0 <%- questao.acertou ? 'green-text' : 'red-text' %>" ><%- questao.acertou ? 'done' : 'clear' %></i>
+                            <span class="left right-0" >)</span>
+                            <span class="left right-0" >&nbsp;<%- questao.numero+1 %>)<%- questao.questao %></span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row" >
+                    <div id="opcoes" class="col s12" >
+                        <% questao.opcoes.forEach(function(opcao, letra) { %>
+                            <p>
+                                <label>
+                                    <input type="radio" name="opcao<%- questao.numero %>" <%- questao.marcada == letra ? 'checked' : '' %> disabled  />
+                                    <span><%- opcao %></span>
+                                </label>
+                            </p>
+                        <% }) %>
+                    </div>
+                </div>
+            <% }) %>
+        </section>
+    </main>
+</div>
+<% include ../partials/footerAluno %>

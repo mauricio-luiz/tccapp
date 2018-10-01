@@ -87,10 +87,8 @@ class AlunoController{
                 
             }, 2000);
         }else{
-            //Buscar erros e acertos aqui
             self._exercicioView.fim();
         }
-        
     }
 
     _incrementaBadgeQuestaoAtual(){

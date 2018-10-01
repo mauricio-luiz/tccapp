@@ -70,12 +70,16 @@
             socket.emit('responder', sala, usuario, questao, resposta );
             return { selecionado : selecionado, acerto : resposta, caderno : caderno };
         }).then( (response) => {
-            console.log(response);
-            alunoController.salva(response);
+            return alunoController.salva(response);
+        }).then( (response) => {
+            if(response.terminou){
+                setTimeout(function(){ 
+                    window.location = `/resultado/${response.resultado._id}/mostrar`;
+                }, 2000);
+            }
         });
     };
-    const enviar = () => {    
-        console.log('sala chat', sala);
+    const enviar = () => {
         const msg = document.getElementById('msg').value;
         socket.emit('send-server', sala, msg);
     };

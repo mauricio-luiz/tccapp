@@ -35,8 +35,13 @@ module.exports = (app) => {
             const { email, caderno } = req.body.sala;
             Exercicio.findOne({ quem: email, status: true }, (err, exercicio) => {
                 if(err) return handleError(err);
-                const exercicioId = exercicio._id;
-                res.redirect(`${exercicioId}/${caderno}/aluno`);
+
+                if(exercicio != null){
+                    const exercicioId = exercicio._id;
+                    res.redirect(`${exercicioId}/${caderno}/aluno`);
+                }else{
+                    res.redirect(`/caderno/${caderno}/exercicio`);
+                }
             });
         },
         aluno(req, res){
@@ -99,9 +104,6 @@ module.exports = (app) => {
             const selecionado_A = selecionado.split("&");
             const { usuario } = req.session;
 
-            console.log('req.body', req.body);
-            console.log('caderno', caderno);
-
             const numero = selecionado_A.shift();
             const resposta_aluno = selecionado_A.shift();
             const exercicioReferencia = selecionado_A.shift();
@@ -111,6 +113,7 @@ module.exports = (app) => {
                 .then((exercicio) => {
 
                     const { questoes } = exercicio;
+                    const total_questoes = (questoes.length) - 1;
                     const questao_corrente = questoes.find((qst) => {
                         return qst._id.toString() === questaoId;
                     });
@@ -136,12 +139,12 @@ module.exports = (app) => {
 
                     Resultado.findOneAndUpdate(where, set, options)
                         .then((resultado) => {
-                            console.log('resultado 1', resultado);
                             resultado.questoes.push(resposta);
                             resultado.save( (err) => {
                                 if(err) throw err;
                             });
-                            return res.json({ status: "success", message : 'resposta salva com sucesso' });
+                            const terminou = total_questoes == parseInt(numero) ? true : false;
+                            return res.json({ status: "success", message : 'resposta salva com sucesso', resultado : resultado, terminou : terminou });
                         })
                         .catch( (e) => { 
                             console.log(e);

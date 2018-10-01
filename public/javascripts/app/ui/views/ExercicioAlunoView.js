@@ -20,7 +20,9 @@ class ExercicioAlunoView extends View{
     }
 
     fim(){
-        this._seletor.innerHTML = '<div>Fim</div>';
+        this._seletor.innerHTML = `<section>
+            <h1><div class="loading">Gerando resultado</div></h1>
+        </section>`;
     }
     
     preloader(){

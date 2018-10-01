@@ -1,6 +1,7 @@
 const { Types: { ObjectId } } = require ( 'mongoose' );
 module.exports = (app) => {
     const Aluno = app.models.aluno;
+    const Resultado = app.models.resultado;
     const CadernoController = {
         index(req, res){
             const { _id } = req.session.aluno;
@@ -69,7 +70,14 @@ module.exports = (app) => {
             res.render('caderno/exercicio', { caderno : cadernoId });
         },
         show(req, res){
-            res.render('caderno/show');
+            const cadernoId = req.params.id;
+
+            Resultado.find( { caderno : cadernoId} )
+                .then( (resultados) => {
+                    res.render('caderno/show', { resultados : resultados });
+                }).catch( (e) => console.log(e) )
+            ;
+            
         }
     };
     return CadernoController;
