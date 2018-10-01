@@ -27,19 +27,22 @@
                 <%-  include('resposta');  %>
             </div>
         </div>
-        
-      
-            
+        <div class="row" >
+            <div class="col s12" >
+                <%- include('finalizado'); %>
+            </div>
         </div>
-  </div>
     </section>
 </div>
 
 <script src="/socket.io/socket.io.js" ></script>
 <script src="/javascripts/app/domain/Salas/Salas.js" ></script>
 <script src="/javascripts/app/domain/Salas/Sala.js" ></script>
+<script src="/javascripts/app/domain/Finalizados/Finalizados.js" ></script>
+<script src="/javascripts/app/domain/Finalizados/Finalizado.js" ></script>
 <script src="/javascripts/app/controllers/SalaController.js" ></script>
 <script src="/javascripts/app/ui/views/RespostasView.js" ></script>
+<script src="/javascripts/app/ui/views/FinalizadoView.js" ></script>
 <script>
     const socket = io({transports: ['websocket'], upgrade: false});
     const sala = '<%- sala %>';
@@ -66,6 +69,10 @@
 
     socket.on('notify-offlines', (aluno) => {
         salaController.remove(aluno);
+    });
+
+    socket.on('terminou', (sala, aluno, resultado) => {
+        salaController.terminou(aluno, resultado);
     });
 </script>
 <% include ../partials/footerProfessor %>

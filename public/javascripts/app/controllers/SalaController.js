@@ -3,7 +3,9 @@ class SalaController{
     constructor(){       
         this._usuario = null;
         this._respostasView = new RespostasView("#resposta");
+        this._finalizadosView = new FinalizadoView("#finalizado");
         this._salas = new Salas();
+        this._finalizados = new Finalizados();
     }
 
     adiciona(aluno, quantidade_de_questao){
@@ -18,7 +20,7 @@ class SalaController{
         nA.classList = 'hide';
     }
 
-    adicionaResposta(aluno = '', questao = '', resposta = ''){
+    adicionaResposta(aluno, questao, resposta){
         this._aluno = aluno;
         this._questao = questao;
         this._resposta = resposta;
@@ -36,7 +38,21 @@ class SalaController{
             nA.classList = '';
     }
 
+    terminou(aluno, resultado){
+        this._aluno = aluno;
+        const { questoes } = resultado;
+        
+        console.log('questao', aluno, questoes);
+        this._finalizados.adiciona( this._criaFinalizado(aluno, questoes) );
+        console.log(this._finalizados);
+        this._finalizadosView.update(this._finalizados);
+    }
+
     _criaSala(aluno, email, quantidade_de_questao){
         return new Sala(aluno, email, quantidade_de_questao);
+    }
+
+    _criaFinalizado(aluno, questoes){
+        return new Finalizado(aluno, questoes);
     }
 }

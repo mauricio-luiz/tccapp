@@ -29,6 +29,11 @@ module.exports = (app, io) => {
             io.to(hashDaSala).emit('resposta', hashDaSala, aluno, questao, resposta);
         });
 
+        cliente.on('terminei', (hashDaSala, aluno, resultado) => {
+            session.sala = hashDaSala;
+            io.to(hashDaSala).emit('terminou', hashDaSala, usuario.nome, resultado);
+        });
+
         cliente.on('disconnect', () => {
             const { sala } = session;
             const resposta = `<b>${usuario.nome}</b> saiu`;

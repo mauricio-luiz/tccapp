@@ -73,6 +73,7 @@
             return alunoController.salva(response);
         }).then( (response) => {
             if(response.terminou){
+                socket.emit('terminei', sala, usuario, response.resultado );
                 setTimeout(function(){ 
                     window.location = `/resultado/${response.resultado._id}/mostrar`;
                 }, 2000);

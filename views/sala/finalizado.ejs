@@ -1,0 +1,20 @@
+<div class="row">
+    <div class="col s12">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">Alunos que terminaram</span>
+                <table class="highlight centered responsive-table" style="display: block; overflow-x: auto; white-space: nowrap;">
+                    <thead>
+                        <th>Alunos</th>
+                        <% exercicio.questoes.forEach(function(questao, index) { %>
+                            <th>Questão #<%- index+1 %></th>                               
+                        <% }) %>
+                    </thead>
+                    <tbody id="finalizado" >
+                        <td id="nA" colspan="<%- quantidade_exercicio + 1 %>" >Nenhum aluno finalizou ainda</td>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

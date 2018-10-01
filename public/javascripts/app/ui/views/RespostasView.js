@@ -13,7 +13,6 @@ class RespostasView extends View{
     }
 
     template(model){
-        console.log(model);
         return  `<tr data-aluno="${ model.email}" >
                         <td>${model.aluno}</td>
                         ${model.respostas.map( (resposta, indice) => `<td class="td-${indice}"><i class="material-icons small">${resposta}</i></td>` ).join('')}
