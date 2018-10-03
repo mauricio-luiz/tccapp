@@ -129,6 +129,7 @@ module.exports = (app) => {
                         aluno : usuario._id,
                         exercicio : exercicio.nome,
                         exercicioReferencia : exercicioReferencia,
+                        nome : usuario.nome,
                         caderno : caderno,
                         questoes : []
                     };

@@ -39,6 +39,10 @@ module.exports = () => {
                 type : Schema.Types.ObjectId,
                 required : true
             },
+            nome : {
+                type : String,
+                required : true,
+            },
             exercicio : {
                 type : String,
                 required : true

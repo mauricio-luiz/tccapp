@@ -1,7 +1,6 @@
 class FinalizadoView extends View{
 
     template(model){
-        console.log(model);
         return  `${model.paraArray().map( aluno =>
             `
                 <tr>

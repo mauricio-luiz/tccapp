@@ -38,7 +38,7 @@ module.exports = () => {
             type: Boolean,
             default: false
         },
-        questoes : [questao],
+        questoes : [questao]
     });
     
     return db.model('exercicio', exercicio);

@@ -19,11 +19,11 @@
                                 </div>
                                 <div class="card-content">
                                     <span class="card-title activator grey-text text-darken-4"><%- exercicio.nome %><i class="material-icons right">more_vert</i></span>
-                                    <p><a href="#"> <i class="material-icons left blue-text lighten-2">trending_up</i>Estatísticas</a></p> 
+                                    <p><a href="/estatistica/<%- exercicio.id %>/mostrar"><i class="material-icons left blue-text lighten-2">trending_up</i>Estatísticas</a></p> 
                                 </div>
                                 <div class="card-reveal">
                                     <span class="card-title grey-text text-darken-4"><%- exercicio.nome %><i class="material-icons right">close</i></span>
-                                    <form action="/exercicio/<%- exercicio._id %>?_method=delete" method="post" >
+                                    <form action="/exercicio/<%- exercicio.id %>?_method=delete" method="post" >
                                         <input type="checkbox" value="<%- exercicio.id %>" />
                                         <a href="/exercicio/<%- exercicio.id %>/editar" class="btn-floating btn-large waves-effect waves-light grey btn-small tooltipped" data-position="bottom" data-tooltip="Editar"><i class="material-icons">edit</i></a>
                                         <a href="/questoes/<%- exercicio.id %>/criar" class="btn-floating btn-large waves-effect waves-light teal btn-small tooltipped" data-position="bottom" data-tooltip="Criar Questoes"><i class="material-icons">add</i></a>
