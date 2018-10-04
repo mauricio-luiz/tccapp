@@ -7,6 +7,7 @@ class Opcoes{
 
     adiciona(opcao){
         this._opcoes.push(opcao);
+        console.log(this._opcoes);
     }
 
     paraArray(){
@@ -15,6 +16,10 @@ class Opcoes{
 
     esvazia(){
         this._opcoes.length = 0;
+    }
+
+    tamanho(){
+        return this._opcoes.length;
     }
 
     letra(){

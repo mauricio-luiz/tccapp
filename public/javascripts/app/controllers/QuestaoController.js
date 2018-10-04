@@ -4,7 +4,7 @@ class QuestaoController{
         const $ = document.querySelector.bind(document);
 
         this._resposta = null;
-        this._opcoes = [];
+        this._opcoesTextareas = [];
         this._enunciado = $("#enunciado");
         this._quantidadeQuestao = $("#quantidadeQuestao");
         this._exercicio = $("#exercicio");
@@ -14,6 +14,10 @@ class QuestaoController{
         this._mensagemView = new MensagemView("#listaOpcoes");
         this._mensagem = new Mensagem("Nenhuma opção cadastrada! :(", "orange lighten-2");
         this._url = '/questao/salvar';
+
+        this._opcoes = new Opcoes();
+        this._opcoesView = new OpcoesView('#listaOpcoes');
+        this._texto = $("#opcao");
     }
 
     adiciona(){
@@ -24,10 +28,10 @@ class QuestaoController{
         
         const listaOpcoes = document.querySelectorAll("#listaOpcoes textarea");
         listaOpcoes.forEach( (textarea, indice) => {
-            this._opcoes.push(textarea.value);
+            this._opcoesTextareas.push(textarea.value);
         });
         this._questoes.adiciona(
-            this._criaQuestao(this._enunciado.value, this._resposta, this._opcoes)
+            this._criaQuestao(this._enunciado.value, this._resposta, this._opcoesTextareas)
         );
 
         const request = {
@@ -59,11 +63,36 @@ class QuestaoController{
         })();
     }
 
+    adicionaOpcao(){
+
+        let resposta = null;
+        if(this._opcoes.tamanho() > 0){
+            console.log(this);
+            resposta = this._respostaCorrente();   
+        }
+
+        this._opcao = this._criaOpcao(this._texto.value, this._opcoes.letra(), resposta);
+        console.log(this._opcao);
+        this._opcoes.adiciona(this._opcao);
+        console.log(this._opcoes);
+        this._opcoesView.update(this._opcoes);
+        this._opcoesView.updateTextarea(this._opcoes);
+        this._opcoesView.updateResposta(this._opcoes, resposta);
+    }
+
     _criaQuestao(enunciado, resposta, opcoes){
         return new Questao(
             enunciado,
             resposta,
             opcoes
+        );
+    }
+
+    _criaOpcao(texto, numero, correta){
+        return new Opcao(
+            texto,
+            numero,
+            correta
         );
     }
 
@@ -78,5 +107,15 @@ class QuestaoController{
         this._enunciado.value = "";
         this._mensagemView.update(this._mensagem);
         M.textareaAutoResize(this._enunciado);
+        this._opcoes.esvazia();
+    }
+
+    _respostaCorrente(){
+        let respostas = document.querySelectorAll("#listaOpcoes input[type=radio]");
+        let resposta = null;
+        respostas.forEach( (input, indice) => {
+            if(input.checked)   resposta = indice;
+        });
+        return resposta;
     }
 }

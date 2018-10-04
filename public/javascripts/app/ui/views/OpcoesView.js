@@ -26,4 +26,11 @@ class OpcoesView extends View{
             M.textareaAutoResize(document.querySelector(`#${opcao.id}`));
         });
     }
+
+    updateResposta(model, resposta){
+        const respostas = document.querySelectorAll("#listaOpcoes input[type=radio]");
+        respostas.forEach( (opcao, indice) =>  {
+            if(resposta == indice) opcao.setAttribute('checked', true);
+        });
+    }
 }

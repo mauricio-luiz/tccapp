@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
 if( $('#botao-adicionaOpcao') !== null){
     document
     $('#botao-adicionaOpcao')
-    .addEventListener('click', opcoes.adiciona.bind(opcoes));
+    .addEventListener('click', questao.adicionaOpcao.bind(questao));
 }
 
 if( $('#salvaQuestao') !== null){

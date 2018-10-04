@@ -54,13 +54,18 @@ module.exports = (app) => {
             const { questao } = req.body;
             const where = { _id : questao.exercicio, 'questoes._id': id };
 
-            const { enunciado, opcoes, resposta } = questao;
+            const { enunciado, opcoes } = questao;
+            const resposta_value = questao.resposta;
+            const letra = resposta_value.replace('opcao', '');
+            const alfabeto = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'X', 'W', 'Y', 'Z'];
+            const numero = alfabeto.indexOf(letra);           
+            const resposta = numero;
+
             const questaoDoc = { questao : enunciado, opcoes : opcoes, correta : resposta, exercicio: questao.exercicio };
             const set = { $set: { 'questoes.$': questaoDoc } };
             
             Exercicio.update( where, set )
-                  .then( (exercicio) => { 
-                        const { questoes } = exercicio;
+                  .then( (exercicio) => {
                         res.redirect(`/exercicio/${questao.exercicio}/mostrar`) 
                     })
                   .catch( (e) => { console.log(e); res.redirect('/') });
@@ -78,6 +83,10 @@ module.exports = (app) => {
                 .then( () => res.redirect(`/exercicio/${exercicio}/mostrar`) )
                 .catch( () => res.redirect('/') )
             ;
+        },
+        converteNumero(letra){
+            const alfabeto = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'X', 'W', 'Y', 'Z'];
+            return alfabeto.indexOf(letra);
         }
     };
     return QuestaoController;

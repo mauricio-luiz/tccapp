@@ -8,11 +8,19 @@ class OpcaoController{
     }
 
     adiciona(){
-        this._opcao = this._criaOpcao(this._texto.value, this._opcoes.letra());
+
+        let resposta = null;
+        if(this._opcoes.tamanho() > 0){
+            resposta = this._resposta();     
+        }
+
+        this._opcao = this._criaOpcao(this._texto.value, this._opcoes.letra(), resposta);
         this._opcoes.adiciona(this._opcao);
         this._opcoesView.update(this._opcoes);
         this._opcoesView.updateTextarea(this._opcoes);
+        this._opcoesView.updateResposta(this._opcoes, resposta);
         this._limpar();
+        this._limparOpcoes();
     }
 
     adicionaOpcao( listaOpcoes, correta ){
@@ -32,7 +40,7 @@ class OpcaoController{
         return this._opcoes;
     }
 
-    limparOpcoes(){
+    _limparOpcoes(){
         this._opcoes.esvazia();
     }
 
@@ -47,5 +55,12 @@ class OpcaoController{
     _limpar(){
         this._texto.value = "";
         M.textareaAutoResize(this._texto);
+    }
+
+    _incrementaQuestao(){
+        this._quantidadeQuestao.textContent =  parseInt(this._quantidadeQuestao.textContent) + 1;
+        this._quantidadeQuestao.classList = "new badge pulse";
+        self = this;
+        setTimeout(function(){ self._quantidadeQuestao.classList = "new badge"; }, 10000);
     }
 }

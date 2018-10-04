@@ -5,7 +5,6 @@ class View{
     }
 
     update(model){
-        console.log(this._seletor);
         this._seletor.innerHTML = this.template(model);
     }
     
