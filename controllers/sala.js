@@ -47,7 +47,7 @@ module.exports = (app) => {
         aluno(req, res){
             const { id, caderno } = req.params;
             const usuario = req.session.usuario;
-            Exercicio.findById(id, 'nome quem questoes')
+            Exercicio.findById( { _id : id}, 'nome quem questoes')
                 .then((exercicio) => {
                     exercicio.questoes.map( (questao) => {
                         return questao.correta = null;
