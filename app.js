@@ -18,7 +18,21 @@ const io = socketIO(server);
 const store = new expressSession.MemoryStore();
 
 mongoose.Promise = bluebird;
-var db = mongoose.connect('mongodb://localhost:27017/tcc', { useNewUrlParser: true });
+var uristring = process.env.MONGOLAB_URI ||
+                process.env.MONGOHQ_URL ||
+                'mongodb://localhost:27017/tcc';
+
+var theport = process.env.PORT || 3000;
+
+mongoose.connect(uristring, function (err, res) {
+  if (err) {
+    console.log ('ERROR connecting to: ' + uristring + '. ' + err);
+  } else {
+    console.log ('Succeeded connected to: ' + uristring);
+  }
+});
+
+var db = mongoose.connect(uristring, { useNewUrlParser: true });
 global.db = mongoose.connection;
 
 app.set('views', path.join(__dirname, 'views'));
@@ -59,6 +73,6 @@ consign({})
 app.use(error.notFound);
 app.use(error.serverError);
 
-server.listen(3000, () => {
+server.listen(theport, () => {
   console.log('tcc app no ar');
 })
