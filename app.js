@@ -18,7 +18,7 @@ const io = socketIO(server);
 const store = new expressSession.MemoryStore();
 
 mongoose.Promise = bluebird;
-var uristring = process.env.MONGOLAB_URI ||
+var uristring = process.env.MONGODB_URI ||
                 process.env.MONGOHQ_URL ||
                 'mongodb://localhost:27017/tcc';
 
