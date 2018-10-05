@@ -4,7 +4,6 @@ class QuestaoController{
         const $ = document.querySelector.bind(document);
 
         this._resposta = null;
-        this._opcoesTextareas = [];
         this._enunciado = $("#enunciado");
         this._quantidadeQuestao = $("#quantidadeQuestao");
         this._exercicio = $("#exercicio");
@@ -27,11 +26,13 @@ class QuestaoController{
         });
         
         const listaOpcoes = document.querySelectorAll("#listaOpcoes textarea");
+        let opcoesTextareas = [];
         listaOpcoes.forEach( (textarea, indice) => {
-            this._opcoesTextareas.push(textarea.value);
+            opcoesTextareas.push(textarea.value);
         });
+
         this._questoes.adiciona(
-            this._criaQuestao(this._enunciado.value, this._resposta, this._opcoesTextareas)
+            this._criaQuestao(this._enunciado.value, this._resposta, opcoesTextareas)
         );
 
         const request = {
@@ -46,11 +47,12 @@ class QuestaoController{
             },
         };
         
+        const self = this;
         fetch(this._url, request)
             .then( (response) => {
-                this._incrementaQuestao();
-                this._limpar();
-                this._verQuestoes.classList.remove('disabled');
+                self._incrementaQuestao();
+                self._limpar();
+                self._verQuestoes.classList.remove('disabled');
             })
             .catch( (e) => { console.log(e)} );
 
@@ -67,17 +69,15 @@ class QuestaoController{
 
         let resposta = null;
         if(this._opcoes.tamanho() > 0){
-            console.log(this);
             resposta = this._respostaCorrente();   
         }
 
         this._opcao = this._criaOpcao(this._texto.value, this._opcoes.letra(), resposta);
-        console.log(this._opcao);
         this._opcoes.adiciona(this._opcao);
-        console.log(this._opcoes);
         this._opcoesView.update(this._opcoes);
         this._opcoesView.updateTextarea(this._opcoes);
         this._opcoesView.updateResposta(this._opcoes, resposta);
+        this._texto.value = "";
     }
 
     _criaQuestao(enunciado, resposta, opcoes){
@@ -108,7 +108,8 @@ class QuestaoController{
         this._mensagemView.update(this._mensagem);
         M.textareaAutoResize(this._enunciado);
         this._opcoes.esvazia();
-    }
+        this._questoes.esvazia();
+    }    
 
     _respostaCorrente(){
         let respostas = document.querySelectorAll("#listaOpcoes input[type=radio]");
