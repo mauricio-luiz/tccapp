@@ -5,15 +5,15 @@ module.exports = (app) => {
     const SalaController = {
         professor(req, res){
             const { id } = req.params;
-            const usuario = req.session.usuario;          
-            Exercicio.findOneAndUpdate(id, {status : true}, { new : true})
+            const usuario = req.session.usuario;           
+            Exercicio.findOneAndUpdate( {_id : id }, {status : true}, { new : true} )
                 .then((exercicio) => {
                     const sala = req.query;
                     let hashDaSala = sala;
                     if( ! hashDaSala.length > 0  ){
                         const md5 = crypto.createHash('md5');
                         hashDaSala = md5.update(usuario.email).digest('hex');
-                    }
+                    }                   
                     const quantidade_exercicio = exercicio.questoes.length;
                     res.render('sala/professor', {usuario, exercicio, sala : hashDaSala, quantidade_exercicio, email : usuario.email});
                 })
