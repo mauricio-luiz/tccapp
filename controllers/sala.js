@@ -32,7 +32,9 @@ module.exports = (app) => {
             ;
         },
         entrar(req,res){
-            const { email, caderno } = req.body.sala;
+            const { caderno } = req.body.sala;
+            let email = req.body.sala.email.trim();
+            console.log(email); 
             Exercicio.findOne({ quem: email, status: true }, (err, exercicio) => {
                 if(err) return handleError(err);
 
