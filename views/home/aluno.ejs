@@ -14,28 +14,43 @@
                 <form class="col s12 center-align" action="/registrar-aluno" method="post">
                     <div class="row">
                         <div class="input-field col s10 offset-s1">
-                        <input type="text" name="usuario[nome]" id="nomecompleto"  >
+                        <input type="text" name="usuario[nome]" id="nomecompleto" value="<%- message.nome %>" >
                             <label for="nomecompleto" >Nome Completo:</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s10  offset-s1">                   
-                            <input type="text" name="usuario[email]" id="email" >
+                            <input type="text" name="usuario[email]" id="email" value="<%- message.email %>" >
                             <label for="email">Email:</label>
+                            <span class="helper-text red-text left-align" data-error="wrong" ><%- message.usuario %></span>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-field col s10  offset-s1">                   
-                        <input type="password" name="usuario[password]" id="password" >
+                        <div class="input-field col s5  offset-s1">                   
+                            <input type="password" name="usuario[password]" id="password" >
                             <label for="password">Senha:</label>
+                        </div>
+                        <div class="input-field col s5  ">                   
+                            <input type="password" name="usuario[password_confirmation]" id="password_confirmation" >
+                            <label for="password_confirmation">Confirmar Senha:</label>
+                            <span class="helper-text red-text" data-error="wrong" ><%- message.password %></span>
                         </div>
                     </div>
                     <div class="row" >
                         <div class="col s12" >
-                            <button class="btn waves-effect waves-light blue lighten-2" type="submit" name="action">Registrar
-                                <i class="material-icons right">send</i>
-                            </button>
+                            <div class="col s12" >
+                                <div class="col s12" >
+                                    <div class="col s12" >
+                                        <button class="btn waves-effect waves-light blue lighten-2 right" type="submit" name="action">Registrar
+                                            <i class="material-icons right">send</i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                    <div class="row" >
+                        <a class="waves-effect waves-teal btn-flat small" href="/" >Voltar</a>
                     </div>
                 </form>
             </div>
