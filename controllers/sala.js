@@ -34,7 +34,6 @@ module.exports = (app) => {
         entrar(req,res){
             const { caderno } = req.body.sala;
             let email = req.body.sala.email.trim();
-            console.log(email); 
             Exercicio.findOne({ quem: email, status: true }, (err, exercicio) => {
                 if(err) return handleError(err);
 
@@ -51,6 +50,7 @@ module.exports = (app) => {
             const usuario = req.session.usuario;
             Exercicio.findById( { _id : id}, 'nome quem questoes')
                 .then((exercicio) => {
+
                     exercicio.questoes.map( (questao) => {
                         return questao.correta = null;
                     });
