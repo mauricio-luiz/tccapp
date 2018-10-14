@@ -8,36 +8,38 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/stylesheets/materialize.min.css">
     <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
-    <script src="/javascripts/app/ui/views/View.js"></script>
+    <script src="/javascripts/app/ui/views/View.js"></script>    
 </head>
 <body>
-   
-   
-    <nav class="nav-extended">
-        <div class="nav-wrapper blue lighten-2">
-            <a href="#!" class="brand-logo">Logo</a>
-            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>           
-            <ul class="right hide-on-med-and-down">
-                <li><a href="/professor"><i class="material-icons left">home</i>Início</a></li>
-                <li><a href="/disciplinas"><i class="material-icons left">library_books</i>Disciplinas</a></li>
-                <li><a href="/sair"><i class="material-icons left" >power_settings_new</i>Sair</a></li>
-            </ul>
-        </div>
-        <div class="nav-content grey lighten-4">
-            <ul class="tabs tabs-transparent">
-                <li class="tab"><a class="black-text" href="/disciplina/criar">Criar Disciplina</a></li>
-                <% if(typeof menu_extra !== 'undefined'){ %>
-                    <% menu_extra.forEach(function(menu) { %>
-                    <li class="tab"><a class="black-text" href="<%- menu.url %>"><%- menu.nome %></a></li>
-                    <% }) %>
-                <% } %>
-            </ul>
-        </div>
-    </nav>
 
-    <ul class="sidenav" id="mobile-demo">
-        <li><a href="/professor">Início</a></li>
-        <li><a href="/disciplinas">Disciplinas</a></li>
-        <li><a href="/exercicio/criar">Criar Exercicio</a></li>    
-        <li><a href="/sair">Sair</a></li>
-    </ul>
+    <!-- Page Layout here -->
+    <div class="row">
+
+      <div class="col s1 m3">
+        <ul id="slide-out" class="sidenav sidenav-fixed blue lighten-2 white-text">
+            <li>
+                <div class="user-view">
+                    <div class="background"><h5 class="center-align">Quizzes<h5></div>
+                    <a href="#name"><span class="white-text name center-align">Mauricio Luiz Geraldo Junior</span></a>
+                    <a href="#email"><span class="white-text email center-align">mauriciojunio@gmail.com</span></a>
+                </div>
+            </li>
+            <li><div class="divider"></div></li>
+            <li class="active"><a class="white-text" href="/professor"><i class="material-icons white-text left">home</i>Início</a></li>
+            <li><a class="white-text" href="/disciplinas"><i class="material-icons white-text left">folder</i>Disciplinas</a></li>
+            <li><a class="white-text" href="/quizzes"><i class="material-icons white-text left">library_books</i>Quizzes</a></li>
+            <li><a class="white-text" href="/sala"><i class="material-icons white-text left">group</i>Sala</a></li>
+            <li><a class="white-text" href="/sala"><i class="material-icons white-text left">trending_up</i>Resultados</a></li>
+            <li><a class="white-text" href="/sair"><i class="material-icons white-text left" >power_settings_new</i>Sair</a></li>
+        </ul>
+        <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+      </div>
+
+      <div class="col s12 m9">
+        <!-- Teal page content  -->
+
+
+
+  
+   
+   
