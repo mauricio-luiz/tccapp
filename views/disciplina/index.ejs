@@ -1,53 +1,52 @@
 <% include ../partials/headerProfessor %>
-<div class="container" >
-    <header id="actions" >
-        <div class="row" >
-            <div class="col s6" >
-                <h3 class="flow-text" ><i class="material-icons left">library_books</i>Disciplinas</h3>
-            </div>
+
+<div id="actions" >
+    <div class="row" >
+        <div class="col s12" >
+            <h1 class="flow-text" ><i class="material-icons left">folder</i>Disciplinas</h1>
+            <div class="divider" ></div>
         </div>
-    </header>
-    <main>
-        <section class="top-20">
-            <div class="row">
-                <% if(disciplinas.length > 0){ %>
-                    <% disciplinas.forEach(function(disciplina) { %>
-                        <div class="col s12 m4">
-                            <div class="card">
-                                <div class="card-image waves-effect waves-block waves-light">
-                                    <i class="material-icons left grey-text lighten-2">local_library</i>
-                                </div>
-                                <div class="card-content">
-                                    <span class="card-title activator grey-text text-darken-4"><%- disciplina.nome %><i class="material-icons right">more_vert</i></span>                                    
-                                    <p><a href="/exercicios/<%- disciplina.id %>/disciplina" ><i class="material-icons  left blue-text lighten-2">assignment</i>Exercicios</a></p>
-                                </div>
-                                <div class="card-reveal">
-                                    <span class="card-title grey-text text-darken-4"><%- disciplina.nome %><i class="material-icons right">close</i></span>
-                                    <form action="/disciplina/<%- disciplina._id %>?_method=delete" method="post" >
-                                        <input type="checkbox" value="<%- disciplina.id %>" />
-                                        <a href="/disciplina/<%- disciplina.id %>/editar" class="btn-floating btn-large waves-effect waves-light grey btn-small tooltipped" data-position="bottom" data-tooltip="Editar"><i class="material-icons">edit</i></a>
-                                        <button class="btn-floating btn-large waves-effect waves-light red btn-small tooltipped" data-position="bottom" data-tooltip="Remover"><i class="material-icons">delete</i></button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    <% }) %>
-                <% } else { %>
-                    <%- include('../partials/messages', {message: 'Nenhuma disciplina cadastrada! :(', color: 'orange lighten-2' }); %>
-                <% } %>
-            </div>
-        </section>
-        <section>
-            <div class="col s12" >
-                <div class="fixed-action-btn">
-                    <a id="add"  href="/disciplina/criar" class="btn-floating btn-large waves-effect waves-light blue lighten-2">
-                        <i class="material-icons">add</i>
-                    </a>
-                </div>
-            </div>
-        </section>
-    </main>
+    </div>
 </div>
+<section class="top-20">
+    <div class="row" >
+        <div class="col s12 m4">
+            <ul>
+                <li><a href="/disciplina/criar" class="waves-effect waves-light btn left"><i class="material-icons left">add</i>Adicionar</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="row" >
+        <% if(disciplinas.length > 0){ %>
+            <% disciplinas.forEach(function(disciplina) { %>
+                <div class="col s12 m4">
+                    <div class="card">
+                        <div class="card-content">
+                            <span class="card-title activator grey-text text-darken-4"><%- disciplina.nome %></span>
+                        </div>
+                        <div class="card-action">
+                            <form action="/disciplina/<%- disciplina._id %>?_method=delete" method="post" >
+                                <a href="/disciplina/<%- disciplina.id %>/editar" class="grey-text lighten-2 left top-2" ><i class="material-icons">edit</i>Editar</a>
+                                <button class="btn-flat waves-effect waves-light red-text left-20 font-15 fix-delete" ><i class="material-icons">delete</i>Excluir</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <%- include('../partials/messages', {message: 'Nenhuma disciplina cadastrada! :(', color: 'orange lighten-2' }); %>
+        <% } %>
+    </div>
+</section>
+<section>
+    <div class="col s12" >
+        <div class="fixed-action-btn">
+            <a id="add"  href="/disciplina/criar" class="btn-floating btn-large waves-effect waves-light blue lighten-2">
+                <i class="material-icons">add</i>
+            </a>
+        </div>
+    </div>
+</section>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('.tooltipped');

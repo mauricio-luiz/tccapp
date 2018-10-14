@@ -5,11 +5,12 @@ module.exports = (app) => {
     const DisciplinaController = {
         index(req, res){
             const { _id } = req.session.professor;
+            const { usuario } = req.session;
             Professor.findById( _id )
                 .then((professor) => {
                     const { disciplinas } = professor;
-                    res.render('disciplina/index', { disciplinas } );
-                }).catch( () => res.redirect('/'));            
+                    res.render('disciplina/index', { disciplinas, usuario } );
+                }).catch( () => res.redirect('/'));
         },
         create(req,res){
             const { usuario } = req.session;
@@ -17,6 +18,7 @@ module.exports = (app) => {
         },
         edit(req, res){
             const { _id } = req.session.professor;
+            const { usuario } = req.session;
             const disciplinaId = req.params.id;
             Professor.findById(_id)
                 .then((professor) => {
@@ -24,7 +26,7 @@ module.exports = (app) => {
                     const disciplina = disciplinas.find((dc) => {
                         return dc._id.toString() === disciplinaId;
                     });
-                    res.render('disciplina/edit', {disciplina});
+                    res.render('disciplina/edit', {disciplina, usuario});
                 })
             ;
         },

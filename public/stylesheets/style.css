@@ -38,6 +38,9 @@ input:not([type]):focus:not([readonly]), input[type="text"]:not(.browser-default
   box-shadow: 0 1px 0 0 #64B5F6;
 }
 
+.top-2{
+  margin:2px;
+}
 .top-20{
   margin-top:20px
 }
@@ -84,12 +87,16 @@ input:not([type]):focus:not([readonly]), input[type="text"]:not(.browser-default
   }
 }
 
-header, main, footer {
+.app header, .app main, .app footer {
   padding-left: 300px;
 }
 
 @media only screen and (max-width : 992px) {
-  header, main, footer {
+  .app header, .app main, .app footer {
     padding-left: 0;
   }
+}
+
+.font-15 {
+  font-size: 15px
 }

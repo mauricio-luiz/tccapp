@@ -10,32 +10,32 @@
     <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
     <script src="/javascripts/app/ui/views/View.js"></script>    
 </head>
-<body>
+<body class="app">
 
     <!-- Page Layout here -->
     <div class="row">
 
-      <div class="col s1 m3">
-        <ul id="slide-out" class="sidenav sidenav-fixed blue lighten-2 white-text">
-            <li>
-                <div class="user-view">
-                    <div class="background"><h5 class="center-align">Quizzes<h5></div>
-                    <a href="#name"><span class="white-text name center-align">Mauricio Luiz Geraldo Junior</span></a>
-                    <a href="#email"><span class="white-text email center-align">mauriciojunio@gmail.com</span></a>
-                </div>
-            </li>
-            <li><div class="divider"></div></li>
-            <li class="active"><a class="white-text" href="/professor"><i class="material-icons white-text left">home</i>Início</a></li>
-            <li><a class="white-text" href="/disciplinas"><i class="material-icons white-text left">folder</i>Disciplinas</a></li>
-            <li><a class="white-text" href="/quizzes"><i class="material-icons white-text left">library_books</i>Quizzes</a></li>
-            <li><a class="white-text" href="/sala"><i class="material-icons white-text left">group</i>Sala</a></li>
-            <li><a class="white-text" href="/sala"><i class="material-icons white-text left">trending_up</i>Resultados</a></li>
-            <li><a class="white-text" href="/sair"><i class="material-icons white-text left" >power_settings_new</i>Sair</a></li>
-        </ul>
-        <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <div class="col s12 m4 l3">
+            <ul id="slide-out" class="sidenav sidenav-fixed blue lighten-2 white-text">
+                <li>
+                    <div class="user-view">
+                        <div class="background"><h5 class="center-align">Quizzes<h5></div>
+                        <a href="#name"><span class="white-text name center-align"><%- usuario.nome %></span></a>
+                        <a href="#email"><span class="white-text email center-align"><%- usuario.email %></span></a>
+                    </div>
+                </li>
+                <li><div class="divider"></div></li>
+                <li><a class="white-text" href="/professor"><i class="material-icons white-text left">home</i>Início</a></li>
+                <li><a class="white-text" href="/disciplinas"><i class="material-icons white-text left">folder</i>Disciplinas</a></li>
+                <li><a class="white-text" href="/quizzes"><i class="material-icons white-text left">library_books</i>Quizzes</a></li>
+                <li><a class="white-text" href="/sala"><i class="material-icons white-text left">group</i>Sala</a></li>
+                <li><a class="white-text" href="/sala"><i class="material-icons white-text left">trending_up</i>Resultados</a></li>
+                <li><a class="white-text" href="/sair"><i class="material-icons white-text left" >power_settings_new</i>Sair</a></li>
+            </ul>
+            <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
       </div>
 
-      <div class="col s12 m9">
+      <div class="col s12 m8 l9">
         <!-- Teal page content  -->
 
 
