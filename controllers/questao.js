@@ -1,7 +1,7 @@
 const { Types: { ObjectId } } = require ( 'mongoose' );
 
 module.exports = (app) => {
-    const Exercicio = app.models.exercicio;
+    const Quiz = app.models.quiz;
     const QuestaoController = {
         index(req, res){
             const usuario = req.session;
@@ -17,22 +17,37 @@ module.exports = (app) => {
                 }).catch( (e) => { console.log(e); res.redirect('/'); });
         },
         save(req, res){
-            const { questoes , exercicio } = req.body;
+            const usuario = req.session;
+            const { nome, disciplina, questoes } = req.body;
+            const { _id } = req.session.professor;
 
-            const { _questoes } = questoes;
-            const questao = _questoes.shift();
-            const { _enunciado, _resposta, _opcoes } = questao;                
-
-            const set = { 
-                $push : { 
-                    questoes : { questao : _enunciado, opcoes : _opcoes, correta : _resposta, exercicio : exercicio }
+            const set = { nome : nome, disciplina : disciplina, professor : _id, status : false, questoes : questoes };
+            const quiz = new Quiz(set);
+            quiz.save(function (err, newQuiz) {
+                if (err) {
+                    res.json({ status: "error", message: `Ocorreu um erro ao salvar questao ${err}` });
+                    return
                 }
-            };
+                
+                res.json({ status: "success", message: "Questão salva com sucesso!" });
+                return;
+            });
 
-            Exercicio.findByIdAndUpdate(exercicio, set)
-                 .then(() => res.json({ status: "success", message: "Questão salva com sucesso!" }))
-                 .catch((e) => res.json({ status: "error", message: `Ocorreu um erro ao salvar questao ${e}` }))
-            ;            
+
+            // const { _questoes } = questoes;
+            // const questao = _questoes.shift();
+            // const { _enunciado, _resposta, _opcoes } = questao;                
+
+            // const set = { 
+            //     $push : { 
+            //         questoes : { questao : _enunciado, opcoes : _opcoes, correta : _resposta, exercicio : exercicio }
+            //     }
+            // };
+
+            // Exercicio.findByIdAndUpdate(exercicio, set)
+            //      .then(() => res.json({ status: "success", message: "Questão salva com sucesso!" }))
+            //      .catch((e) => res.json({ status: "error", message: `Ocorreu um erro ao salvar questao ${e}` }))
+            // ;            
         },
         edit(req, res){
             const exercicioId = req.params.exercicio;

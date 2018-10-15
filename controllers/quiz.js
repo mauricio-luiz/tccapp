@@ -1,20 +1,25 @@
 const { Types: { ObjectId } } = require('mongoose');
 
 module.exports = (app) => {    
-    const Exercicio = app.models.exercicio;
-    const ExercicioController = {        
+    const Quiz = app.models.quiz;
+    const Professor = app.models.professor;
+    const QuizController = {        
         index(req, res){
-            const disciplinaId = req.params.id;
-            Exercicio.find( { disciplina : disciplinaId } )
-                .then((exercicios) => {
-                    const menu_extra = [{nome : 'Criar Exercicios', url : `/exercicio/${disciplinaId}/criar`}];
-                    res.render('exercicio/index', { exercicios, menu_extra });
+            const { _id } = req.session.professor;
+            const { usuario } = req.session;
+            Quiz.find( {professor : _id} ).populate('professor')
+                .then((quizzes) => {
+                    res.render('quiz/index', { quizzes, usuario });
                 }).catch( (e) => { console.log(e); res.redirect('/'); });            
         },
         create(req, res){
-            const usuario = req.session;
-            const disciplinaId = req.params.id;
-            res.render('exercicio/create', {disciplinaId});
+            const { usuario } = req.session;
+            const { _id } = req.session.professor;
+            Professor.findById( _id )
+                .then((professor) => {
+                    const { disciplinas } = professor;
+                    res.render('quiz/create', { disciplinas, usuario });
+                }).catch( () => res.redirect('/'));
         },
         save(req, res){
             const exercicio = req.body.exercicio;
@@ -24,7 +29,7 @@ module.exports = (app) => {
             
             const documentoExercicio = new Exercicio({ nome: nome, disciplina : disciplinaId, quem : email, questoes : []});
             documentoExercicio.save()
-                .then(() => res.redirect(`/exercicios/${disciplinaId}/disciplina`))
+                .then(() => res.redirect(`/quiz/${disciplinaId}/disciplina`))
                 .catch((e) => { console.log(e); res.redirect('/') })
             ;            
         },
@@ -33,14 +38,16 @@ module.exports = (app) => {
             Exercicio.findOne( { _id : exercicioId } )
             .then((exercicio) => {
                 const quantidade_exercicio = exercicio.questoes.length;
-                res.render('exercicio/show', { exercicio, quantidade_exercicio, questoes : exercicio.questoes});
+                res.render('quiz/show', { exercicio, quantidade_exercicio, questoes : exercicio.questoes});
             }).catch( (e) => { console.log(e); res.redirect('/'); }); 
         },
         edit(req, res){
+            const { usuario } = req.session;
             const id  = req.params.id;        
-            Exercicio.findById(id)
-                .then((exercicio) => {
-                    res.render('exercicio/edit', {exercicio});
+            Quiz.findById(id).populate('professor')
+                .then((quiz) => {
+                    const { disciplinas } = quiz.professor;
+                    res.render('quiz/edit', {quiz, usuario, disciplinas});
                 })
             ;
         },
@@ -52,7 +59,7 @@ module.exports = (app) => {
             const set = { $set: { nome : nome } };
             Exercicio.updateOne(where, set)
                 .then( () => {
-                    res.redirect(`/exercicios/${disciplina}/disciplina`);
+                    res.redirect(`/quiz/${disciplina}/disciplina`);
                 })
                 .catch( (e) => { console.log(e); res.redirect('/') });
             ;
@@ -62,11 +69,11 @@ module.exports = (app) => {
             Exercicio.findById(id, (err, exercicio) =>{
                 const where = { _id : id };
                 Exercicio.deleteOne(where)
-                    .then( () =>  res.redirect(`/exercicios/${exercicio.disciplina}/disciplina`))
+                    .then( () =>  res.redirect(`/quiz/${exercicio.disciplina}/disciplina`))
                     .catch( (e) => { console.log(e); res.redirect('/') })
                 ;
             });
         }
     };
-    return ExercicioController;
+    return QuizController;
 }

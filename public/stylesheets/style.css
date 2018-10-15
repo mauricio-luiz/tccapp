@@ -41,6 +41,9 @@ input:not([type]):focus:not([readonly]), input[type="text"]:not(.browser-default
 .top-2{
   margin:2px;
 }
+.top-10{
+  margin-top:10px;
+}
 .top-20{
   margin-top:20px
 }
@@ -99,4 +102,8 @@ input:not([type]):focus:not([readonly]), input[type="text"]:not(.browser-default
 
 .font-15 {
   font-size: 15px
+}
+
+.uppercase {
+  text-transform: uppercase;
 }

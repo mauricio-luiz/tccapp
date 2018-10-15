@@ -1,0 +1,93 @@
+<% include ../partials/headerProfessor %>
+
+    <div id="actions" >
+        <div class="row" >
+            <div class="col s12" >
+                <h1 class="flow-text" ><i class="material-icons left">assignment</i>Editar Quizzes</h1>
+                <div class="divider" ></div>
+            </div>
+        </div>
+    </div>
+    <section>
+        <form class="col s12" action="/exercicio" method="post">
+            <div class="row">
+                <div class="col s12">
+                    <div class="card">
+                        <div class="card-content black-text">
+                            <span class="card-title">Um nome para o quiz e escolha uma disciplina</span>
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input id="nome" type="text" name="exercicio[nome]" class="validate" value="<%- quiz.nome %>" >
+                                    <label for="nome">Nome do Quiz</label>
+                                </div>
+                            </div>
+                            <div class="row" >
+                                <div class="input-field col s12">
+                                    <select id="disciplina">
+                                        <option value="" disabled>Selecione</option>
+                                        <% disciplinas.forEach( function(disciplina) { %>
+                                            <option value="<%- disciplina._id %>" "<%- disciplina._id === quiz.disciplina ? 'selected' : '' %>" ><%- disciplina.nome %></option>
+                                        <% }) %>
+                                    </select>
+                                    <label>Disciplina</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+            <div class="row">
+                <div class="col s12">
+                    <div class="card">
+                        <div class="card-content black-text">
+                            <span class="card-title">Questões</span>
+                            <div class="row">
+                                <div class="col s12" >
+                                    <div id="template_exercicio">
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                <textarea id="enunciado" class="materialize-textarea" data-length="120" name="questao[enunciado]"></textarea>
+                                                <label for="enunciado">Enunciado</label>
+                                                <input type="hidden" name="questao[exercicio]" id="exercicio" >
+                                            </div>
+                                        </div>                                                                    
+                                        <div class="row">
+                                            <div id="listaOpcoes" class="col s12">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col s12">
+                                                <button id="botao-adicionaOpcao" class="btn waves-effect waves-light teal btn-small right" type="button" name="action">Adicionar Opção
+                                                    <i class="material-icons left">add</i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col s12">
+                    <div class="card">
+                        <div class="card-action">
+                            <div class="row" >
+                                <div class="col s12 m4" >
+                                    <a href="#" id="salvaECriaProxima" class="btn waves-effect waves-light top-20 bottom-20"><i class="material-icons left" >add</i>Salvar e criar proxima questão</i></a>
+                                </div>
+                                <div class="col s12 m4" >
+                                    <a href="#" id="finalizarESair" class="btn waves-effect waves-light top-20"><i class="material-icons left" >add</i>Finalizar e Sair</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          
+        </form>
+    </section>
+<% include ../partials/footerProfessor %>

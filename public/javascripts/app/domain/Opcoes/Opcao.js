@@ -7,7 +7,6 @@ class Opcao{
         this._campoLabel = `Opção ${_campoNumero}`;
         this._placeholder = `Escreva aqui a opção ${_campoNumero}`;
         this._correta = _correta;
-        Object.freeze(this);
     }
 
     get id(){
@@ -32,5 +31,13 @@ class Opcao{
 
     get correta(){
         return this._correta;
+    }
+
+    set correta(correta){
+        this._correta = correta;
+    }
+
+    set texto(texto){
+        this._texto = texto;
     }
 }
