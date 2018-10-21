@@ -1,0 +1,49 @@
+<% include ../partials/headerProfessor %>
+
+<section>
+    <div class="row" >
+        <div class="col s12" >
+            <h1 class="flow-text"><i class="material-icons left">group</i>Criar Sala</h1>
+            <div class="divider" ></div>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="row">
+        <form class="col s12" action="/sala" method="post">
+            <div class="row">
+                <div class="col s12">
+                    <div class="card">
+                        <div class="card-content">
+                            <span class="card-title">Um nome para sua Sala e um código de acesso</span>
+                            <div class="row">
+                                <div class="col s12" >
+                                    <div class="input-field col s12">
+                                        <input id="nome" type="text" name="sala[nome]" class="validate" >
+                                        <label for="nome">Nome</label>
+                                    </div>
+                                    <div class="input-field col s12">
+                                        <input id="codigo" type="text" name="sala[codigo]" class="validate" >
+                                        <label for="codigo">Código de Acesso <small>(exemplo: SALA123)</small></label>
+                                    </div>  
+                                    <div class="col s2" >
+                                        <a class="btn waves-effect waves-light grey left" href="/disciplinas" >Voltar
+                                            <i class="material-icons left" >navigate_before</i>
+                                        </a>
+                                    </div>
+                                    <div class="col s2" >
+                                        <button class="btn waves-effect waves-light teal lighten-2 left-2" type="submit" name="action">Salvar
+                                            <i class="material-icons right">save</i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+        </form>
+    </div>
+</section>
+<% include ../partials/footerProfessor %>
