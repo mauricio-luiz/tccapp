@@ -10,8 +10,8 @@ class OpcoesView extends View{
                         <label for="${opcao.name}" class="active">${opcao.label}</label>
                     </div>
                     <div class="col s12 m3">
-                        <button type="button" class="btn-floating waves-effect waves-light red botao-removeOpcao" value="${opcao.id}" ><i class="material-icons" >delete</i></button>
-                        <label class="right top-10">
+                        <button type="button" class="btn-flat waves-effect waves-light red-text small top-10 botao-removeOpcao" value="${opcao.id}" ><i class="material-icons" >delete</i></button>
+                        <label class="right top-15">
                             <input class="with-gap" name="questao[resposta]" type="radio" value="${opcao.id}"  ${ opcao.correta == true ? 'checked' : '' } />
                             <span><span class="hide-on-med-and-down">Resposta</span> Correta?</span>
                         </label>

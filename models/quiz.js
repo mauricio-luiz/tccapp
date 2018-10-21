@@ -1,6 +1,20 @@
 const Schema = require('mongoose').Schema;
 
-module.exports = () => {    
+module.exports = () => {
+    
+    const questao = Schema({
+        enunciado : {
+            type : String,
+            required : true
+        },
+        resposta : {
+            type : String,
+            required: true,
+        },
+        opcoes : {
+            type : Array
+        }
+    });
 
     const quiz = Schema({
         nome : {
@@ -13,16 +27,13 @@ module.exports = () => {
             ref: 'professor'
         },
         disciplina: {
-            type : Schema.Types.ObjectId,
-            required: true,
+            type : Schema.Types.ObjectId,            
         },
         status :  {
             type: Boolean,
             default: false
         },
-        questoes : {
-            type: Array
-        }
+        questoes : [questao]
     });
     
     return db.model('quiz', quiz);

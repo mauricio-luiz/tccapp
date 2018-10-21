@@ -42,6 +42,10 @@ class Opcoes{
         [].concat(this._opcoes)[indice].correta = true;
     }
 
+    removeCorreta(indice){
+        [].concat(this._opcoes)[indice].correta = false;
+    }
+
     texto(texto, indice){
         [].concat(this._opcoes)[indice].texto = texto;
     }

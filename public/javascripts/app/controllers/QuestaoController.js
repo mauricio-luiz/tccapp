@@ -1,6 +1,6 @@
 class QuestaoController{
 
-    constructor(){        
+    constructor(){  
         const $ = document.querySelector.bind(document);
 
         this._resposta = null;
@@ -10,95 +10,213 @@ class QuestaoController{
         this._quantidadeQuestao = $("#quantidadeQuestao");
         this._exercicio = $("#exercicio");
         this._verQuestoes = $("#verQuestoes");
-        this._salvaECriaProxima = $("#salvaECriaProxima");
-        this._finalizarESair = $("#finalizarESair");
 
         this._questoes = new Questoes();
         this._opcoes = new Opcoes();
         
         this._url = '/questao/salvar';
+        this._find = '/questao/quiz/id/editar';
+        this._create = '/quiz';
+        this._edit = '/quiz/id/editar';       
 
-        if(! $('#listaOpcoes')) return;
+        this._inicializeCollapse();
+        if(! $('.collapsible li.active .collapsible-body .listaOpcoes')) return;
         
-        this._opcoesView = new OpcoesView('#listaOpcoes');
+        this._opcoesView = new OpcoesView('.collapsible li.active .collapsible-body .listaOpcoes');
         this._criaOpcoesPadroes();    
 
-        this._salvaECriaProxima
-        .addEventListener('click', this.salva.bind(this));
-
-        this._finalizarESair
-        .addEventListener('click', this.finaliza.bind(this));
+        this._adicionaEventoSalvarECriarProxima();
         
+        this._atualizaNumeroDeQuestoes();
+
+        this._listaQuestao = new ListaQuestaoView("#mostraQuestoes");
+
+    }
+
+    _inicializeCollapse(){
+        var elem = document.querySelector('#mostraQuestoes');
+        var options = {
+        onOpenStart : this.edita.bind(this)
+        }
+        this._collapse = M.Collapsible.init(elem, options);
+    }
+
+    cria(){
+        const request = {
+            method : 'POST',
+            body :  JSON.stringify({
+               _id : null
+            }),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        };       
+        fetch(this._create, request)
+            .then( (response) => {
+               response.json().then( (json) => {
+                    const edit = this._edit.replace('id', json.quiz);
+                    window.location.href = edit;
+               });
+            })
+            .catch( (e) => { console.log(e)} );
     }
 
     adicionaOpcao(){
-        const respostas = document.querySelectorAll("#listaOpcoes input[type=radio]");
-        const textos = document.querySelectorAll("#listaOpcoes textarea");
+        const respostas = document.querySelectorAll(".collapsible li.active .collapsible-body .listaOpcoes input[type=radio]");
+        const textos = document.querySelectorAll(".collapsible li.active .collapsible-body .listaOpcoes textarea");
         this._adicionaTextos(textos);
         this._adicionaQuestaoCorreta(respostas);
         
         this._opcao = this._criaOpcao('', this._opcoes.letra(), false);
         this._opcoes.adiciona(this._opcao);
+
         this._opcoesView.update(this._opcoes);
         this._opcoesView.updateTextarea(this._opcoes);
         this._adicionaEventoRemoverBotao();
     }
 
     removeOpcao(botao, indice){
-        const resposta = document.querySelector("#listaOpcoes input[type=radio]:checked");             
+        const resposta = document.querySelector(".collapsible li.active .collapsible-body .listaOpcoes input[type=radio]:checked");             
         this._opcoes.remove(indice);
         this._opcoesView.refresh(this._opcoes);
         this._adicionaEventoRemoverBotao();
 
-        const nova_resposta = document.querySelector(`#listaOpcoes input[type="radio"][value="${resposta.value}"]`);
+        const nova_resposta = document.querySelector(`.collapsible li.active .collapsible-body .listaOpcoes input[type="radio"][value="${resposta.value}"]`);
         if(nova_resposta) nova_resposta.checked = true;
     }
 
     async salva(e){
         e.preventDefault();
-        const resposta = document.querySelector("#listaOpcoes input[type=radio]:checked").value;
-        const respostas = document.querySelectorAll("#listaOpcoes input[type=radio]");
-        const textos = document.querySelectorAll("#listaOpcoes textarea");
+        const resposta = document.querySelector(".collapsible li.active .collapsible-body .listaOpcoes input[type=radio]:checked").value;
+        const respostas = document.querySelectorAll(".collapsible li.active .collapsible-body .listaOpcoes input[type=radio]");
+        const textos = document.querySelectorAll(".collapsible li.active .collapsible-body .listaOpcoes textarea");
+        const id = document.querySelector("#quizID");
         this._adicionaTextos(textos);
         this._adicionaQuestaoCorreta(respostas); 
-        this._questoes.adiciona(this._criaQuestao(this._enunciado.value, resposta, this._opcoes.paraArray()));
+        this._enunciado = $("#enunciado");
+        
+        const questao = this._criaQuestao(this._enunciado.value, resposta, this._opcoes.paraArray());
+        const request = {
+            method : 'POST',
+            body :  JSON.stringify({
+                id : id.value,
+                questao : questao
+            }),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        };
+        
+        fetch(this._url, request)
+            .then( async (response) => {
+               return await response.json().then( (json) => {
+                    this._questoes.adiciona(questao);
+                    this._listaQuestao.update(json.quiz);
+                    this._collapse.destroy();
+               });
+            }).then( async () => {
+                this._opcoesView = new OpcoesView('.collapsible li.active .collapsible-body .listaOpcoes');
+                this._criaOpcoesPadroes();
+                this._atualizaNumeroDeQuestoes();
+                this._inicializeCollapse();
+                this._adicionaEventoAdicionaOpcoes();
+                this._adicionaEventoSalvarECriarProxima();
+            })
+            .catch( (e) => { console.log(e)} );
+        
         this._limpar();
     }
 
-    finaliza(e){
-        this.salva(e).then( () => {
-            
-            console.log(this._questoes);
-            const request = {
-                method : 'POST',
-                body :  JSON.stringify({
-                    nome : this._nome.value,
-                    disciplina : this._disciplina.value,
-                    questoes : this._questoes
-                }),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-            };
-            
-            const self = this;
-            fetch(this._url, request)
-                .then( (response) => {
-                    // self._incrementaQuestao();
-                    // self._limpar();
-                    // self._verQuestoes.classList.remove('disabled');
-                })
-                .catch( (e) => { console.log(e)} );
+    edita(obj){
+        const dados = obj.getAttribute('data-questao');
+        if( ! dados ) {
+            this._opcoes.esvazia();
+            this._criaOpcoesPadroes();
+            return;
+        }
+
+        const questao = dados.split("&");
+
+        const id = questao.shift();
+        const quiz = questao.shift();
+        const url = this._find.replace('quiz', quiz).replace('id', id);
+
+        const request = {
+            method : 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        };
+        fetch(url, request)
+            .then( (response) => {
+               return response.json().then( (json) => {
+                    const editarQuestaoView = new EditarQuestaoView('.collapsible li.active .collapsible-body');
+                    editarQuestaoView.update(json.questao);
+                    editarQuestaoView.updateTextarea(json.questao);
+                    return json.questao;
+               });
+            }).then( (questao) => {
+                this._opcoesView = new OpcoesView('.collapsible li.active .collapsible-body .listaOpcoes');
+                this._opcoes.esvazia();
+                questao.opcoes.forEach( (opcao) => this._opcoes.adiciona( this._criaOpcao(opcao._texto, this._opcoes.letra(), opcao._correta)));
+                this._opcoesView.update(this._opcoes);              
+                this._adicionaEventoEditarAdicionarOpcao();
+                
+                const btnAtualizar = document.querySelector(".editar-questao");
+                btnAtualizar.addEventListener('click', () => {
+                    this.atualizar(questao);
+                });
+            })
+            .catch( (e) => { console.log(e)} );
+    }
+
+    atualizar(dados){
+
+        const resposta = document.querySelector(".collapsible li.active .collapsible-body .listaOpcoes input[type=radio]:checked").value;
+        const respostas = document.querySelectorAll(".collapsible li.active .collapsible-body .listaOpcoes input[type=radio]");
+        const textos = document.querySelectorAll(".collapsible li.active .collapsible-body .listaOpcoes textarea");
+        const id = document.querySelector("#quizID");
+        this._adicionaTextos(textos);
+        this._adicionaQuestaoCorreta(respostas); 
+        const enunciado = document.querySelector(".collapsible li.active .collapsible-body .enunciado-edit");
+
+        
+
+        const questao = this._criaQuestao(enunciado.value, resposta, this._opcoes.paraArray());       
+        const request = {
+            method : 'POST',
+            body: JSON.stringify({
+                    id : id.value,
+                    questao : questao,
+                    id_questao : dados._id
+            }),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        };
+        const url = `/questao/atualizar`;
+        fetch(url, request)
+            .then( (response) => {
+                console.log(response);
+            })
+            .catch( (e) => { console.log(e)} );
+    }
     
-            (function smoothscroll(){
-                var currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
-                if (currentScroll > 0) {
-                     window.requestAnimationFrame(smoothscroll);
-                     window.scrollTo (0,currentScroll - (currentScroll/5));
-                }
-            })();
+    _adicionaEventoEditarAdicionarOpcao(){
+        const editAdicionaOpcao = $('.collapsible li.active .collapsible-body .edit-adicionar-opcao');
+        editAdicionaOpcao.addEventListener('click', (event) => {
+            this.adicionaOpcao();
         });
+    }
+
+    _adicionaEventoSalvarECriarProxima(){
+        this._salvaECriaProxima = document.querySelector("#salvaECriaProxima");
+        this._salvaECriaProxima
+        .addEventListener('click', this.salva.bind(this));
     }
 
     _criaOpcoesPadroes(){
@@ -108,7 +226,7 @@ class QuestaoController{
             this._opcao = this._criaOpcao('', this._opcoes.letra(), false);
             this._opcoes.adiciona(this._opcao);
         });
-
+        this._opcoesView = new OpcoesView('.collapsible li.padrao .collapsible-body .listaOpcoes');
         this._opcoesView.update(this._opcoes);
         this._adicionaEventoRemoverBotao();
     }
@@ -117,7 +235,9 @@ class QuestaoController{
         respostas.forEach( (input, indice) => {
             if(input.checked){
                 this._opcoes.opcaoCorreta(indice);
-            }  
+            }else{
+                this._opcoes.removeCorreta(indice);
+            }
         });
     }
 
@@ -132,6 +252,11 @@ class QuestaoController{
         botaoRemoveOpcao.forEach( (botaoRemove, indice) => {
             botaoRemove.addEventListener('click', this.removeOpcao.bind(this, botaoRemove, indice ));
         });
+    }
+
+    _adicionaEventoAdicionaOpcoes(){
+        const btnAdicionaOpcao = document.querySelector("#botao-adicionaOpcao");       
+        btnAdicionaOpcao.addEventListener('click', this.adicionaOpcao.bind(this));
     }
 
     _criaQuestao(enunciado, resposta, opcoes){
@@ -161,15 +286,21 @@ class QuestaoController{
         this._enunciado.value = "";
         M.textareaAutoResize(this._enunciado);
         this._opcoes.esvazia();
-        this._criaOpcoesPadroes();
     }    
 
     _respostaCorrente(){
-        let respostas = document.querySelectorAll("#listaOpcoes input[type=radio]");
+        let respostas = document.querySelectorAll(".collapsible li.active .collapsible-body .listaOpcoes input[type=radio]");
         let resposta = null;
         respostas.forEach( (input, indice) => {
             if(input.checked)   resposta = indice;
         });
         return resposta;
     }
+
+    _atualizaNumeroDeQuestoes(){
+        const textoNumeroQuestao = document.querySelector("#numeroQuestao");
+        const numeroQuestao = document.querySelectorAll('.collapsible li').length;
+        textoNumeroQuestao.innerHTML = numeroQuestao;
+    }
+
 }

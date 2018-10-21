@@ -6,96 +6,73 @@ module.exports = (app) => {
         index(req, res){
             const usuario = req.session;
             res.render('questao/index');
-        },
-        create(req, res){
-            const id = req.params.id;
-            
-            Exercicio.findOne( { _id : id } )
-                .then((exercicio) => {
-                    const quantidade_exercicio = exercicio.questoes.length;
-                    res.render('questao/create', { id, quantidade_exercicio });
-                }).catch( (e) => { console.log(e); res.redirect('/'); });
-        },
+        },       
         save(req, res){
             const usuario = req.session;
-            const { nome, disciplina, questoes } = req.body;
-            const { _id } = req.session.professor;
+            const { id } = req.body;
+            const postQuestao = req.body.questao;
 
-            const set = { nome : nome, disciplina : disciplina, professor : _id, status : false, questoes : questoes };
-            const quiz = new Quiz(set);
-            quiz.save(function (err, newQuiz) {
-                if (err) {
-                    res.json({ status: "error", message: `Ocorreu um erro ao salvar questao ${err}` });
-                    return
-                }
-                
-                res.json({ status: "success", message: "Questão salva com sucesso!" });
-                return;
-            });
+            const questao = { enunciado : postQuestao._enunciado, resposta : postQuestao._resposta, opcoes : postQuestao._opcoes };
+            const set = { $push : { questoes : questao } };
+            const options = {
+               runValidator :true, new : true
+            };
 
-
-            // const { _questoes } = questoes;
-            // const questao = _questoes.shift();
-            // const { _enunciado, _resposta, _opcoes } = questao;                
-
-            // const set = { 
-            //     $push : { 
-            //         questoes : { questao : _enunciado, opcoes : _opcoes, correta : _resposta, exercicio : exercicio }
-            //     }
-            // };
-
-            // Exercicio.findByIdAndUpdate(exercicio, set)
-            //      .then(() => res.json({ status: "success", message: "Questão salva com sucesso!" }))
-            //      .catch((e) => res.json({ status: "error", message: `Ocorreu um erro ao salvar questao ${e}` }))
-            // ;            
+            Quiz.findByIdAndUpdate(id, set, options)
+                 .then((quiz) => res.json({ status: "success", message: "Quiz salvo com sucesso!", quiz : quiz  }))
+                 .catch((e) => res.json({ status: "error", message: `Ocorreu um erro ao salvar questao ${e}` }))
+            ;  
         },
         edit(req, res){
-            const exercicioId = req.params.exercicio;
-            const id = req.params.id;
+            const { quiz, id } = req.params;         
 
-            Exercicio.findById( exercicioId )
-                .then( (exercicio) => {
-                    const { questoes } = exercicio;
+            Quiz.findById( { _id : quiz })
+                .then( (quiz) => {                    
+                    const { questoes } = quiz;                    
                     const questao = questoes.find((qt) => {
                         return qt._id.toString() === id;
                     });
-                    const quantidade_exercicio = questao.opcoes.length;
-                    res.render('questao/edit', {questao, quantidade_exercicio});
-                })
+                    res.json({ status: "error", message: "Questão encontrada", questao : questao  });
+                }).catch((e) => res.json({ status: "error", message: `Ocorreu um erro ao buscar questao ${e}` }));
             ;
         },
         update(req, res){
-            const id = req.params.id;
-            const { questao } = req.body;
-            const where = { _id : questao.exercicio, 'questoes._id': id };
+            const id = req.body.id;
+            const postQuestao = req.body.questao;
+            const idQuestao = req.body.id_questao;
+           
+            const where = { "_id" : ObjectId(id), "questoes._id" : ObjectId(idQuestao) };
+            const questao = { enunciado : postQuestao._enunciado, resposta : postQuestao._resposta, opcoes : postQuestao._opcoes };
+        
+            const set = { $set : { "questoes.$" : questao } };
+            const options = {
+                runValidator :true, new : true
+             };
 
-            const { enunciado, opcoes } = questao;
-            const resposta_value = questao.resposta;
-            const letra = resposta_value.replace('opcao', '');
-            const alfabeto = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'X', 'W', 'Y', 'Z'];
-            const numero = alfabeto.indexOf(letra);           
-            const resposta = numero;
-
-            const questaoDoc = { questao : enunciado, opcoes : opcoes, correta : resposta, exercicio: questao.exercicio };
-            const set = { $set: { 'questoes.$': questaoDoc } };
-            
-            Exercicio.update( where, set )
-                  .then( (exercicio) => {
-                        res.redirect(`/exercicio/${questao.exercicio}/mostrar`) 
-                    })
-                  .catch( (e) => { console.log(e); res.redirect('/') });
+            Quiz.findOneAndUpdate(where, set, options)
+                 .then( (quiz) =>{
+                    console.log(quiz);
+                    res.json({ status: "success", message: "Quiz salvo com sucesso!", quiz : quiz  });
+                 })
+                 .catch((e) => res.json({ status: "error", message: `Ocorreu um erro ao salvar questao ${e}` }))
             ;
         },
         destroy(req, res){
-            const {id, exercicio} = req.params;
-            const where = {  _id : exercicio };
+            const dados = req.params.id;
+
+            const separaDados = dados.split('&');
+            const questao = separaDados.shift();
+            const quiz = separaDados.shift();
+
+            const where = {  _id : quiz };           
+
             const set = {
                 $pull: {
-                    questoes : { _id: ObjectId(id) }
+                    questoes : { _id: ObjectId(questao) }
                 }
             };
-            Exercicio.update(where, set)
-                .then( () => res.redirect(`/exercicio/${exercicio}/mostrar`) )
+            Quiz.update(where, set)
+                .then( () => res.redirect(`/quiz/${quiz}/editar`) )
                 .catch( () => res.redirect('/') )
             ;
         },

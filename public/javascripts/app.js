@@ -21,6 +21,12 @@ if( $('#salvaQuestao') !== null){
     .addEventListener('click', questao.adiciona.bind(questao));
 }
 
+if($("#createQuiz") != null){
+    document
+    $("#createQuiz")
+    .addEventListener('click', questao.cria.bind(questao));
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('.dropdown-trigger');
     var instances = M.Dropdown.init(elems, {
@@ -46,4 +52,3 @@ document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('select');
     var instances = M.FormSelect.init(elems, []);
 });
-

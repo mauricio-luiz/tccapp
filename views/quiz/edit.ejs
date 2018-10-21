@@ -9,85 +9,86 @@
         </div>
     </div>
     <section>
-        <form class="col s12" action="/exercicio" method="post">
             <div class="row">
                 <div class="col s12">
                     <div class="card">
                         <div class="card-content black-text">
-                            <span class="card-title">Um nome para o quiz e escolha uma disciplina</span>
-                            <div class="row">
-                                <div class="input-field col s12">
-                                    <input id="nome" type="text" name="exercicio[nome]" class="validate" value="<%- quiz.nome %>" >
-                                    <label for="nome">Nome do Quiz</label>
+                            <form action="/quiz/<%- quiz._id %>?_method=put" method="post">
+                                <span class="card-title">Um nome para o quiz e escolha uma disciplina</span>
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <input id="nome" type="text" name="quiz[nome]" class="validate" value="<%- quiz.nome %>" >
+                                        <label for="nome">Nome do Quiz</label>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row" >
-                                <div class="input-field col s12">
-                                    <select id="disciplina">
-                                        <option value="" disabled>Selecione</option>
-                                        <% disciplinas.forEach( function(disciplina) { %>
-                                            <option value="<%- disciplina._id %>" "<%- disciplina._id === quiz.disciplina ? 'selected' : '' %>" ><%- disciplina.nome %></option>
-                                        <% }) %>
-                                    </select>
-                                    <label>Disciplina</label>
+                                <div class="row" >
+                                    <div class="input-field col s12">
+                                        <select id="disciplina" name="quiz[disciplina]">
+                                            <option value="" disabled>Selecione</option>
+                                            <% disciplinas.forEach( function(disciplina) { %>
+                                                <option value="<%- disciplina._id %>" <%- JSON.stringify(disciplina._id) === JSON.stringify(quiz.disciplina) ? 'selected' : 'aaaa' %> ><%- disciplina.nome %></option>
+                                            <% }) %>
+                                        </select>
+                                        <label>Disciplina</label>
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="row" >                               
+                                    <div class="col s12" >
+                                        <button class="btn waves-effect waves-light top-20 right" >
+                                            <i class="material-icons left" >exit_to_app</i>Finalizar
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                </div>
+                </div>                
             </div>
-           
-            <div class="row">
-                <div class="col s12">
-                    <div class="card">
-                        <div class="card-content black-text">
-                            <span class="card-title">Questões</span>
-                            <div class="row">
-                                <div class="col s12" >
-                                    <div id="template_exercicio">
-                                        <div class="row">
-                                            <div class="input-field col s12">
-                                                <textarea id="enunciado" class="materialize-textarea" data-length="120" name="questao[enunciado]"></textarea>
-                                                <label for="enunciado">Enunciado</label>
-                                                <input type="hidden" name="questao[exercicio]" id="exercicio" >
-                                            </div>
-                                        </div>                                                                    
-                                        <div class="row">
-                                            <div id="listaOpcoes" class="col s12">
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col s12">
-                                                <button id="botao-adicionaOpcao" class="btn waves-effect waves-light teal btn-small right" type="button" name="action">Adicionar Opção
-                                                    <i class="material-icons left">add</i>
-                                                </button>
-                                            </div>
-                                        </div>
+
+            <div class="listaQuestoes" >
+                <ul class="collapsible popout" id="mostraQuestoes">
+                    <% quiz.questoes.forEach( (questao, numero) => { %>
+                        <li data-questao="<%- questao._id %>&<%- quiz._id %>">
+                            <div class="collapsible-header"><i class="material-icons">edit</i>
+                                <span class="question"><b class="font-20">#<%- numero+1 %></b> <%- questao.enunciado %></span>
+                                <form class="rigth" action="/questao/<%- questao._id %>&<%- quiz._id %>?_method=delete" method="post" >                                
+                                    <button type="submit" class="btn-flat red-text waves-effect waves-light top-negative-9 right-collapse" >
+                                        <i class="material-icons" >delete</i>
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="collapsible-body"></div>
+                        </li>
+                    <% }) %>
+                    <li class="active padrao" >
+                        <div class="collapsible-header"><i class="material-icons" >library_add</i><b>Adicionar Questão #<span id="numeroQuestao">1</span></b></div>
+                        <div class="collapsible-body">
+                            <div id="template_exercicio">
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <textarea id="enunciado" class="materialize-textarea" data-length="120" name="questao[enunciado]"></textarea>
+                                        <label for="enunciado">Enunciado</label>
+                                        <input type="hidden" name="questao[quiz]" id="quizID" value="<%- quiz._id %>" >
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col s12 listaOpcoes">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col s12">
+                                        <button id="salvaECriaProxima" class="btn waves-effect waves-light btn-small  right" >
+                                            <i class="material-icons left" >save</i>Salvar</i>
+                                        </button>
+                                        <button id="botao-adicionaOpcao" class="btn waves-effect waves-light teal btn-small right-20 right" type="button" name="action">Adicionar Opção
+                                            <i class="material-icons left">add</i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="row">
-                <div class="col s12">
-                    <div class="card">
-                        <div class="card-action">
-                            <div class="row" >
-                                <div class="col s12 m4" >
-                                    <a href="#" id="salvaECriaProxima" class="btn waves-effect waves-light top-20 bottom-20"><i class="material-icons left" >add</i>Salvar e criar proxima questão</i></a>
-                                </div>
-                                <div class="col s12 m4" >
-                                    <a href="#" id="finalizarESair" class="btn waves-effect waves-light top-20"><i class="material-icons left" >add</i>Finalizar e Sair</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-          
-        </form>
+                    </li>
+                </ul>
+            </div>               
     </section>
 <% include ../partials/footerProfessor %>

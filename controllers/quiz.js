@@ -13,25 +13,25 @@ module.exports = (app) => {
                 }).catch( (e) => { console.log(e); res.redirect('/'); });            
         },
         create(req, res){
+           
+        },
+        save(req, res){
             const { usuario } = req.session;
             const { _id } = req.session.professor;
             Professor.findById( _id )
                 .then((professor) => {
                     const { disciplinas } = professor;
-                    res.render('quiz/create', { disciplinas, usuario });
-                }).catch( () => res.redirect('/'));
-        },
-        save(req, res){
-            const exercicio = req.body.exercicio;
-            const { email } = req.session.usuario;
-            const { nome } = exercicio;
-            const disciplinaId = exercicio.identificador;
-            
-            const documentoExercicio = new Exercicio({ nome: nome, disciplina : disciplinaId, quem : email, questoes : []});
-            documentoExercicio.save()
-                .then(() => res.redirect(`/quiz/${disciplinaId}/disciplina`))
-                .catch((e) => { console.log(e); res.redirect('/') })
-            ;            
+                    const set = { nome : 'Quiz sem Título', disciplina : null, professor : professor._id, status : false, questoes : [] };
+                    const quiz = new Quiz(set);
+                    quiz.save(function (err, newQuiz) {
+                        if (err) {
+                            res.json({ status: "error", message: `Ocorreu um erro ao salvar questao ${err}` });
+                            return
+                        }
+                        
+                        res.json({ status: "sucesso", message: `Quiz salvo com sucesso`, quiz: newQuiz._id });
+                    });
+                }).catch( () => res.redirect('/'));            
         },
         show(req, res){
             const exercicioId = req.params.id;
@@ -52,24 +52,24 @@ module.exports = (app) => {
             ;
         },
         update(req, res){
-            const exercicioId = req.params.id;
-            const {exercicio} = req.body;
-            const {nome, disciplina} = exercicio;
-            const where = { _id : exercicioId};
-            const set = { $set: { nome : nome } };
-            Exercicio.updateOne(where, set)
+            const id = req.params.id;
+            const {quiz} = req.body;
+            const {nome, disciplina} = quiz;
+            const where = { _id : id};
+            const set = { $set: { nome : nome, disciplina : disciplina } };
+            Quiz.updateOne(where, set)
                 .then( () => {
-                    res.redirect(`/quiz/${disciplina}/disciplina`);
+                    res.redirect(`/quizzes`);
                 })
                 .catch( (e) => { console.log(e); res.redirect('/') });
             ;
         },
         destroy(req, res){
             const { id } = req.params;
-            Exercicio.findById(id, (err, exercicio) =>{
+            Quiz.findById(id, (err, quiz) =>{
                 const where = { _id : id };
-                Exercicio.deleteOne(where)
-                    .then( () =>  res.redirect(`/quiz/${exercicio.disciplina}/disciplina`))
+                Quiz.deleteOne(where)
+                    .then( () =>  res.redirect(`/quizzes`))
                     .catch( (e) => { console.log(e); res.redirect('/') })
                 ;
             });

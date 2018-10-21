@@ -38,11 +38,17 @@ input:not([type]):focus:not([readonly]), input[type="text"]:not(.browser-default
   box-shadow: 0 1px 0 0 #64B5F6;
 }
 
+.top-negative-9{
+  margin-top:-9px;
+}
 .top-2{
   margin:2px;
 }
 .top-10{
   margin-top:10px;
+}
+.top-15{
+  margin-top: 15px;
 }
 .top-20{
   margin-top:20px
@@ -58,6 +64,10 @@ input:not([type]):focus:not([readonly]), input[type="text"]:not(.browser-default
 
 .right-20{
   margin-right:20px;
+}
+
+.right-50{
+  margin-right:50px;
 }
 
 .right-0{
@@ -104,6 +114,29 @@ input:not([type]):focus:not([readonly]), input[type="text"]:not(.browser-default
   font-size: 15px
 }
 
+.font-20{
+  font-size: 20px;
+}
+
 .uppercase {
   text-transform: uppercase;
+}
+
+.question {
+  width: 88%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media only screen and (max-width : 992px) {
+  .question{
+    width: 75%;
+  }
+}
+
+.right-collapse{
+    position: absolute;
+    right:10px;
+    margin-top:0;
 }
