@@ -13,7 +13,7 @@ module.exports = (app) => {
 
     app.get('/sala/professor', autenticar, professorMiddleware, sala.professor);
     app.post('/sala/iniciar', autenticar, professorMiddleware, sala.iniciar);
-    //app.put('/sala/:id/finalizar', autenticar, professorMiddleware, sala.finalizar);
+    app.get('/sala/:id/finalizar', autenticar, professorMiddleware, sala.finalizar);
     app.post('/sala/entrar', autenticar, alunoMiddleware, sala.entrar);
     app.get('/sala/:id/:caderno/aluno', autenticar, alunoMiddleware, sala.aluno);
     app.post('/aluno/responder', autenticar, alunoMiddleware, sala.responder);

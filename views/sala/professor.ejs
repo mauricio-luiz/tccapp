@@ -44,28 +44,21 @@
 <script src="/javascripts/app/ui/views/TabelaFinalizadosView.js"></script>
 <script>
     const socket = io({transports: ['websocket'], upgrade: false});
-    const salaController = new SalaController();
+    const salaController = new SalaController(socket);
 
     const salas = '<%- JSON.stringify(salas) %>';
-    const quizzes = '<%- JSON.stringify(quizzes) %>'
+    const quizzes = '<%- JSON.stringify(quizzes) %>';
+    const temSalaAtiva = '<%- JSON.stringify(temSalaAtiva) %>';
+    const salaEscolhida = '<%- JSON.stringify(salaEscolhida) %>';
 
     salaController.adicionaSalas(salas);
     salaController.adicionaQuizzes(quizzes);
-   
-    socket.emit('create-room', '123123');
-   
-    socket.on('send-client', (msg) => {        
-        document.getElementById('chat').innerHTML += msg;
-    });
+
+    if(temSalaAtiva) salaController.reinicia(salaEscolhida);       
 
     socket.on('resposta', (sala, aluno, questao, resposta) => {
         salaController.adicionaResposta(aluno,questao,resposta);
     });
-
-    const enviar = () => {
-        const msg = document.getElementById('msg').value;
-        socket.emit('send-server', sala, msg);
-    };
 
     socket.on('notify-onlines', (aluno) => {
         salaController.adiciona(aluno, quantidade_de_questao);

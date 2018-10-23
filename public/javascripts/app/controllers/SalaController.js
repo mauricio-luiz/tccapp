@@ -1,6 +1,6 @@
 class SalaController{
 
-    constructor(){       
+    constructor(socket){       
         this._usuario = null;
         this._respostasView = new RespostasView("#resposta");
         this._finalizadosView = new FinalizadoView("#finalizado");
@@ -13,6 +13,8 @@ class SalaController{
         this._acoesSala.update();
         this._cardResposta = document.querySelector("#cardResposta");
         this._cardFinalizado = document.querySelector("#cardFinalizado");
+
+        this._socket = socket;
     }
 
     adicionaSalas(salas){
@@ -37,11 +39,25 @@ class SalaController{
         const iniciar = document.querySelector("#play");
         iniciar.classList.remove('disabled');
         iniciar.addEventListener("click", () => {
-            this.iniciar();
+            this.iniciar(this._sala.value,  this._quiz.value);
         });
     }
 
-    iniciar(){
+    reinicia(salaEscolhida){
+        const sala = JSON.parse(salaEscolhida).shift();
+        const idsala = sala._id;
+        const idquiz = sala.quiz._id;
+
+        this._sala = document.querySelector("#select-cardSala");
+        this._quiz = document.querySelector("#select-cardQuiz");
+
+        this._sala.value = idsala;
+        this._quiz.value = idquiz;
+
+        this.iniciar(idsala, idquiz);
+    }
+
+    iniciar(sala, quiz){
         const iniciar   = document.querySelector("#play");
         const finalizar = document.querySelector("#stop");
 
@@ -53,8 +69,8 @@ class SalaController{
         const request = {
             method : 'POST',
             body: JSON.stringify({
-                    sala : this._sala.value,
-                    quiz : this._quiz.value,
+                    sala : sala ,
+                    quiz : quiz,
             }),
             headers: {
                 'Accept': 'application/json',
@@ -63,17 +79,29 @@ class SalaController{
         };
         const url = `/sala/iniciar`;
         fetch(url, request)
-            .then( (response) => {
+            .then( async (response) => {
                 if(response.ok === true){
-                    return response.json().then( (json) => {
+                    return await response.json().then( async (json) => {
                         if (json.status === false) return;
 
                         const tabelaRespostasView = new TabelaRespostasView("#tabelaRespostas");
                         const tabelaFilizadosView = new TabelaFinalizadosView("#tabelaFilizados");
                         tabelaRespostasView.update(json.dados.quiz);
                         tabelaFilizadosView.update(json.dados.quiz);
+                        this._sala.disabled = true;
+                        this._quiz.disabled = true;
+                        let elems = document.querySelectorAll('select');
+                        let instances = M.FormSelect.init(elems, []);
+
+                        this._socket.emit('create-room', json.dados._id);
+                        return json;
                     });
                 }
+            }).then((json) => {
+                console.log('json 1', json);
+                finalizar.addEventListener('click', () => {
+                    window.location.href = `/sala/${json.dados._id}/finalizar`;
+                });
             })
             .catch( (e) => { console.log(e)} );
     }

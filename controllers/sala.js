@@ -85,8 +85,19 @@ module.exports = (app) => {
             Professor.findOne( {_id : professor._id } )
                 .then((professor) => {
                     const {salas} = professor;
+
+                    let online = [];
+                    onlines = salas.map( (sl) => {
+                        return sl.online === true ? true : false;
+                    });
+                    const temSalaAtiva = onlines.indexOf(true) >= 0 ? true : false;
+                    let salaEscolhida = null;
+                    salaEscolhida = salas.filter((sl) => {
+                        return sl.online === true;
+                    });
+
                     Quiz.find({ professor : professor._id }).then( (quizzes) => {
-                        res.render('sala/professor', { usuario, salas, quizzes });
+                        res.render('sala/professor', { usuario, salas, quizzes, temSalaAtiva, salaEscolhida });
                     });
                 })
             ;
@@ -116,12 +127,19 @@ module.exports = (app) => {
         },
         finalizar(req, res){
             const { id } = req.params;
-            Exercicio.findById(id)
-                .then((exercicio) => {
-                    exercicio.status = false;
-                    exercicio.save( (err) => {
-                        if(err) return handleError(err);
-                        res.redirect('/disciplinas');
+            const { professor } = req.session;
+            Professor.findById( { _id : professor._id } )
+                .then((prof) => {
+                    const { salas } = prof;
+                    const salaEscolhida = salas.find( (sl) => {
+                        return sl._id.toString() === id;
+                    });
+                    console.log(salaEscolhida);
+                    salaEscolhida.online = false;
+                    salaEscolhida.quiz = {};
+                    prof.save( (err) => {
+                        if(err) console.log(err);
+                        res.redirect('/professor');
                     });
                 })
             ;
