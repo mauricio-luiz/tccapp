@@ -10,7 +10,9 @@ module.exports = (app) => {
     app.get('/sala/:id/editar', autenticar, professorMiddleware, sala.edit);
     app.put('/sala/:id', autenticar, professorMiddleware, sala.update);
     app.delete('/sala/:id/', autenticar, professorMiddleware, sala.destroy);
-    app.get('/sala/:id/professor', autenticar, professorMiddleware, sala.professor);
+
+    app.get('/sala/professor', autenticar, professorMiddleware, sala.professor);
+    app.post('/sala/iniciar', autenticar, professorMiddleware, sala.iniciar);
     //app.put('/sala/:id/finalizar', autenticar, professorMiddleware, sala.finalizar);
     app.post('/sala/entrar', autenticar, alunoMiddleware, sala.entrar);
     app.get('/sala/:id/:caderno/aluno', autenticar, alunoMiddleware, sala.aluno);

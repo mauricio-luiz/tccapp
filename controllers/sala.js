@@ -5,6 +5,7 @@ module.exports = (app) => {
     const Exercicio = app.models.exercicio;
     const Resultado = app.models.resultado;
     const Professor = app.models.professor;
+    const Quiz = app.models.quiz;
     const SalaController = {
         index(req, res){
             const { _id } = req.session.professor;
@@ -24,14 +25,14 @@ module.exports = (app) => {
             const { _id } = req.session.professor;
             const { nome, codigo } = sala;
             
-            const set = { $push : { salas : { nome, codigo } } };
+            const set = { $push : { salas : { nome, codigo, online : false } } };
             Professor.findByIdAndUpdate( _id, set )
                 .then(() => res.redirect('/salas'))
                 .catch((e) => {
                     console.log(e);
                     res.redirect('/sala/criar');
                 })
-            ; 
+            ;
         },
         edit(req, res){
             const { _id } = req.session.professor;
@@ -79,17 +80,37 @@ module.exports = (app) => {
         },
         professor(req, res){
             const { id } = req.params;
-            const usuario = req.session.usuario;           
-            Exercicio.findOneAndUpdate( {_id : id }, {status : true}, { new : true} )
-                .then((exercicio) => {
-                    const sala = req.query;
-                    let hashDaSala = sala;
-                    if( ! hashDaSala.length > 0  ){
-                        const md5 = crypto.createHash('md5');
-                        hashDaSala = md5.update(usuario.email).digest('hex');
-                    }                   
-                    const quantidade_exercicio = exercicio.questoes.length;
-                    res.render('sala/professor', {usuario, exercicio, sala : hashDaSala, quantidade_exercicio, email : usuario.email});
+            const usuario = req.session.usuario;
+            const { professor } = req.session;        
+            Professor.findOne( {_id : professor._id } )
+                .then((professor) => {
+                    const {salas} = professor;
+                    Quiz.find({ professor : professor._id }).then( (quizzes) => {
+                        res.render('sala/professor', { usuario, salas, quizzes });
+                    });
+                })
+            ;
+        },
+        iniciar(req, res){
+            const { sala, quiz } = req.body;
+            const { professor } = req.session;
+            Quiz.findOne( { _id :  quiz } )
+                .then((quiz) => {
+                    const where = { _id : professor._id, 'salas._id': sala };
+                    const set = { $set: { 'salas.$.online': true, 'salas.$.quiz' : quiz } };
+                    const options = { new : true };
+                    Professor.findOneAndUpdate(where, set, options)
+                        .then( (prof) =>{
+                            const { salas } = prof;
+                            const salaEscolhida = salas.find( (sl) => {
+                                return sl._id.toString() === sala;
+                            });
+                            return res.json({ status: "success", 'dados' : salaEscolhida });
+                        })
+                        .catch( (e) => {
+                            console.log(e);
+                        })
+                    ;
                 })
             ;
         },

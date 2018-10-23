@@ -29,10 +29,6 @@ module.exports = () => {
         disciplina: {
             type : Schema.Types.ObjectId,            
         },
-        status :  {
-            type: Boolean,
-            default: false
-        },
         questoes : [questao]
     });
     

@@ -10,33 +10,27 @@
     <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
     <script src="/javascripts/app/ui/views/View.js"></script>
 </head>
-<body>
-   
-   
-    <nav class="nav-extended">
-        <div class="nav-wrapper blue lighten-2">
-            <a href="#!" class="brand-logo">Logo</a>
-            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>           
-            <ul class="right hide-on-med-and-down">
-                <li><a href="/aluno"><i class="material-icons left">home</i>Início</a></li>
-                <li><a href="/cadernos"><i class="material-icons left">library_books</i>Cadernos</a></li>
-                <li><a href="/sair"><i class="material-icons left" >power_settings_new</i>Sair</a></li>
-            </ul>
-        </div>
-        <div class="nav-content grey lighten-4">
-            <ul class="tabs tabs-transparent">
-                <li class="tab"><a class="black-text" href="/caderno/criar">Criar Cadernos</a></li>
-                <% if(typeof menu_extra !== 'undefined'){ %>
-                    <% menu_extra.forEach(function(menu) { %>
-                    <li class="tab"><a class="black-text" href="<%- menu.url %>"><%- menu.nome %></a></li>
-                    <% }) %>
-                <% } %>
-            </ul>
-        </div>
-    </nav>
+<body class="app">
 
-    <ul class="sidenav" id="mobile-demo">
-        <li><a href="/professor">Início</a></li>
-        <li><a href="/Cadernos">Cadernos</a></li>
-        <li><a href="/sair">Sair</a></li>
-    </ul>
+    <!-- Page Layout here -->
+    <div class="row">
+
+        <div class="col s12 m4 l3">
+            <ul id="slide-out" class="sidenav sidenav-fixed blue lighten-2 white-text">
+                <li>
+                    <div class="user-view">
+                        <div class="background"><h5 class="center-align">Quizzes<h5></div>
+                        <a href="#name"><span class="white-text name center-align"><%- usuario.nome %></span></a>
+                        <a href="#email"><span class="white-text email center-align"><%- usuario.email %></span></a>
+                    </div>
+                </li>
+                <li><div class="divider"></div></li>
+                <li class="uppercase"><a class="white-text" href="/aluno"><i class="material-icons white-text left">home</i>Início</a></li>
+                <li class="uppercase"><a class="white-text" href="/exercicios"><i class="material-icons white-text left">folder</i>Meus Quizzes</a></li>
+                <li class="uppercase"><a class="white-text" href="/sair"><i class="material-icons white-text left" >power_settings_new</i>Sair</a></li>
+            </ul>
+            <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+      </div>
+
+      <div class="col s12 m8 l9">
+        <!-- Teal page content  -->

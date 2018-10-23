@@ -1,39 +1,41 @@
 <% include ../partials/headerAluno %>
 <section>
-    <div class="container" >
-        <section>
-            <div class="col s12" >
-                <div class="row">
-                    <div class="col s12">
-                        <div class="card large">
-                            <div class="card-content">
-                                <span class="card-title activator grey-text text-darken-4">Bem vindo<i class="material-icons right">more_vert</i> <%- usuario.nome %></span>
-                                <p>Este sistema ...Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a molestie lacus, sit amet ultrices arcu. Aenean imperdiet tellus at interdum maximus. In dapibus magna quis tellus imperdiet, ut hendrerit ligula consectetur. Aliquam eu lorem sit amet lorem porta porttitor. Aliquam vitae porttitor neque, et ornare velit. Mauris pretium porta ante. Pellentesque molestie sem mollis sem pretium, eu gravida elit ullamcorper. Nunc nec dictum elit, id lobortis nulla. Integer accumsan orci lacus, ac hendrerit odio facilisis eu. Curabitur justo tortor, cursus non ipsum vel, blandit ultricies nunc. Fusce luctus, mi eu malesuada interdum, ipsum tellus feugiat tellus, eget mattis ante elit pulvinar dui. Donec in quam enim. Pellentesque odio magna, tempus eu risus eget, imperdiet dignissim felis. Sed venenatis semper ligula eu finibus. Suspendisse orci augue, imperdiet eget turpis id, tempus lacinia metus.</p>
-                            </div>
-                            <div class="card-reveal">
-                                <span class="card-title grey-text text-darken-4">Estatisticas<i class="material-icons right">close</i></span>
-                                <table class="striped highlight responsive-table">
-                                    <thead>
-                                        <th>-</th>
-                                        <th>Totais</th>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Quantidade de Caderno</td>
-                                            <td>100</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Exercicios Feitos</td>
-                                            <td>100</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+    <div class="row" >
+        <div class="col s12" >
+            <h1 class="flow-text"><i class="material-icons small left">home</i>Inicio</h1>
+            <div class="divider" ></div>
+        </div>
+    </div>
+</section>
+<div class="row">
+    <div class="col s12">
+      <div class="card">
+        <form >
+            <div class="card-content">
+                <span class="card-title">Adicione Quizzes</span>
+                <p>Adicione quizzes apenas indicando o nome da sala e seu código:</p>
+                <div class="row" >
+                    <div class="col s12" >
+                        <div class="input-field col s12">
+                            <input id="sala" type="text" class="validate">
+                            <label for="sala">Nome Sala</label>
                         </div>
+                    </div>
+                    <div class="col s12" >
+                        <div class="input-field col s12">
+                            <input id="sala" type="text" class="validate">
+                            <label for="sala">Código</label>
+                        </div>
+                    </div>
+                    <div class="col s12 center-align" >
+                        <button class="btn waves-effect waves-light" type="submit" name="action">Inciar Quiz
+                            <i class="material-icons right">send</i>
+                        </button>
                     </div>
                 </div>
             </div>
-        </section>
+        </form>
+      </div>
     </div>
-</section>
+  </div>
 <% include ../partials/footerAluno %>

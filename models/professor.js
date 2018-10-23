@@ -12,8 +12,14 @@ module.exports = () => {
             required : true
         },
         alunos : {
-            type : Schema.Types.ObjectId,
-            ref: 'aluno'
+            type : Array,
+        },
+        online : {
+            type : Boolean,
+            require : true
+        },
+        quiz : {
+            type : Schema.Types.Mixed
         }
     });
 
