@@ -5,6 +5,7 @@ class AcoesSalaView extends View{
         <div class="col s12">
             <div id="salaCard" class="card">
                 <div class="card-content center-align">
+                    <h5>Codigo da Sala : <span id="codigoDaSala">Aguardando iniciar</span></h5>
                     <button id="play" class="btn waves-effect waves-light disabled" type="submit" name="action">Iniciar
                         <i class="material-icons left">play_arrow</i>
                     </button>

@@ -30,6 +30,7 @@ module.exports = (app, io) => {
         });
 
         cliente.on('terminei', (hashDaSala, aluno, resultado) => {
+            console.log('terminei', hashDaSala);
             session.sala = hashDaSala;
             io.to(hashDaSala).emit('terminou', hashDaSala, usuario.nome, resultado);
         });

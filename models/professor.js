@@ -11,6 +11,9 @@ module.exports = () => {
             type : String,
             required : true
         },
+        descricao : {
+            type : String
+        },
         alunos : {
             type : Array,
         },

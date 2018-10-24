@@ -78,6 +78,10 @@ input:not([type]):focus:not([readonly]), input[type="text"]:not(.browser-default
   font-size: 30px;
 }
 
+.bold{
+  font-weight: bold;
+}
+
 .loading:after {
   overflow: hidden;
   display: inline-block;

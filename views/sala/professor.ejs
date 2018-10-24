@@ -18,16 +18,16 @@
     </div>
 </div>
 
-    <section>       
-        <div class="row" >
-            <div class="col s12" >
-                <%- include('resposta');  %>
-            </div>
-            <div class="col s12" >
-                <%- include('finalizado'); %>
-            </div>
+<section>       
+    <div class="row" >
+        <div class="col s12" >
+            <%- include('resposta');  %>
         </div>
-    </section>
+        <div class="col s12" >
+            <%- include('finalizado'); %>
+        </div>
+    </div>
+</section>
 
 <script src="/socket.io/socket.io.js" ></script>
 <script src="/javascripts/app/domain/Salas/Salas.js" ></script>
@@ -54,14 +54,16 @@
     salaController.adicionaSalas(salas);
     salaController.adicionaQuizzes(quizzes);
 
-    if(temSalaAtiva) salaController.reinicia(salaEscolhida);       
+    if(temSalaAtiva === 'true') salaController.reinicia(salaEscolhida);
 
     socket.on('resposta', (sala, aluno, questao, resposta) => {
+        console.log('here');
         salaController.adicionaResposta(aluno,questao,resposta);
     });
 
     socket.on('notify-onlines', (aluno) => {
-        salaController.adiciona(aluno, quantidade_de_questao);
+        const questoes = JSON.parse(quizzes).shift();
+        salaController.adiciona(aluno, questoes.questoes.length);
     });
 
     socket.on('notify-offlines', (aluno) => {

@@ -15,7 +15,7 @@ module.exports = (app) => {
     app.post('/sala/iniciar', autenticar, professorMiddleware, sala.iniciar);
     app.get('/sala/:id/finalizar', autenticar, professorMiddleware, sala.finalizar);
     app.post('/sala/entrar', autenticar, alunoMiddleware, sala.entrar);
-    app.get('/sala/:id/:caderno/aluno', autenticar, alunoMiddleware, sala.aluno);
+    app.get('/sala/:professor/aluno', autenticar, alunoMiddleware, sala.aluno);
     app.post('/aluno/responder', autenticar, alunoMiddleware, sala.responder);
     app.post('/aluno/salvar', autenticar, alunoMiddleware, sala.salvar);
 }

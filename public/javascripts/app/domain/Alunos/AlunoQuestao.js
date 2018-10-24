@@ -1,7 +1,7 @@
 class AlunoQuestao{
     
-    constructor(_enunciado, _resposta, _opcoes, _id = null, _exercicioId = null, _numero){
-        Object.assign(this, {_enunciado, _resposta, _opcoes, _id, _exercicioId, _numero});
+    constructor(_enunciado, _resposta, _opcoes, _id = null, _quiz, _numero){
+        Object.assign(this, {_enunciado, _resposta, _opcoes, _id, _quiz, _numero});
         Object.freeze(this);
     }
 
@@ -21,8 +21,8 @@ class AlunoQuestao{
         return this._id;
     }
 
-    get exercicioId(){
-        return this._exercicioId;
+    get quiz(){
+        return this._quiz;
     }
 
     get numero(){

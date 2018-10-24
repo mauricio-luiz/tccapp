@@ -1,5 +1,6 @@
 const crypto = require('crypto');
 const { Types: { ObjectId } } = require('mongoose');
+const shortid = require('shortid');
 
 module.exports = (app) => {
     const Exercicio = app.models.exercicio;
@@ -23,9 +24,10 @@ module.exports = (app) => {
         save(req, res){
             const { sala } = req.body;
             const { _id } = req.session.professor;
-            const { nome, codigo } = sala;
+            const { nome, descricao } = sala;
             
-            const set = { $push : { salas : { nome, codigo, online : false } } };
+            shortid.worker(1);
+            const set = { $push : { salas : { nome, descricao, online : false,  codigo : shortid.generate() } } };
             Professor.findByIdAndUpdate( _id, set )
                 .then(() => res.redirect('/salas'))
                 .catch((e) => {
@@ -92,7 +94,7 @@ module.exports = (app) => {
                     });
                     const temSalaAtiva = onlines.indexOf(true) >= 0 ? true : false;
                     let salaEscolhida = null;
-                    salaEscolhida = salas.filter((sl) => {
+                    salaEscolhida = salas.find((sl) => {
                         return sl.online === true;
                     });
 
@@ -106,7 +108,7 @@ module.exports = (app) => {
             const { sala, quiz } = req.body;
             const { professor } = req.session;
             Quiz.findOne( { _id :  quiz } )
-                .then((quiz) => {
+                .then((quiz) => {                    
                     const where = { _id : professor._id, 'salas._id': sala };
                     const set = { $set: { 'salas.$.online': true, 'salas.$.quiz' : quiz } };
                     const options = { new : true };
@@ -145,44 +147,35 @@ module.exports = (app) => {
             ;
         },
         entrar(req,res){
-            const { caderno } = req.body.sala;
-            let email = req.body.sala.email.trim();
-            Exercicio.findOne({ quem: email, status: true }, (err, exercicio) => {
-                if(err) return handleError(err);
-
-                if(exercicio != null){
-                    const exercicioId = exercicio._id;
-                    res.redirect(`${exercicioId}/${caderno}/aluno`);
-                }else{
-                    res.redirect(`/caderno/${caderno}/exercicio`);
-                }
-            });
+            const { nome, codigo } = req.body.sala;  
+            const where = { 'salas.nome' : nome, 'salas.codigo': codigo, 'salas.online' : true };
+            Professor.findOne(where)
+                .then((professor) => {
+                   return res.redirect(`/sala/${professor._id}/aluno`)
+                }).catch( (e) => {
+                    return res.redirect('/aluno');
+                });
+            ;
         },
         aluno(req, res){
-            const { id, caderno } = req.params;
+            const { professor } = req.params;
             const usuario = req.session.usuario;
-            Exercicio.findById( { _id : id}, 'nome quem questoes')
-                .then((exercicio) => {
+            Professor.findById( {_id : professor })
+                .then((prof) => {
 
-                    exercicio.questoes.map( (questao) => {
-                        return questao.correta = null;
-                    });
+                    const { salas } = prof;
+                    const salaEscolhida = salas.find( (sl) => {
+                        return  sl.online === true;
+                    });                   
 
-                    const sala = req.query;
-                    let hashDaSala = sala;
-                    if( ! hashDaSala.length > 0  ){
-                        const md5 = crypto.createHash('md5');
-                        hashDaSala = md5.update(exercicio.quem).digest('hex');
-                    }
-                    const quantidade_exercicio = exercicio.questoes.length;
+                    const quantidade_exercicio = salaEscolhida.quiz.questoes.length;
                     res.render('sala/aluno', {
                         usuario,
-                        exercicio,
+                        quiz : salaEscolhida.quiz,
                         quantidade_exercicio,
-                        questoes : exercicio.questoes,
-                        sala : hashDaSala,
-                        email : usuario.email,
-                        caderno : caderno
+                        questoes : salaEscolhida.quiz.questoes,
+                        sala : salaEscolhida._id,
+                        email : usuario.email
                     });
                 })
             ;
@@ -196,60 +189,65 @@ module.exports = (app) => {
             const id = resposta_A.shift();
             const questao = resposta_A.shift();
 
-            Exercicio.findById(id)
-                .then((exercicio) => {
+            Quiz.findById(id)
+                .then((quiz) => {
                     let acertou = 0;
                     let message = "Resposta Incorreta";
-                    const { questoes } = exercicio;
+                    let numeroQuestao = 0;
+                    const { questoes } = quiz;
                     const questao_corrente = questoes.find((qst) => {
+                        numeroQuestao = numeroQuestao + 1;
                         return qst._id.toString() === questao;
                     });
 
-                    if(questao_corrente.correta == resposta_aluno){
-                        acertou = 1;
-                        message = "Resposta Correta";    
+                    if(questao_corrente.resposta == resposta_aluno){
+                         acertou = 1;
+                         message = "Resposta Correta";    
                     }
 
-                    return res.json({ status: "success", message: message, questao : numero, resposta : acertou });
+                    return res.json({ status: "success", message: message, questao : numeroQuestao, resposta : acertou });
                 })
             ;
         },
         salvar(req, res){
-            const { selecionado, acerto, caderno } = req.body;
+            const { selecionado, acerto } = req.body;
             const selecionado_A = selecionado.split("&");
             const { usuario } = req.session;
 
             const numero = selecionado_A.shift();
             const resposta_aluno = selecionado_A.shift();
-            const exercicioReferencia = selecionado_A.shift();
+            const id = selecionado_A.shift();
             const questaoId = selecionado_A.shift();
 
-            Exercicio.findById(exercicioReferencia)
-                .then((exercicio) => {
+            Quiz.findById( { _id : id})
+                .then((quiz) => {
 
-                    const { questoes } = exercicio;
-                    const total_questoes = (questoes.length) - 1;
+                    const { questoes } = quiz;
+                    const total_questoes = questoes.length;
+                    let  numeroQuestao = 0;
                     const questao_corrente = questoes.find((qst) => {
+                        numeroQuestao = numeroQuestao + 1;
                         return qst._id.toString() === questaoId;
                     });
+                    
+                    const resultado = {
+                        aluno : usuario._id,
+                        quiz : quiz._id,
+                        professor : quiz.professor,
+                        nome : usuario.nome,
+                        questoes : [],
+                        quiz_nome : quiz.nome
+                    };
 
                     const resposta = {
-                        questao : questao_corrente.questao,
+                        questao : questao_corrente.enunciado,
                         opcoes : questao_corrente.opcoes,
                         numero : numero,
                         acertou : acerto,
                         marcada : resposta_aluno
                     };
-                    const resultado = {
-                        aluno : usuario._id,
-                        exercicio : exercicio.nome,
-                        exercicioReferencia : exercicioReferencia,
-                        nome : usuario.nome,
-                        caderno : caderno,
-                        questoes : []
-                    };
 
-                    const where = { aluno : usuario._id, caderno, exercicioReferencia};
+                    const where = { aluno : usuario._id, quiz : quiz._id};
                     const options = { upsert : true, runValidator : true, new : true };
                     const set = { $setOnInsert: resultado };
 
@@ -259,7 +257,8 @@ module.exports = (app) => {
                             resultado.save( (err) => {
                                 if(err) throw err;
                             });
-                            const terminou = total_questoes == parseInt(numero) ? true : false;
+
+                            const terminou = total_questoes == numeroQuestao ? true : false;
                             return res.json({ status: "success", message : 'resposta salva com sucesso', resultado : resultado, terminou : terminou });
                         })
                         .catch( (e) => { 

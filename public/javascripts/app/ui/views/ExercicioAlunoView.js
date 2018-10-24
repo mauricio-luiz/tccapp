@@ -1,5 +1,6 @@
 class ExercicioAlunoView extends View{
     template(model){
+        console.log(model);
         return  `
                 <div class="row" >
                     <div id="enunciado" class="col s12" >
@@ -11,8 +12,8 @@ class ExercicioAlunoView extends View{
                         ${model.opcoes.map( (opcao, numero_opcao) =>
                             `<p>
                                 <label>
-                                    <input type="radio" name="opcao" value="${model.numero}&${numero_opcao}&${model.exercicioId}&${model.id}"  />
-                                    <span>${opcao}</span>
+                                    <input type="radio" name="opcao" value="${numero_opcao}&${opcao._id}&${model.quiz}&${model._id}"  />
+                                    <span>${opcao._texto}</span>
                                 </label>
                             </p>`).join('')}
                     </div>

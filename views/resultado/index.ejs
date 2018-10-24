@@ -1,0 +1,44 @@
+<% include ../partials/headerAluno %>
+<div id="actions" >
+    <div class="row" >
+        <div class="col s12" >
+            <h1 class="flow-text" ><i class="material-icons left">folder</i>Meus Quizzes</h1>
+            <div class="divider" ></div>
+        </div>
+    </div>
+</div>
+<section class="top-20">
+    <div class="row" >
+        <% if(resultados.length > 0){ %>
+            <% resultados.forEach(function(resultado) { %>
+                <div class="col s12 m4">
+                    <div class="card">
+                        <div class="card-content">
+                        <a href="/resultado/<%- resultado.id %>/show" ><span class="card-title activator grey-text text-darken-4"><%- resultado.quiz_nome %></span></a>
+                        </div>
+                        <div class="card-action">
+                            <form action="/resultado/<%- resultado._id %>?_method=delete" method="post" >
+                                <a href="/resultado/<%- resultado.id %>/mostrar" class="grey-text lighten-2 left top-2" ><i class="material-icons">edit</i>Mostrar</a>
+                                <button class="btn-flat waves-effect waves-light red-text font-15 fix-delete" ><i class="material-icons">delete</i>Excluir</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <%- include('../partials/messages', {message: 'Nenhum quiz feito até o momento! :(', color: 'orange lighten-2' }); %>
+        <% } %>
+    </div>
+</section>
+<section>
+    <div class="col s12" >
+        <div class="fixed-action-btn">
+            <a id="add"  href="/disciplina/criar" class="btn-floating btn-large waves-effect waves-light blue lighten-2">
+                <i class="material-icons">add</i>
+            </a>
+        </div>
+    </div>
+</section>
+<script>
+   
+<% include ../partials/footerAluno %>

@@ -20,7 +20,7 @@ module.exports = () => {
             required: true
         },
         marcada : {
-            type : Number,
+            type : String,
             required : true
         }
     });
@@ -31,12 +31,8 @@ module.exports = () => {
                 type : Schema.Types.ObjectId,
                 required : true
             },
-            sala : {
-                type : Schema.Types.ObjectId,
-                required : true
-            },
             quiz : {
-                type : Schema.Types.ObjectId,
+                type : String,
                 required : true
             },
             professor: {
@@ -46,7 +42,14 @@ module.exports = () => {
             nome : {
                 type : String,
                 required : true,
-            },            
+            }, 
+            quiz_nome : {
+                type : String,
+                require : true
+            },
+            descricao : {
+                type : String
+            },
             questoes : [resposta]
         },
         {

@@ -1,6 +1,6 @@
 class AlunoController{
 
-    constructor(){
+    constructor(quiz){
         const $ = document.querySelector.bind(document);
         this._url_responder = '/aluno/responder';
         this._url_salvar = '/aluno/salvar';
@@ -9,6 +9,7 @@ class AlunoController{
         this._responder = $('#responder');
         this._questaoAtual = $("#questaoAtual");
         this._quantidadeQuestao = $("#quantidadeQuestao");
+        this._quiz = quiz;
     }
 
     adiciona(questoes){
@@ -16,7 +17,7 @@ class AlunoController{
 
         questoes.forEach( (questao, indice) => {
             this._alunoQuestoes.adiciona(
-                new AlunoQuestao(questao.questao, questao.correta, questao.opcoes, questao._id, questao.exercicio, indice )
+                new AlunoQuestao(questao.enunciado, questao.correta, questao.opcoes, questao._id, this._quiz._id, indice )
             );    
         });
 
@@ -46,14 +47,13 @@ class AlunoController{
     }
 
     async salva(dados){
-        const { selecionado, acerto, caderno } = dados;
+        const { selecionado, acerto } = dados;
         
         const request = {
             method : 'POST',
             body :  JSON.stringify({
                 selecionado : selecionado,
                 acerto : acerto,
-                caderno : caderno
             }),
             headers: {
                 'Accept': 'application/json',

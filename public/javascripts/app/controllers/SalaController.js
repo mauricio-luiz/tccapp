@@ -2,8 +2,6 @@ class SalaController{
 
     constructor(socket){       
         this._usuario = null;
-        this._respostasView = new RespostasView("#resposta");
-        this._finalizadosView = new FinalizadoView("#finalizado");
         this._salas = new Salas();
         this._finalizados = new Finalizados();        
 
@@ -44,7 +42,7 @@ class SalaController{
     }
 
     reinicia(salaEscolhida){
-        const sala = JSON.parse(salaEscolhida).shift();
+        const sala = JSON.parse(salaEscolhida);
         const idsala = sala._id;
         const idquiz = sala.quiz._id;
 
@@ -92,7 +90,9 @@ class SalaController{
                         this._quiz.disabled = true;
                         let elems = document.querySelectorAll('select');
                         let instances = M.FormSelect.init(elems, []);
-
+                        
+                        const codigoDaSala = document.querySelector("#codigoDaSala");
+                        codigoDaSala.innerHTML = json.dados.codigo;
                         this._socket.emit('create-room', json.dados._id);
                         return json;
                     });
@@ -111,6 +111,7 @@ class SalaController{
         if(this._salas.temAluno(aluno.email)) 
             return;
         
+        this._respostasView = new RespostasView("#resposta");
         const sala = this._criaSala(aluno.nome, aluno.email, quantidade_de_questao);
         this._salas.adiciona(sala);
         this._respostasView.adiciona(sala);
@@ -140,9 +141,8 @@ class SalaController{
         this._aluno = aluno;
         const { questoes } = resultado;
         
-        console.log('questao', aluno, questoes);
+        this._finalizadosView = new FinalizadoView("#finalizado");
         this._finalizados.adiciona( this._criaFinalizado(aluno, questoes) );
-        console.log(this._finalizados);
         this._finalizadosView.update(this._finalizados);
     }
 
