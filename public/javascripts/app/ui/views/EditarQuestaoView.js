@@ -31,8 +31,11 @@ class EditarQuestaoView extends View{
         const enunciado = document.querySelector("#enunciado-edit");
         M.textareaAutoResize(enunciado);
 
-        model.opcoes.map( opcao => {
-            M.textareaAutoResize(document.querySelector(`#${opcao._id}`));
-        });
+        setTimeout( () => {
+            model.opcoes.map( opcao => {
+                M.textareaAutoResize(document.querySelector(`#${opcao._id}`));
+            });
+        },1000);
+        
     }
 }

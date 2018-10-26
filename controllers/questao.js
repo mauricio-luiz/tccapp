@@ -24,15 +24,14 @@ module.exports = (app) => {
             ;  
         },
         edit(req, res){
-            const { quiz, id } = req.params;         
-
+            const { quiz, id } = req.params;
             Quiz.findById( { _id : quiz })
-                .then( (quiz) => {                    
-                    const { questoes } = quiz;                    
+                .then( (quizEncontrado) => { 
+                    const { questoes } = quizEncontrado;
                     const questao = questoes.find((qt) => {
                         return qt._id.toString() === id;
                     });
-                    res.json({ status: "error", message: "Questão encontrada", questao : questao  });
+                    res.json({ status: "success", message: "Questão encontrada", questao : questao  });
                 }).catch((e) => res.json({ status: "error", message: `Ocorreu um erro ao buscar questao ${e}` }));
             ;
         },
@@ -42,7 +41,7 @@ module.exports = (app) => {
             const idQuestao = req.body.id_questao;
            
             const where = { "_id" : ObjectId(id), "questoes._id" : ObjectId(idQuestao) };
-            const questao = { enunciado : postQuestao._enunciado, resposta : postQuestao._resposta, opcoes : postQuestao._opcoes };
+            const questao = { _id : ObjectId(idQuestao), enunciado : postQuestao._enunciado, resposta : postQuestao._resposta, opcoes : postQuestao._opcoes };
         
             const set = { $set : { "questoes.$" : questao } };
             const options = {
@@ -51,7 +50,6 @@ module.exports = (app) => {
 
             Quiz.findOneAndUpdate(where, set, options)
                  .then( (quiz) =>{
-                    console.log(quiz);
                     res.json({ status: "success", message: "Quiz salvo com sucesso!", quiz : quiz  });
                  })
                  .catch((e) => res.json({ status: "error", message: `Ocorreu um erro ao salvar questao ${e}` }))

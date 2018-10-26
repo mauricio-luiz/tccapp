@@ -36,7 +36,7 @@ class QuestaoController{
     _inicializeCollapse(){
         var elem = document.querySelector('#mostraQuestoes');
         var options = {
-        onOpenStart : this.edita.bind(this)
+            onOpenStart : this.edita.bind(this)
         }
         this._collapse = M.Collapsible.init(elem, options);
     }
@@ -137,11 +137,11 @@ class QuestaoController{
             return;
         }
 
-        const questao = dados.split("&");
+        const dadosQuestao = dados.split("&");
 
-        const id = questao.shift();
-        const quiz = questao.shift();
-        const url = this._find.replace('quiz', quiz).replace('id', id);
+        const id = dadosQuestao.shift();
+        const quiz = dadosQuestao.shift();
+        const url = this._find.replace('quiz', quiz).replace('id', id).trim();
 
         const request = {
             method : 'GET',
@@ -165,7 +165,7 @@ class QuestaoController{
                 this._opcoesView.update(this._opcoes);              
                 this._adicionaEventoEditarAdicionarOpcao();
                 
-                const btnAtualizar = document.querySelector(".editar-questao");
+                const btnAtualizar = document.querySelector(".collapsible li.active .collapsible-body .editar-questao");
                 btnAtualizar.addEventListener('click', () => {
                     this.atualizar(questao);
                 });
@@ -200,8 +200,20 @@ class QuestaoController{
         };
         const url = `/questao/atualizar`;
         fetch(url, request)
-            .then( (response) => {
-                console.log(response);
+            .then( (response) => {                
+                return response.json().then( (json) => {
+                    const li = document.querySelectorAll('.collapsible li');
+                    const enunciado = document.querySelector('.collapsible li.active .question');
+                    let selecionado = 0;
+                    Array.from(li).filter( (elemento, index) => { 
+                        if(elemento.classList.contains('active')){
+                            selecionado = index;
+                        }
+                    });                
+                    this._collapse.close(selecionado);                    
+                    enunciado.innerHTML = `<span class="question"><b class="font-20">#${selecionado+1}</b> ${json.quiz.questoes[selecionado].enunciado}</span>`;
+                });
+                
             })
             .catch( (e) => { console.log(e)} );
     }
@@ -273,13 +285,6 @@ class QuestaoController{
             numero,
             correta
         );
-    }
-
-    _incrementaQuestao(){
-        this._quantidadeQuestao.textContent =  parseInt(this._quantidadeQuestao.textContent) + 1;
-        this._quantidadeQuestao.classList = "new badge pulse";
-        self = this;
-        setTimeout(function(){ self._quantidadeQuestao.classList = "new badge"; }, 10000);
     }
 
     _limpar(){
