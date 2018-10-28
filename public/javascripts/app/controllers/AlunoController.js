@@ -4,6 +4,7 @@ class AlunoController{
         const $ = document.querySelector.bind(document);
         this._url_responder = '/aluno/responder';
         this._url_salvar = '/aluno/salvar';
+        this._url_finaliza = '/aluno/gera-resultado';
         this._alunoQuestoes = new AlunoQuestoes();
         this._exercicioView = new ExercicioAlunoView('#exercicio');
         this._responder = $('#responder');
@@ -89,6 +90,28 @@ class AlunoController{
         }else{
             self._exercicioView.fim();
         }
+    }
+
+    async finalizar(resultado, sala){
+        
+        const request = {
+            method : 'POST',
+            body :  JSON.stringify({
+                resultado : resultado,
+                sala : sala
+            }),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        };
+        return await fetch(this._url_finaliza, request)
+            .then( (response) => {
+                return response.json( (json) => {
+                    return json;
+                });
+            })
+            .catch( (e) => { console.log(e) });
     }
 
     _incrementaBadgeQuestaoAtual(){

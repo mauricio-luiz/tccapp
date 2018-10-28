@@ -37,6 +37,9 @@
 <script>
     const socket = io({transports: ['websocket'], upgrade: false});
     const sala = '<%- sala %>';
+    const nomeSala = '<%- nomeSala %>';
+    console.log(nomeSala);
+    console.log(sala)
     const alunoQuestoes = <%- JSON.stringify(questoes) %>;
     const quiz = <%- JSON.stringify(quiz) %>;
     const alunoController = new AlunoController(quiz);
@@ -58,12 +61,13 @@
             return { selecionado : selecionado, acerto : resposta};
         }).then( (response) => {
             return alunoController.salva(response);
-        }).then( (response) => {
-            console.log(response.terminou);
+        }).then( (response) => {            
             if(response.terminou){
                 socket.emit('terminei', sala, usuario, response.resultado );
-                setTimeout(function(){ 
-                    window.location = `/resultado/${response.resultado._id}/mostrar`;
+                setTimeout(function(){
+                    alunoController.finalizar(response.resultado, nomeSala).then( () => {
+                        window.location = `/resultado/${response.resultado._id}/mostrar`;
+                    });
                 }, 2000);
             }
         });

@@ -3,9 +3,9 @@ const { Types: { ObjectId } } = require('mongoose');
 const shortid = require('shortid');
 
 module.exports = (app) => {
-    const Exercicio = app.models.exercicio;
     const Resultado = app.models.resultado;
     const Professor = app.models.professor;
+    const Estatistica = app.models.estatistica;
     const Quiz = app.models.quiz;
     const SalaController = {
         index(req, res){
@@ -166,7 +166,7 @@ module.exports = (app) => {
                     const { salas } = prof;
                     const salaEscolhida = salas.find( (sl) => {
                         return  sl.online === true;
-                    });                   
+                    }); 
 
                     const quantidade_exercicio = salaEscolhida.quiz.questoes.length;
                     res.render('sala/aluno', {
@@ -175,7 +175,8 @@ module.exports = (app) => {
                         quantidade_exercicio,
                         questoes : salaEscolhida.quiz.questoes,
                         sala : salaEscolhida._id,
-                        email : usuario.email
+                        email : usuario.email,
+                        nomeSala : salaEscolhida.nome
                     });
                 })
             ;
@@ -267,6 +268,32 @@ module.exports = (app) => {
                         });
                 })
             ;
+        },
+
+        geraResultadoFinal(req, res){
+            const { usuario } = req.session;
+            const { resultado, sala } = req.body;
+
+            const dados = {
+                professor : resultado.professor,
+                sala : sala,
+                quiz : resultado.quiz_nome
+            }
+            const where = { professor : resultado.professor, sala : sala};
+            const set = { $setOnInsert: dados };
+            const options = { upsert : true, runValidator : true, new : true };
+            Estatistica.findOneAndUpdate(where, set, options)
+                .then((estatistica) => {
+                    const resposta = {
+                        aluno : resultado.nome,
+                        questoes : resultado.questoes
+                    };
+                    estatistica.respostas.push(resposta);
+                    estatistica.save( (err) => {
+                        if(err) throw err;
+                    });                    
+                    res.json({ status: "success", message : 'Estatisticas geradas com sucesso'});
+                }).catch( (e) => res.json({ status: "error", message : `Ocorreu um erro ao gerar estatisticas ${e}`} ));
         }
 
     };

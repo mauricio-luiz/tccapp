@@ -1,53 +1,38 @@
 <% include ../partials/headerProfessor %>
-<div class="container" >
-    <header>
-        <div class="row" >
-            <div class="col s12"  >
-                <h3 class="flow-text" >
-                    <i class="material-icons left" >assignment</i>
-                    <%- exercicio.nome %>
-                </h3>
-            </div>
-        </div>
-    </header>
-    <main>
-        <section >
-            <div id="exercicio" >
-                <div class="row" >
-                    <% if(resultados.length > 0) { %>
 
-                            <div class="row">
-                                <div class="col s12">
-                                    <table class="highlight centered responsive-table" style="display: block; overflow-x: auto; white-space: nowrap;">
-                                        <thead>
-                                            <th>Alunos</th>
-                                            <% exercicio.questoes.forEach(function(questao, index) { %>
-                                                <th>Questão #<%- index+1 %></th>                               
-                                            <% }) %>
-                                        </thead>
-                                        <tbody id="finalizado" >
-                                            <% resultados.forEach(function(resultado) { %>
-                                                <tr>
-                                                    <td><%- resultado.nome %></td>
-                                                    <% resultado.questoes.forEach(function(questao) { %>
-                                                        <td>
-                                                            <i class="material-icons <%- questao.acertou ? 'green' : 'red'  %>-text" >
-                                                                <%- questao.acertou ? 'done' : 'clear'  %>
-                                                            </i>
-                                                        </td>
-                                                    <% }) %>                                                
-                                                </tr>
-                                            <% }) %>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                    <% } else { %>
-                        <%- include('../partials/messages', {message: 'Nenhuma estatistica! :(', color: 'orange lighten-2' }); %>
-                    <% } %>
-                </div>
-            </div>
-        </section>  
-    </main>
-</div>
+    <div class="row" >
+        <div class="col s12" >
+            <h1 class="flow-text"><i class="material-icons left">trending_up</i>Resultados</h1>
+            <div class="divider" ></div>
+        </div>
+    </div>
+
+    <section>
+        <div class="row">            
+            <table class="highlight centered responsive-table" style="display: block; overflow-x: auto; white-space: nowrap;">
+                <head>
+                    <tr>
+                        <th>Aluno</th>
+                        <% estatistica.respostas.every( (resposta) => { %>
+                            <% resposta.questoes.forEach( (questao, numero) => { %>
+                                <th>#<%- numero+1 %></th>
+                            <% }) %>
+                            <% return false; %>
+                        <% }) %>
+                    </tr>
+                </head>
+                <tbody id="resposta">
+                    <% estatistica.respostas.forEach( (resposta) => { %>
+                        <tr>
+                            <td><%- resposta.aluno %></td>
+                            <% resposta.questoes.forEach( (questao) => { %>
+                                <td><%- questao.acertou ? '<i class="material-icons small green-text">done</i>' : '<i class="material-icons small red-text">clear</i>' %></td>
+                            <% }) %>
+                        <tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
 <% include ../partials/footerProfessor %>

@@ -1,19 +1,33 @@
+var moment = require('moment');
 module.exports = (app) => {
-    const Resultado = app.models.resultado;
-    const Exercicio = app.models.exercicio;
+    const Estatistica = app.models.estatistica;
     const EstatisticaController = {
-        show(req, res){
-            const usuario = req.session;
-            const { id } = req.params;
+        index(req, res){
+            const { _id } = req.session.professor;
+            const { usuario } = req.session;
 
-            Exercicio.findById( {_id : id} )
-                .then( (exercicio) => {
-                    Resultado.find({ exercicioReferencia : exercicio._id })
-                    .then( (resultados) => {
-                        res.render('estatistica/show', { resultados : resultados, exercicio : exercicio });
-                    }).catch( (e) => console.log(e) )
+            Estatistica.find( { professor : _id } )
+                .then( (estatisticas) => {
+                    res.render('estatistica/index', {usuario, estatisticas, moment});
+                }).catch( (e) => console.log(e) )
+            ;
+        },
+        show(req, res){
+            const { _id } = req.session.professor;
+            const { usuario } = req.session;
+            const estatisticaID = req.params.id;
+            Estatistica.findById( { _id : estatisticaID } )
+                .then((estatistica) => {
+                    const respostas = estatistica.respostas;
+                    res.render('estatistica/show', {usuario, estatistica, respostas});
                 })
             ;
+        },
+        destroy(req, res){
+            const { id } = req.params;
+            Estatistica.deleteOne({ _id : id })
+                    .then( () =>  res.redirect(`/estatisticas`))
+                    .catch( (e) => { console.log(e); res.redirect('/') })
         }
     };
     return EstatisticaController;
