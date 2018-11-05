@@ -25,7 +25,7 @@
                             <a href="/disciplina/<%- disciplina.id %>/editar" ><span class="card-title activator grey-text text-darken-4"><%- disciplina.nome %></span></a>
                         </div>
                         <div class="card-action">
-                            <form action="/disciplina/<%- disciplina._id %>?_method=delete" method="post" >
+                            <form action="/disciplina/<%- disciplina._id %>?_method=delete" method="post" onsubmit="return antesExcluir(this, event)" >
                                 <a href="/disciplina/<%- disciplina.id %>/editar" class="grey-text lighten-2 left top-2" ><i class="material-icons">edit</i>Editar</a>
                                 <button class="btn-flat waves-effect waves-light red-text font-15 fix-delete" ><i class="material-icons">delete</i>Excluir</button>
                             </form>

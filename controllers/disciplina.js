@@ -1,11 +1,17 @@
 const { Types: { ObjectId } } = require ( 'mongoose' );
 
 module.exports = (app) => {
+    
     const Professor = app.models.professor;
+    const mensagemSucesso = 'Item Cadastrado com sucesso!';
+    const mensagemError = 'Ocorreu um erro! Detalhes: ';
+    const mensagemAtualiza = 'Item Atualizado com sucesso!';
+    const mensagemDelete = 'Item Deletado com sucesso!';
+
     const DisciplinaController = {
         index(req, res){
             const { _id } = req.session.professor;
-            const { usuario } = req.session;
+            const { usuario } = req.session;   
             Professor.findById( _id )
                 .then((professor) => {
                     const { disciplinas } = professor;
@@ -37,8 +43,20 @@ module.exports = (app) => {
             const where = { _id : professor._id, 'disciplinas._id': disciplinaId };
             const set = { $set: { 'disciplinas.$': disciplina } };
             Professor.update(where, set)
-                .then( () => res.redirect('/disciplinas'))
-                .catch( () => res.redirect('/'))
+                .then( () => {
+                    req.session.sessionFlash = {
+                        type: 'success',
+                        message: `${mensagemAtualiza}`
+                    }
+                    res.redirect('/disciplinas');
+                })
+                .catch( (e) => {
+                    req.session.sessionFlash = {
+                        type: 'error',
+                        message: `${mensagemError} ${e}`
+                    }
+                    res.redirect('/disciplinas');
+                })
             ;
         },
         save(req, res){
@@ -48,8 +66,20 @@ module.exports = (app) => {
             
             const set = { $push : { disciplinas : { nome, exercicios : [] }}};
             Professor.findByIdAndUpdate(_id, set)
-                .then(() => res.redirect('/disciplinas'))
-                .catch(() => res.redirect('/disciplinas/create'))
+                .then(() => {
+                    req.session.sessionFlash = {
+                        type: 'success',
+                        message: `${mensagemSucesso}`
+                    }
+                    res.redirect('/disciplinas');
+                })
+                .catch((e) => {
+                    req.session.sessionFlash = {
+                        type: 'error',
+                        message: `${mensagemError} ${e}`
+                    }
+                    res.redirect('/disciplina/criar');
+                })
             ;
         },
         destroy(req, res){
@@ -62,8 +92,20 @@ module.exports = (app) => {
                 }
             };
             Professor.update(where, set)
-                .then( () => res.redirect('/disciplinas'))
-                .catch( () => res.redirect('/') )
+                .then( () => { 
+                    req.session.sessionFlash = {
+                        type: 'success',
+                        message: `${mensagemDelete}`
+                    }
+                    res.redirect('/disciplinas')
+                })
+                .catch( (e) => { 
+                    req.session.sessionFlash = {
+                        type: 'error',
+                        message: `${mensagemError} ${e}`
+                    }
+                    res.redirect('/') 
+                })
             ;
         }
     };

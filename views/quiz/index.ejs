@@ -25,7 +25,7 @@
                             <a href="/quiz/<%- quiz.id %>/editar" ><span class="card-title activator grey-text text-darken-4"><%- quiz.nome %></span></a>
                             </div>
                             <div class="card-action">
-                                <form action="/quiz/<%- quiz._id %>?_method=delete" method="post" >
+                                <form action="/quiz/<%- quiz._id %>?_method=delete" method="post"  onsubmit="return antesExcluir(this, event)" >
                                     <a href="/quiz/<%- quiz.id %>/editar" class="grey-text lighten-2 left top-2" ><i class="material-icons">edit</i>Editar</a>
                                     <button class="btn-flat waves-effect waves-light red-text font-15 fix-delete" ><i class="material-icons">delete</i>Excluir</button>
                                 </form>

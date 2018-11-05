@@ -14,6 +14,9 @@
 <script src="/javascripts/app/ui/views/ExercicioView.js"></script>
 <script src="/javascripts/app/ui/views/ListaQuestaoView.js"></script>
 <script src="/javascripts/app/ui/views/EditarQuestaoView.js"></script>
+<script src="/javascripts/libs/pnotify/dist/iife/PNotify.js"></script>
+<script src="/javascripts/libs/sweetalert/dist/sweetalert.min.js"></script>
+
 <script src="/javascripts/app.js"></script>
 <footer>
     <div class="col s12" >
@@ -22,6 +25,18 @@
         </div>
     </div>
 </footer>
+
+<% if ( sessionFlash && sessionFlash.message) { %>
+<script>
+document.addEventListener("DOMContentLoaded", function(event) {
+    PNotify.alert({
+        title: 'SUCESSO!',
+        text: '<%= sessionFlash.message %>',
+        type: '<%= sessionFlash.type %>'
+    });
+});
+</script>
+<% } %>
 
 </div>
 </div>

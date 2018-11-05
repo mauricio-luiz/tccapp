@@ -52,3 +52,38 @@ document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('select');
     var instances = M.FormSelect.init(elems, []);
 });
+
+const validate = document.querySelectorAll('.validate');
+function validaForm(){
+    let retorno = true;
+    if(validate != null){
+        validate.forEach( (element) => {
+            if(element.value == ""){
+                element.classList.add('invalid');
+                PNotify.alert({
+                    title: 'ERROR!',
+                    text: `Item ${element.id} é obrigatório`,
+                    type: 'error'
+                });
+                retorno = false;
+            }
+        });
+    }
+    return retorno;
+}
+
+function antesExcluir(form, event){
+    event.preventDefault();
+
+    swal({
+        title: "Você tem certeza?",
+        text: "Item será removido e não poderá mais ser recuperado",       
+        buttons: true,
+        dangerMode: true
+        })
+        .then((willDelete) => {
+            if (willDelete) {
+                form.submit();
+            }
+    });
+}

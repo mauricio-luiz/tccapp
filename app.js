@@ -11,6 +11,7 @@ const config = require('./config');
 const mongoose = require('mongoose');
 const bluebird = require('bluebird');
 const error = require('./middlewares/error');
+var flash = require('express-flash-messages')
 
 const app = express();
 const server = http.Server(app);
@@ -36,6 +37,7 @@ var db = mongoose.connect(uristring, { useNewUrlParser: true });
 global.db = mongoose.connection;
 
 app.set('views', path.join(__dirname, 'views'));
+app.use(flash())
 app.set('view engine', 'ejs');
 app.use(expressSession({
   store,
@@ -60,6 +62,12 @@ io.use((socket, next) => {
     socket.handshake.session = currentSession;
     return next();
   });
+});
+
+app.use(function(req, res, next){  
+  res.locals.sessionFlash = req.session.sessionFlash;
+  delete req.session.sessionFlash;
+  next();
 });
 
 consign({})
