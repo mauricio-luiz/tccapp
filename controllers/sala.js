@@ -7,6 +7,12 @@ module.exports = (app) => {
     const Professor = app.models.professor;
     const Estatistica = app.models.estatistica;
     const Quiz = app.models.quiz;
+
+    const mensagemSucesso = 'Item Cadastrado com sucesso!';
+    const mensagemError = 'Ocorreu um erro! Detalhes: ';
+    const mensagemAtualiza = 'Item Atualizado com sucesso!';
+    const mensagemDelete = 'Item Deletado com sucesso!';
+
     const SalaController = {
         index(req, res){
             const { _id } = req.session.professor;
@@ -29,9 +35,18 @@ module.exports = (app) => {
             shortid.worker(1);
             const set = { $push : { salas : { nome, descricao, online : false,  codigo : shortid.generate() } } };
             Professor.findByIdAndUpdate( _id, set )
-                .then(() => res.redirect('/salas'))
+                .then(() => { 
+                    req.session.sessionFlash = {
+                        type: 'success',
+                        message: `${mensagemAtualiza}`
+                    }
+                    res.redirect('/salas') 
+                })
                 .catch((e) => {
-                    console.log(e);
+                    req.session.sessionFlash = {
+                        type: 'error',
+                        message: `${mensagemError} ${e}`
+                    }
                     res.redirect('/sala/criar');
                 })
             ;
@@ -136,7 +151,6 @@ module.exports = (app) => {
                     const salaEscolhida = salas.find( (sl) => {
                         return sl._id.toString() === id;
                     });
-                    console.log(salaEscolhida);
                     salaEscolhida.online = false;
                     salaEscolhida.quiz = {};
                     prof.save( (err) => {

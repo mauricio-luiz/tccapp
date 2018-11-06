@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="row">
-            <% if(quizzes){ %>
+            <% if(quizzes.length > 0){ %>
                 <% quizzes.forEach(function(quiz) { %>
                     <div class="col s12 m4">
                         <div class="card">
@@ -34,9 +34,7 @@
                     </div>
                 <% }) %>
             <% } else { %>
-                <div class="col s12">
-                <%- include('../partials/messages', {message: 'Nenhum Quiz encontrado! :(', color: 'orange lighten-2' }); %>
-                </div>
+                <%- include('../partials/messages', {message: 'Nenhum Quiz encontrado! :(', color: 'red darken-3' }); %>
             <% } %>
         </div>
     </section>

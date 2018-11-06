@@ -3,6 +3,12 @@ const { Types: { ObjectId } } = require('mongoose');
 module.exports = (app) => {    
     const Quiz = app.models.quiz;
     const Professor = app.models.professor;
+
+    const mensagemSucesso = 'Item Cadastrado com sucesso!';
+    const mensagemError = 'Ocorreu um erro! Detalhes: ';
+    const mensagemAtualiza = 'Item Atualizado com sucesso!';
+    const mensagemDelete = 'Item Deletado com sucesso!';
+
     const QuizController = {        
         index(req, res){
             const { _id } = req.session.professor;
@@ -11,10 +17,7 @@ module.exports = (app) => {
                 .then((quizzes) => {
                     res.render('quiz/index', { quizzes, usuario });
                 }).catch( (e) => { console.log(e); res.redirect('/'); });            
-        },
-        create(req, res){
-           
-        },
+        },       
         save(req, res){
             const { usuario } = req.session;
             const { _id } = req.session.professor;
@@ -59,6 +62,10 @@ module.exports = (app) => {
             const set = { $set: { nome : nome, disciplina : disciplina } };
             Quiz.updateOne(where, set)
                 .then( () => {
+                    req.session.sessionFlash = {
+                        type: 'success',
+                        message: `${mensagemAtualiza}`
+                    };
                     res.redirect(`/quizzes`);
                 })
                 .catch( (e) => { console.log(e); res.redirect('/') });

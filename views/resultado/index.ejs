@@ -17,7 +17,7 @@
                         <a href="/resultado/<%- resultado.id %>/show" ><span class="card-title activator grey-text text-darken-4"><%- resultado.quiz_nome %></span></a>
                         </div>
                         <div class="card-action">
-                            <form action="/resultado/<%- resultado._id %>?_method=delete" method="post" >
+                            <form action="/resultado/<%- resultado._id %>?_method=delete" method="post" onsubmit="return antesExcluir(this, event)" >
                                 <a href="/resultado/<%- resultado.id %>/mostrar" class="grey-text lighten-2 left top-2" ><i class="material-icons">edit</i>Mostrar</a>
                                 <button class="btn-flat waves-effect waves-light red-text font-15 fix-delete" ><i class="material-icons">delete</i>Excluir</button>
                             </form>
@@ -26,7 +26,7 @@
                 </div>
             <% }) %>
         <% } else { %>
-            <%- include('../partials/messages', {message: 'Nenhum quiz feito até o momento! :(', color: 'orange lighten-2' }); %>
+            <%- include('../partials/messages', {message: 'Nenhum Quiz feito até o momento! :(', color: 'red darken-3' }); %>
         <% } %>
     </div>
 </section>
@@ -39,6 +39,5 @@
         </div>
     </div>
 </section>
-<script>
    
 <% include ../partials/footerAluno %>
