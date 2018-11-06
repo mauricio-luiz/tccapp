@@ -6,7 +6,6 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "@mdi/font": "^3.0.39",
     "animate.css": "^3.7.0",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.3",
@@ -18,7 +17,6 @@
     "express": "~4.16.0",
     "express-flash-messages": "^0.1.1",
     "express-session": "^1.15.6",
-    "material-design-icons": "^3.0.1",
     "materialize-css": "^1.0.0-rc.2",
     "md5": "^2.2.1",
     "method-override": "^3.0.0",
