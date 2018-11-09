@@ -12,7 +12,7 @@ module.exports = (app) => {
             const { id } = req.body;
             const postQuestao = req.body.questao;
 
-            const questao = { enunciado : postQuestao._enunciado, resposta : postQuestao._resposta, opcoes : postQuestao._opcoes };
+            const questao = { enunciado : postQuestao._enunciado, resposta : postQuestao._resposta, opcoes : postQuestao._opcoes, justificativa : postQuestao._justificativa };
             const set = { $push : { questoes : questao } };
             const options = {
                runValidator :true, new : true
@@ -41,7 +41,7 @@ module.exports = (app) => {
             const idQuestao = req.body.id_questao;
            
             const where = { "_id" : ObjectId(id), "questoes._id" : ObjectId(idQuestao) };
-            const questao = { _id : ObjectId(idQuestao), enunciado : postQuestao._enunciado, resposta : postQuestao._resposta, opcoes : postQuestao._opcoes };
+            const questao = { _id : ObjectId(idQuestao), enunciado : postQuestao._enunciado, resposta : postQuestao._resposta, opcoes : postQuestao._opcoes, justificativa : postQuestao._justificativa };
         
             const set = { $set : { "questoes.$" : questao } };
             const options = {

@@ -13,6 +13,9 @@ module.exports = () => {
         },
         opcoes : {
             type : Array
+        },
+        justificativa : {
+            type: String
         }
     });
 

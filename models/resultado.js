@@ -22,6 +22,9 @@ module.exports = () => {
         marcada : {
             type : String,
             required : true
+        },
+        justificativa : {
+            type : String
         }
     });
 

@@ -27,7 +27,13 @@ class ListaQuestaoView extends View{
                         </div>
                     </div>
                     <div class="row">
-                        <div  class="col s12 listaOpcoes" >
+                        <div class="col s12 listaOpcoes" >
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12" >
+                            <textarea id="justificativa" class="materialize-textarea" data-length="120" name="questao[justificativa]"></textarea>
+                            <label for="justificativa">Justificativa da Questão (Feedback para o aluno)</label>
                         </div>
                     </div>
                     <div class="row">

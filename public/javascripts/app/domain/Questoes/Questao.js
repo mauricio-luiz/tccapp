@@ -1,7 +1,7 @@
 class Questao{
     
-    constructor(_enunciado, _resposta, _opcoes){
-        Object.assign(this, {_enunciado, _resposta, _opcoes});
+    constructor(_enunciado, _resposta, _opcoes, _justificativa){
+        Object.assign(this, {_enunciado, _resposta, _opcoes, _justificativa});
         Object.freeze(this);
     }
 
@@ -15,5 +15,9 @@ class Questao{
 
     get opcoes(){
         return this._opcoes;
-    }  
+    }
+
+    get justificativa(){
+        return this._justificativa;
+    }
 }

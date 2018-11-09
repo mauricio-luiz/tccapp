@@ -95,8 +95,10 @@ class QuestaoController{
         this._adicionaTextos(textos);
         this._adicionaQuestaoCorreta(respostas); 
         this._enunciado = $("#enunciado");
+        this._justificativa = $("#justificativa");
         
-        const questao = this._criaQuestao(this._enunciado.value, resposta, this._opcoes.paraArray());
+        const questao = this._criaQuestao(this._enunciado.value, resposta, this._opcoes.paraArray(), this._justificativa.value);
+
         const request = {
             method : 'POST',
             body :  JSON.stringify({
@@ -182,10 +184,9 @@ class QuestaoController{
         this._adicionaTextos(textos);
         this._adicionaQuestaoCorreta(respostas); 
         const enunciado = document.querySelector(".collapsible li.active .collapsible-body .enunciado-edit");
+        const justificativa = document.querySelector(".collapsible li.active .collapsible-body .justificativa-edit");
 
-        
-
-        const questao = this._criaQuestao(enunciado.value, resposta, this._opcoes.paraArray());       
+        const questao = this._criaQuestao(enunciado.value, resposta, this._opcoes.paraArray(), justificativa.value);
         const request = {
             method : 'POST',
             body: JSON.stringify({
@@ -271,11 +272,12 @@ class QuestaoController{
         btnAdicionaOpcao.addEventListener('click', this.adicionaOpcao.bind(this));
     }
 
-    _criaQuestao(enunciado, resposta, opcoes){
+    _criaQuestao(enunciado, resposta, opcoes, justificativa){
         return new Questao(
             enunciado,
             resposta,
-            opcoes
+            opcoes,
+            justificativa
         );
     }
 

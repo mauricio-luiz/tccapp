@@ -9,26 +9,51 @@
 
 <section>
     <% questoes.forEach(function(questao, indice) { %>
-        <div class="row" >
-            <div id="enunciado" class="col s12" >
-                <p>
-                    <span class="left right-0">(</span>
-                    <i class="material-icons left right-0 <%- questao.acertou ? 'green-text' : 'red-text' %>" ><%- questao.acertou ? 'done' : 'clear' %></i>
-                    <span class="left right-0" >)</span>
-                    <span class="left right-0" ><%- questao.questao %></span>
-                </p>
-            </div>
-        </div>
-        <div class="row" >
-            <div id="opcoes" class="col s12" >
-                <% questao.opcoes.forEach(function(opcao, letra) { %>
-                    <p>
-                        <label>
-                            <input type="radio" name="opcao<%- questao.numero %>" <%- questao.numero == letra ? 'checked' : '' %> disabled  />
-                            <span <%- opcao._correta  ? 'class="green-text bold"' : '' %>><%- opcao._texto %></span>
-                        </label>
-                    </p>
-                <% }) %>
+
+        <div class="row">
+            <div class="col s12">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="row" >
+                            <div id="enunciado" class="col s12" >
+                                <p>
+                                    <span class="left right-0">(</span>
+                                    <i class="material-icons left right-0 <%- questao.acertou ? 'green-text' : 'red-text' %>" ><%- questao.acertou ? 'done' : 'clear' %></i>
+                                    <span class="left right-0" >)</span>
+                                    <span class="left right-0" ><%- questao.questao %></span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row" >
+                            <div id="opcoes" class="col s12" >
+                                <% questao.opcoes.forEach(function(opcao, letra) { %>
+                                    <p>
+                                        <label>
+                                            <input type="radio" name="opcao<%- questao.numero %>" <%- questao.numero == letra ? 'checked' : '' %> disabled  />
+                                            <span <%- opcao._correta  ? 'class="green-text bold"' : '' %>><%- opcao._texto %></span>
+                                        </label>                                    
+                                    </p>
+                                <% }) %>
+                            </div>
+                        </div>
+                        <% if (questao.justificativa){ %>
+                            <div class="row" >
+                                <div class="col s12" >
+                                    <div class="col s12">
+                                        <div class="card-panel grey lighten-5">
+                                        <div class="row valign-wrapper">
+                                            <span class="black-text">
+                                                <b>Justificativa:</b>
+                                                <%- questao.justificativa %>
+                                            </span>
+                                        </div>
+                                        </div>
+                                    </div>        
+                                </div>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
             </div>
         </div>
     <% }) %>

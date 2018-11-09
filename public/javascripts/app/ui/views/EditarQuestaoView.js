@@ -13,6 +13,12 @@ class EditarQuestaoView extends View{
                     <div class="col s12 listaOpcoes" >
                     </div>            
                 <div>
+                <div class="row">
+                    <div class="input-field col s12" >
+                        <textarea id="justificativa-edit" class="materialize-textarea justificativa-edit" data-length="120" name="questao[justificativa]">${model.justificativa}</textarea>
+                        <label for="justificativa-edit">Justificativa da Questão (Feedback para o aluno)</label>
+                    </div>
+                </div>
                 <div class="row" >
                     <div class="col s12" >
                         <button type="submit" class="btn waves-effect waves-light right btn-small editar-questao" >
@@ -29,10 +35,12 @@ class EditarQuestaoView extends View{
 
     updateTextarea(model){
         const enunciado = document.querySelector("#enunciado-edit");
-        M.textareaAutoResize(enunciado);
+        const justificativa = document.querySelector("#justificativa-edit");
 
         setTimeout( () => {
             model.opcoes.map( opcao => {
+                M.textareaAutoResize(enunciado);
+                M.textareaAutoResize(justificativa);
                 M.textareaAutoResize(document.querySelector(`#${opcao._id}`));
             });
         },1000);

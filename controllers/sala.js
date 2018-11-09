@@ -243,7 +243,7 @@ module.exports = (app) => {
                     const questao_corrente = questoes.find((qst) => {
                         numeroQuestao = numeroQuestao + 1;
                         return qst._id.toString() === questaoId;
-                    });
+                    });                    
                     
                     const resultado = {
                         aluno : usuario._id,
@@ -259,7 +259,8 @@ module.exports = (app) => {
                         opcoes : questao_corrente.opcoes,
                         numero : numero,
                         acertou : acerto,
-                        marcada : resposta_aluno
+                        marcada : resposta_aluno,
+                        justificativa : questao_corrente.justificativa
                     };
 
                     const where = { aluno : usuario._id, quiz : quiz._id};
