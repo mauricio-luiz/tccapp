@@ -306,6 +306,7 @@ module.exports = (app) => {
                         aluno : resultado.nome,
                         questoes : resultado.questoes
                     };
+                    
                     estatistica.respostas.push(resposta);
                     estatistica.save( (err) => {
                         if(err) throw err;

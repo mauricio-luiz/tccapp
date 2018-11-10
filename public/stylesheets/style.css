@@ -70,6 +70,10 @@ input:not([type]):focus:not([readonly]), input[type="text"]:not(.browser-default
   margin-right:50px;
 }
 
+.right-10{
+  margin-right:10px !important;
+}
+
 .right-0{
   margin-right:0 !important;
 }

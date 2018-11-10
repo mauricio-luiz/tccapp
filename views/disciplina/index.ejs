@@ -10,7 +10,7 @@
 </div>
 <section class="top-20">
     <div class="row" >
-        <div class="col s12 m4">
+        <div class="col s12 m6 l4">
             <ul>
                 <li><a href="/disciplina/criar" class="waves-effect waves-light btn left"><i class="material-icons left">add</i>Adicionar</a></li>
             </ul>
@@ -19,7 +19,7 @@
     <div class="row" >
         <% if(disciplinas.length > 0){ %>
             <% disciplinas.forEach(function(disciplina) { %>
-                <div class="col s12 m4">
+                <div class="col s12 m6 l4">
                     <div class="card">
                         <div class="card-content">
                             <a href="/disciplina/<%- disciplina.id %>/editar" ><span class="card-title activator grey-text text-darken-4"><%- disciplina.nome %></span></a>

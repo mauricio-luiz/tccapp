@@ -80,6 +80,28 @@ module.exports = (app) => {
                     .catch( (e) => { console.log(e); res.redirect('/') })
                 ;
             });
+        },
+        duplicate(req, res){
+            const { usuario } = req.session;
+            const id  = req.params.id;        
+            Quiz.findById(id).populate('professor')
+                .then((quiz) => {                    
+                    const set = { nome : `${quiz.nome} - cópia`, disciplina : quiz.disciplina, professor : quiz.professor._id, status : false, questoes : quiz.questoes };
+                    const quizClone = new Quiz(set);
+                    quizClone.save(function (err, newQuiz) {
+                        if (err) {
+                            res.json({ status: "error", message: `Ocorreu um erro ao salvar questao ${err}` });
+                            return
+                        }
+                        
+                        req.session.sessionFlash = {
+                            type: 'success',
+                            message: `${mensagemSucesso}`
+                        };
+                        res.redirect(`/quizzes`);
+                    });
+                })
+            ;            
         }
     };
     return QuizController;

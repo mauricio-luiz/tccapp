@@ -8,5 +8,6 @@ module.exports = (app) => {
     app.get('/quiz/:id/editar', autenticar, professorMiddleware, quiz.edit);
     app.put('/quiz/:id', autenticar, professorMiddleware, quiz.update);
     app.delete('/quiz/:id', autenticar, professorMiddleware, quiz.destroy);
-    app.get('/quiz/:id/mostrar', autenticar, professorMiddleware, quiz.show)
+    app.get('/quiz/:id/mostrar', autenticar, professorMiddleware, quiz.show);
+    app.get('/quiz/:id/duplicar', autenticar, professorMiddleware, quiz.duplicate);
 }

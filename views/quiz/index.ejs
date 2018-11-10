@@ -10,7 +10,7 @@
     </div>    
     <section class="top-20">
         <div class="row" >
-            <div class="col s12 m4">
+            <div class="col s12 m6 l4">
                 <ul>
                     <li><a href="#" id="createQuiz" class="waves-effect waves-light btn left"><i class="material-icons left">add</i>Adicionar</a></li>
                 </ul>
@@ -19,8 +19,11 @@
         <div class="row">
             <% if(quizzes.length > 0){ %>
                 <% quizzes.forEach(function(quiz) { %>
-                    <div class="col s12 m4">
+                    <div class="col s12 m12 l4">
                         <div class="card">
+                            <div class="card-image waves-effect waves-block waves-light">
+                                <a href="/quiz/<%- quiz.id %>/duplicar" class="grey-text lighten-2 left top-2" ><i class="material-icons">rotate_right</i>Clonar</a>
+                            </div>
                             <div class="card-content">
                             <a href="/quiz/<%- quiz.id %>/editar" ><span class="card-title activator grey-text text-darken-4"><%- quiz.nome %></span></a>
                             </div>
@@ -36,15 +39,6 @@
             <% } else { %>
                 <%- include('../partials/messages', {message: 'Nenhum Quiz encontrado! :(', color: 'red darken-3' }); %>
             <% } %>
-        </div>
-    </section>
-    <section>
-        <div class="col s12" >
-            <div class="fixed-action-btn">
-                <a id="add"  href="/exercicio/criar" class="btn-floating btn-large waves-effect waves-light blue lighten-2">
-                    <i class="material-icons">add</i>
-                </a>
-            </div>
         </div>
     </section>
    
