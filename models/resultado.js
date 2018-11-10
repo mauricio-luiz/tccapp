@@ -59,6 +59,9 @@ module.exports = () => {
             tempo : {
                 type : Number
             },
+            acertos : {
+                type : Number
+            },
             questoes : [resposta]
         },
         {

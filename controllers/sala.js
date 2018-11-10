@@ -198,6 +198,7 @@ module.exports = (app) => {
         responder(req, res){
             const { resposta } = req.body;
             const resposta_A = resposta.split("&");
+            const { usuario } = req.session;
 
             const numero = resposta_A.shift();
             const resposta_aluno = resposta_A.shift();
@@ -252,7 +253,7 @@ module.exports = (app) => {
                         nome : usuario.nome,
                         questoes : [],
                         quiz_nome : quiz.nome
-                    };                   
+                    };              
 
                     const where = { aluno : usuario._id, quiz : quiz._id};
                     const options = { upsert : true, runValidator : true, new : true };
@@ -271,8 +272,13 @@ module.exports = (app) => {
                                 tempo : resultado.tempo ? tempo - resultado.tempo : tempo
                             };
 
+                            let acertos = resultado.acertos ? resultado.acertos : 0;
+                            if(acerto == 1)
+                                acertos = acertos + 1;
+
                             resultado.questoes.push(resposta);
                             resultado.tempo = tempo;
+                            resultado.acertos = acertos;
                             resultado.save( (err) => {
                                 if(err) throw err;
                             });
@@ -280,9 +286,8 @@ module.exports = (app) => {
                             const terminou = total_questoes == numeroQuestao ? true : false;
                             return res.json({ status: "success", message : 'resposta salva com sucesso', resultado : resultado, terminou : terminou });
                         })
-                        .catch( (e) => { 
-                            console.log(e);
-                            res.redirect('/registrar/aluno', {message : e.message});
+                        .catch( (e) => {                             
+                            return res.json({ status: "error", message : 'Ocorreu um erro ao salvar resposta', error : e });
                         });
                 })
             ;

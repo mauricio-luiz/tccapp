@@ -11,19 +11,31 @@ module.exports = (app) => {
     const ResultadoController = {
         index(req, res){
             const { usuario } = req.session;
+
             Resultado.find( { aluno : usuario._id } )
                 .then( (resultados) => {
+
                     res.render('resultado/index', { usuario, resultados });
                 }).catch( (e) => console.log(e) )
             ;
         },
-        show(req, res){
+        async show(req, res){
             const { usuario } = req.session;
             const { id } = req.params;
 
+            resultados = await Resultado.find({}, {acertos : 1, tempo : 1}).sort('-acertos, -tempo').exec();
+
+            console.log('resultados', resultados);
+
             Resultado.findById(id)
-                .then( (resultado) => {                    
-                    res.render('resultado/show', {moment, usuario, resultado : resultado, questoes : resultado.questoes });
+                .then( (resultado) => {
+
+                    let posicao = 0;
+                    resultados.forEach((element, index) => {                    
+                        if(element._id.toString() == resultado._id) posicao = index+1;
+                    });
+
+                    res.render('resultado/show', {moment, usuario, resultado : resultado, questoes : resultado.questoes, posicao });
                 }).catch( (e) => console.log(e) )
             ;
         },

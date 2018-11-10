@@ -14,7 +14,7 @@
             <div class="card" >
                 <div class="card-content" >
                     <span class="card-title">
-                        <b class="right-align">Posição :</b> 1                    
+                        <b class="right-align">Posição :</b> <%- posicao == 1 ? 'Primeiro lugar!! Parabéns, você acertou mais vezes em menor tempo!' : posicao + "&ordf lugar, não desanime e tente em outra opotunidade o primeiro lugar" %>
                     </span>
                     <b>Data: </b><%- moment(resultado.created_at).format('DD/MM/YYYY') %>
                     <b>Tempo total  : </b><%- resultado.tempo %>s
