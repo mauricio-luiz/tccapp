@@ -25,6 +25,9 @@ module.exports = () => {
         },
         justificativa : {
             type : String
+        },
+        tempo : {
+            type: Number
         }
     });
 
@@ -52,6 +55,9 @@ module.exports = () => {
             },
             descricao : {
                 type : String
+            },
+            tempo : {
+                type : Number
             },
             questoes : [resposta]
         },

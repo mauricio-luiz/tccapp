@@ -1,3 +1,5 @@
+var moment = require('moment');
+
 module.exports = (app) => {
     const Resultado = app.models.resultado;
 
@@ -21,7 +23,7 @@ module.exports = (app) => {
 
             Resultado.findById(id)
                 .then( (resultado) => {                    
-                    res.render('resultado/show', { usuario, resultado : resultado, questoes : resultado.questoes });
+                    res.render('resultado/show', {moment, usuario, resultado : resultado, questoes : resultado.questoes });
                 }).catch( (e) => console.log(e) )
             ;
         },
@@ -31,7 +33,7 @@ module.exports = (app) => {
                     .then( () => {
                         req.session.sessionFlash = {
                             type: 'success',
-                            message: `${mensagemAtualiza}`
+                            message: `${mensagemDelete}`
                         }
                         res.redirect(`/meus-quizzes`)
                     })

@@ -20,6 +20,13 @@
 
 <section>       
     <div class="row" >
+        <div class="col s12" >
+            <div class="card grey lighten-2 z-depth-3" >
+                <div class="card-content" >
+                    <p class="font-20"><b>TEMPO :</b> <span id="tempo">0</span> s</p>
+                </div>
+            </div>
+        </div>
         <div id="exercicio" class="col s12" >
             <%- include('../partials/messages', {message: 'Nenhuma questão cadastrada! :(', color: 'orange lighten-2' }); %>
         </div>
@@ -37,9 +44,7 @@
 <script>
     const socket = io({transports: ['websocket'], upgrade: false});
     const sala = '<%- sala %>';
-    const nomeSala = '<%- nomeSala %>';
-    console.log(nomeSala);
-    console.log(sala)
+    const nomeSala = '<%- nomeSala %>';    
     const alunoQuestoes = <%- JSON.stringify(questoes) %>;
     const quiz = <%- JSON.stringify(quiz) %>;
     const alunoController = new AlunoController(quiz);
@@ -50,15 +55,16 @@
         document.getElementById('chat').innerHTML += msg;
     });
     const responder = (btnResponder) => {
+        const tempo = document.querySelector("#tempo");
         btnResponder.classList = "waves-effect waves-light btn right left-20 hide";
-        const selecionado = document.querySelector('#opcoes input[type="radio"]:checked').value;
+        const selecionado = document.querySelector('#opcoes input[type="radio"]:checked').value;        
         alunoController.reponder(selecionado).then( (response) => {
             const toastHTML = `<span class="white-text"><b>${response.message}<b></span>`;
             const toastClass = response.resposta == 1 ? 'green' : 'red';
             M.toast({html: toastHTML , classes: toastClass, displayLength: 1500, completeCallback : alunoController.proximo() })
             const { questao, resposta } = response;
             socket.emit('responder', sala, usuario, questao, resposta );
-            return { selecionado : selecionado, acerto : resposta};
+            return { selecionado : selecionado, acerto : resposta, tempo : tempo.textContent};
         }).then( (response) => {
             return alunoController.salva(response);
         }).then( (response) => {            
@@ -72,5 +78,12 @@
             }
         });
     };   
+
+    i = 0;
+    setInterval(function() {
+		i++; // equivale a i = i + 1;
+		document.getElementById("tempo").innerHTML = i;
+	}, 1000);
+
 </script>
 <% include ../partials/footerAluno %>

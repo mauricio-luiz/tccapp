@@ -225,7 +225,7 @@ module.exports = (app) => {
             ;
         },
         salvar(req, res){
-            const { selecionado, acerto } = req.body;
+            const { selecionado, acerto, tempo } = req.body;
             const selecionado_A = selecionado.split("&");
             const { usuario } = req.session;
 
@@ -252,16 +252,7 @@ module.exports = (app) => {
                         nome : usuario.nome,
                         questoes : [],
                         quiz_nome : quiz.nome
-                    };
-
-                    const resposta = {
-                        questao : questao_corrente.enunciado,
-                        opcoes : questao_corrente.opcoes,
-                        numero : numero,
-                        acertou : acerto,
-                        marcada : resposta_aluno,
-                        justificativa : questao_corrente.justificativa
-                    };
+                    };                   
 
                     const where = { aluno : usuario._id, quiz : quiz._id};
                     const options = { upsert : true, runValidator : true, new : true };
@@ -269,7 +260,19 @@ module.exports = (app) => {
 
                     Resultado.findOneAndUpdate(where, set, options)
                         .then((resultado) => {
+
+                            const resposta = {
+                                questao : questao_corrente.enunciado,
+                                opcoes : questao_corrente.opcoes,
+                                numero : numero,
+                                acertou : acerto,
+                                marcada : resposta_aluno,
+                                justificativa : questao_corrente.justificativa,
+                                tempo : resultado.tempo ? tempo - resultado.tempo : tempo
+                            };
+
                             resultado.questoes.push(resposta);
+                            resultado.tempo = tempo;
                             resultado.save( (err) => {
                                 if(err) throw err;
                             });

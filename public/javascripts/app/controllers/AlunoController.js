@@ -48,13 +48,14 @@ class AlunoController{
     }
 
     async salva(dados){
-        const { selecionado, acerto } = dados;
+        const { selecionado, acerto, tempo } = dados;
         
         const request = {
             method : 'POST',
             body :  JSON.stringify({
                 selecionado : selecionado,
                 acerto : acerto,
+                tempo : tempo
             }),
             headers: {
                 'Accept': 'application/json',
