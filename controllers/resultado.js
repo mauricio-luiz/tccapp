@@ -23,7 +23,7 @@ module.exports = (app) => {
             const { usuario } = req.session;
             const { id } = req.params;
 
-            resultados = await Resultado.find({}, {acertos : 1, tempo : 1}).sort('-acertos, -tempo').exec();
+            resultados = await Resultado.find({}, {acertos : 1, tempo : 1}).sort('acertos, tempo').exec();
 
             console.log('resultados', resultados);
 
