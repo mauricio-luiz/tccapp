@@ -82,8 +82,16 @@ class QuestaoController{
         this._opcoesView.refresh(this._opcoes);
         this._adicionaEventoRemoverBotao();
 
-        const nova_resposta = document.querySelector(`.collapsible li.active .collapsible-body .listaOpcoes input[type="radio"][value="${resposta.value}"]`);
-        if(nova_resposta) nova_resposta.checked = true;
+        if(resposta){
+            const nova_resposta = document.querySelector(`.collapsible li.active .collapsible-body .listaOpcoes input[type="radio"][value="${resposta.value}"]`);
+            if(nova_resposta) nova_resposta.checked = true;
+        }
+        
+        PNotify.alert({
+            title: 'SUCESSO!',
+            text: 'Opção removida com sucesso!',
+            type: 'success'
+        });
     }
 
     async salva(e){
@@ -129,6 +137,11 @@ class QuestaoController{
             .catch( (e) => { console.log(e)} );
         
         this._limpar();
+        PNotify.alert({
+            title: 'SUCESSO!',
+            text: 'Questão salva com sucesso',
+            type: 'success'
+        });
     }
 
     edita(obj){
@@ -166,6 +179,7 @@ class QuestaoController{
                 questao.opcoes.forEach( (opcao) => this._opcoes.adiciona( this._criaOpcao(opcao._texto, this._opcoes.letra(), opcao._correta)));
                 this._opcoesView.update(this._opcoes);              
                 this._adicionaEventoEditarAdicionarOpcao();
+                this._adicionaEventoRemoverBotao();
                 
                 const btnAtualizar = document.querySelector(".collapsible li.active .collapsible-body .editar-questao");
                 btnAtualizar.addEventListener('click', () => {
@@ -176,7 +190,6 @@ class QuestaoController{
     }
 
     atualizar(dados){
-
         const resposta = document.querySelector(".collapsible li.active .collapsible-body .listaOpcoes input[type=radio]:checked").value;
         const respostas = document.querySelectorAll(".collapsible li.active .collapsible-body .listaOpcoes input[type=radio]");
         const textos = document.querySelectorAll(".collapsible li.active .collapsible-body .listaOpcoes textarea");
@@ -213,8 +226,12 @@ class QuestaoController{
                     });                
                     this._collapse.close(selecionado);                    
                     enunciado.innerHTML = `<span class="question"><b class="font-20">#${selecionado+1}</b> ${json.quiz.questoes[selecionado].enunciado}</span>`;
+                    PNotify.alert({
+                        title: 'SUCESSO!',
+                        text: 'Questão editada com sucesso!',
+                        type: 'success'
+                    });
                 });
-                
             })
             .catch( (e) => { console.log(e)} );
     }
@@ -260,7 +277,7 @@ class QuestaoController{
         });
     }
 
-    _adicionaEventoRemoverBotao() {
+    _adicionaEventoRemoverBotao() {        
         const botaoRemoveOpcao = document.querySelectorAll(".botao-removeOpcao");
         botaoRemoveOpcao.forEach( (botaoRemove, indice) => {
             botaoRemove.addEventListener('click', this.removeOpcao.bind(this, botaoRemove, indice ));
