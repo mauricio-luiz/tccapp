@@ -47,11 +47,11 @@
     const salaController = new SalaController(socket);
 
     const salas = '<%- JSON.stringify(salas) %>';
-    const dadosQuizzes = '<%- JSON.stringify(quizzes) %>';
+    const dadosQuizzes = ('<%- JSON.stringify(quizzes) %>');
     const temSalaAtiva = '<%- JSON.stringify(temSalaAtiva) %>';
     const salaEscolhida = '<%- JSON.stringify(salaEscolhida) %>';
 
-    salaController.adicionaSalas(salas);
+    salaController.adicionaSalas(salas);    
     salaController.adicionaQuizzes(dadosQuizzes);
 
     if(temSalaAtiva === 'true') salaController.reinicia(salaEscolhida);

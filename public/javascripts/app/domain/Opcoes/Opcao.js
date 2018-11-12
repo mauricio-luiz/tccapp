@@ -1,7 +1,7 @@
 class Opcao{
     
     constructor(_texto, _campoNumero, _correta = false){
-        this._texto = _texto;
+        this._texto = _texto;        
         this._id = `opcao${_campoNumero}`;
         this._campoName = `opcao[${_campoNumero}]`;
         this._campoLabel = `Opção ${_campoNumero}`;

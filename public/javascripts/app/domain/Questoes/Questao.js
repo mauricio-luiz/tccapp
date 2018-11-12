@@ -1,7 +1,9 @@
 class Questao{
     
     constructor(_enunciado, _resposta, _opcoes, _justificativa){
-        Object.assign(this, {_enunciado, _resposta, _opcoes, _justificativa});
+        this._enunciado = _enunciado.replace(/\n/g, '');
+        this._opcoes = _opcoes;
+        this._justificativa = _justificativa.replace(/\n/g, '');
         Object.freeze(this);
     }
 

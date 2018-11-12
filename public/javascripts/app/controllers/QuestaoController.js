@@ -30,7 +30,6 @@ class QuestaoController{
         this._atualizaNumeroDeQuestoes();
 
         this._listaQuestao = new ListaQuestaoView("#mostraQuestoes");
-
     }
 
     _inicializeCollapse(){
@@ -273,7 +272,8 @@ class QuestaoController{
 
     _adicionaTextos(textos){
         textos.forEach( (textarea, indice) => {
-            this._opcoes.texto(textarea.value, indice);
+            let texto = textarea.value.replace(/\n/g, '');            
+            this._opcoes.texto(texto, indice);
         });
     }
 

@@ -70,7 +70,13 @@ module.exports = (app) => {
                 }
             };
             Quiz.update(where, set)
-                .then( () => res.redirect(`/quiz/${quiz}/editar`) )
+                .then( () => {
+                    req.session.sessionFlash = {
+                        type: 'success',
+                        message: `Questão excluida com sucesso!`
+                    }
+                    res.redirect(`/quiz/${quiz}/editar`) 
+                })
                 .catch( () => res.redirect('/') )
             ;
         },
