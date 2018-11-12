@@ -2,7 +2,7 @@ class TabelaRespostasView extends View{
 
     template(model){
         return `
-            <table class="highlight centered responsive-table" style="display: block; overflow-x: auto; white-space: nowrap;">
+            <table class="highlight centered" style="display: block; overflow-x: auto; white-space: nowrap;">
                 <thead>                            
                     <tr>
                         <th>Alunos</th>
@@ -16,6 +16,14 @@ class TabelaRespostasView extends View{
                         <td id="nA" colspan="${ model.questoes.length+1 }" >Aguardando alunos</td>
                     </tr>                     
                 </tbody>
+                <tfoot>                            
+                    <tr>
+                        <th>Alunos</th>
+                        ${model.questoes.map( (questao, numero) => `
+                            <th>#${numero+1}</th>
+                        `).join('') }
+                    </tr>
+                </tfoot>
             </table>
         `;
     }   

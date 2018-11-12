@@ -13,29 +13,42 @@
                 <div class="card">
                     <div class="card-content">
                         <span class="card-title">Acertos e Erros</span>
-                        <table class="highlight centered responsive-table" style="display: block; overflow-x: auto; white-space: nowrap;">
-                            <head>
-                                <tr>
-                                    <th>Aluno</th>
-                                    <% estatistica.respostas.every( (resposta) => { %>
-                                        <% resposta.questoes.forEach( (questao, numero) => { %>
-                                            <th>#<%- numero+1 %></th>
+                        <div class="responsive" >
+                            <table class="highlight centered" style="display: block; overflow-x: auto; white-space: nowrap;">
+                                <thead>
+                                    <tr>
+                                        <th>Aluno</th>
+                                        <% estatistica.respostas.every( (resposta) => { %>
+                                            <% resposta.questoes.forEach( (questao, numero) => { %>
+                                                <th>#<%- numero+1 %></th>
+                                            <% }) %>
+                                            <% return false; %>
                                         <% }) %>
-                                        <% return false; %>
+                                    </tr>
+                                </thead>
+                                <tbody id="resposta">
+                                    <% estatistica.respostas.forEach( (resposta) => { %>
+                                        <tr>
+                                            <td><%- resposta.aluno %></td>
+                                            <% resposta.questoes.forEach( (questao) => { %>
+                                                <td><%- questao.acertou ? '<i class="material-icons small green-text">done</i>' : '<i class="material-icons small red-text">clear</i>' %></td>
+                                            <% }) %>
+                                        <tr>
                                     <% }) %>
-                                </tr>
-                            </head>
-                            <tbody id="resposta">
-                                <% estatistica.respostas.forEach( (resposta) => { %>
+                                </tbody>
+                                <tfoot>
                                     <tr>
-                                        <td><%- resposta.aluno %></td>
-                                        <% resposta.questoes.forEach( (questao) => { %>
-                                            <td><%- questao.acertou ? '<i class="material-icons small green-text">done</i>' : '<i class="material-icons small red-text">clear</i>' %></td>
+                                        <th>Aluno</th>
+                                        <% estatistica.respostas.every( (resposta) => { %>
+                                            <% resposta.questoes.forEach( (questao, numero) => { %>
+                                                <th>#<%- numero+1 %></th>
+                                            <% }) %>
+                                            <% return false; %>
                                         <% }) %>
-                                    <tr>
-                                <% }) %>
-                            </tbody>
-                        </table>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -48,29 +61,42 @@
                 <div class="card">
                     <div class="card-content">
                         <span class="card-title">Média de Tempo em questão</span>
-                        <table class="highlight centered responsive-table" style="display: block; overflow-x: auto; white-space: nowrap;">
-                            <head>
-                                <tr>
-                                    <th>Aluno</th>
-                                    <% estatistica.respostas.every( (resposta) => { %>
-                                        <% resposta.questoes.forEach( (questao, numero) => { %>
-                                            <th>#<%- numero+1 %></th>
+                        <div class="responsive" >
+                            <table class="highlight centered" style="display: block; overflow-x: auto; white-space: nowrap;">
+                                <thead>
+                                    <tr>
+                                        <th>Aluno</th>
+                                        <% estatistica.respostas.every( (resposta) => { %>
+                                            <% resposta.questoes.forEach( (questao, numero) => { %>
+                                                <th>#<%- numero+1 %></th>
+                                            <% }) %>
+                                            <% return false; %>
                                         <% }) %>
-                                        <% return false; %>
+                                    </tr>
+                                </thead>
+                                <tbody id="resposta">
+                                    <% estatistica.respostas.forEach( (resposta) => { %>
+                                        <tr>
+                                            <td><%- resposta.aluno %></td>
+                                            <% resposta.questoes.forEach( (questao) => { %>
+                                                <td><%- questao.tempo %>s</td>
+                                            <% }) %>
+                                        <tr>
                                     <% }) %>
-                                </tr>
-                            </head>
-                            <tbody id="resposta">
-                                <% estatistica.respostas.forEach( (resposta) => { %>
+                                </tbody>
+                                <tfoot>
                                     <tr>
-                                        <td><%- resposta.aluno %></td>
-                                        <% resposta.questoes.forEach( (questao) => { %>
-                                            <td><%- questao.tempo %>s</td>
+                                        <th>Aluno</th>
+                                        <% estatistica.respostas.every( (resposta) => { %>
+                                            <% resposta.questoes.forEach( (questao, numero) => { %>
+                                                <th>#<%- numero+1 %></th>
+                                            <% }) %>
+                                            <% return false; %>
                                         <% }) %>
-                                    <tr>
-                                <% }) %>
-                            </tbody>
-                        </table>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

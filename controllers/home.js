@@ -53,6 +53,18 @@ module.exports = (app) => {
             const password = md5(usuario.password);
             const where = { email, password};
             const tipo = 'p';
+            const filtro = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+            
+            if( ! filtro.test(email) ){
+                const message = querystring.stringify({
+                        nome : nome,
+                        email : email,
+                        emailError : 'Email com formata inválido!'
+                    }
+                );
+                res.redirect(`/registrar/professor?${message}`);
+                return;
+            }
 
             if(md5(password_confirmation) != password){
                 const message = querystring.stringify({
@@ -72,7 +84,7 @@ module.exports = (app) => {
                 upsert : true, runValidator :true, new : true
             };
             Usuario.findOneAndUpdate(where, set, options)
-                .select('nome email password')
+                .select('nome email password tipo')
                 .then((usuario) => {
                     const professorDoc = new Professor({ usuario : usuario._id, disciplinas : [] });
                     professorDoc.save( (err, professor) => {
@@ -98,6 +110,18 @@ module.exports = (app) => {
             const password = md5(usuario.password);
             const where = { email, password};
             const tipo = 'a';
+            const filtro = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+            
+            if( ! filtro.test(email) ){
+                const message = querystring.stringify({
+                        nome : nome,
+                        email : email,
+                        emailError : 'Email com formata inválido!'
+                    }
+                );
+                res.redirect(`/registrar/aluno?${message}`);
+                return;
+            }
 
             if(md5(password_confirmation) != password){
                 const message = querystring.stringify({
@@ -117,7 +141,7 @@ module.exports = (app) => {
                 upsert : true, runValidator :true, new : true
             };
             Usuario.findOneAndUpdate(where, set, options)
-                .select('nome email password')
+                .select('nome email password tipo')
                 .then((usuario) => {
                     const alunoDoc = new Aluno({ usuario : usuario._id , cadernos : [] });
                     alunoDoc.save( (err, aluno) => {

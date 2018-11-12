@@ -21,14 +21,12 @@ module.exports = (app) => {
         },
         async show(req, res){
             const { usuario } = req.session;
-            const { id } = req.params;
-
-            resultados = await Resultado.find({}, {acertos : 1, tempo : 1}).sort('acertos, tempo').exec();
-
-            console.log('resultados', resultados);
+            const { id } = req.params;           
 
             Resultado.findById(id)
-                .then( (resultado) => {
+                .then( async (resultado) => {
+
+                    resultados = await Resultado.find({ quiz : resultado.quiz }, {acertos : 1, tempo : 1}).sort('acertos, tempo').exec();
 
                     let posicao = 0;
                     resultados.forEach((element, index) => {                    

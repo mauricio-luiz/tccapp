@@ -47,22 +47,23 @@
     const salaController = new SalaController(socket);
 
     const salas = '<%- JSON.stringify(salas) %>';
-    const quizzes = '<%- JSON.stringify(quizzes) %>';
+    const dadosQuizzes = '<%- JSON.stringify(quizzes) %>';
     const temSalaAtiva = '<%- JSON.stringify(temSalaAtiva) %>';
     const salaEscolhida = '<%- JSON.stringify(salaEscolhida) %>';
 
     salaController.adicionaSalas(salas);
-    salaController.adicionaQuizzes(quizzes);
+    salaController.adicionaQuizzes(dadosQuizzes);
 
     if(temSalaAtiva === 'true') salaController.reinicia(salaEscolhida);
 
     socket.on('resposta', (sala, aluno, questao, resposta) => {
-        console.log('here');
         salaController.adicionaResposta(aluno,questao,resposta);
     });
 
     socket.on('notify-onlines', (aluno) => {
-        const questoes = JSON.parse(quizzes).shift();
+        const quizSelectedValue = document.querySelector("#select-cardQuiz").value;
+        const quiz = JSON.parse(dadosQuizzes).filter( (q) => q._id == quizSelectedValue);
+        const questoes = quiz.shift();
         salaController.adiciona(aluno, questoes.questoes.length);
     });
 

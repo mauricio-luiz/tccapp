@@ -148,3 +148,11 @@ input:not([type]):focus:not([readonly]), input[type="text"]:not(.browser-default
     right:10px;
     margin-top:0;
 }
+
+.responsive {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+}
