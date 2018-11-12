@@ -38,8 +38,8 @@ module.exports = (app) => {
                 .then(() => { 
                     req.session.sessionFlash = {
                         type: 'success',
-                        message: `${mensagemAtualiza}`
-                    }
+                        message: `${mensagemSucesso}`
+                    };
                     res.redirect('/salas') 
                 })
                 .catch((e) => {
@@ -73,6 +73,10 @@ module.exports = (app) => {
             const set = { $set: { 'salas.$': sala } };
             Professor.update(where, set)
                 .then( (professor) =>{
+                    req.session.sessionFlash = {
+                        type: 'success',
+                        message: `${mensagemAtualiza}`
+                    }
                     res.redirect('/salas')                    
                  })
                 .catch( (e) => {
@@ -91,7 +95,13 @@ module.exports = (app) => {
                 }
             };
             Professor.update(where, set)
-                .then( () => res.redirect('/salas'))
+                .then( () => { 
+                    req.session.sessionFlash = {
+                        type: 'success',
+                        message: `${mensagemDelete}`
+                    };
+                    res.redirect('/salas'); 
+                })
                 .catch( () => res.redirect('/') )
             ;
         },
