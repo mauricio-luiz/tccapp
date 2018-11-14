@@ -41,8 +41,9 @@ module.exports = (app) => {
 
                 // verify connection configuration
                 transporter.verify(function(error, success) {
+                    console.log("entrei para validar");
                     if (error) {
-                        console.log(error);
+                        console.log("error SMTP", error);
                     } else {
                         console.log('Server is ready to take our messages');
                     }
