@@ -33,8 +33,10 @@
                                             <% resposta.questoes.forEach( (questao) => { %>
                                                 <td><%- questao.acertou ? '<i class="material-icons small green-text">done</i>' : '<i class="material-icons small red-text">clear</i>' %></td>
                                             <% }) %>
-                                        <tr>
+                                        <tr>                                    
                                     <% }) %>
+                                    <tr id="taxaAcertos" >
+                                    </tr>
                                 </tbody>
                                 <tfoot>
                                     <tr>
@@ -83,6 +85,8 @@
                                             <% }) %>
                                         <tr>
                                     <% }) %>
+                                        <tr id="tempoMedio">                                           
+                                        </tr>
                                 </tbody>
                                 <tfoot>
                                     <tr>
@@ -102,5 +106,52 @@
             </div>
         </div>
     </section>
+
+    <script>
+        const respostas_STR = ('<%- JSON.stringify(estatistica.respostas) %>');
+        const respostas = JSON.parse(respostas_STR);
+        const quantidade_questao = respostas[0].questoes.length;
+        const quantidade_resposta = respostas.length;
+
+        var i = 0;
+        var j = 0;
+        var dadosTempo = [];
+        var dadosAcertos = [];
+        var acumuladorTempo = 0;
+        var acumaladorAcertos = 0;
+        while(true){
+            acumuladorTempo = respostas[i].questoes[j].tempo + acumuladorTempo;
+            acumaladorAcertos = respostas[i].questoes[j].acertou ? acumaladorAcertos+1 : acumaladorAcertos;
+            i++;
+            if(i == quantidade_resposta) {
+                var mediaTempo = acumuladorTempo / quantidade_resposta;
+                var mediaAcertos = (acumaladorAcertos / quantidade_resposta) * 100;
+                dadosTempo.push(mediaTempo);
+                dadosAcertos.push(mediaAcertos);
+                acumuladorTempo = 0;
+                acumaladorAcertos = 0;
+                j++;
+                i=0;
+            }
+
+            if(j == quantidade_questao) break;
+        }
+
+        console.log(dadosAcertos);
+
+        var tempoMedio = document.querySelector("#tempoMedio");
+        var acertoMedio = document.querySelector("#taxaAcertos");
+        var html = ' <td>Tempo médio</td>';
+        dadosTempo.forEach( (values, index) => {
+            html += `<td>${values}s</td>`;
+        });        
+        tempoMedio.innerHTML = html;
+
+        html = "<td>Taxa de Acerto</td>";
+        dadosAcertos.forEach( (values, index) => {
+            html += `<td>${values}%</td>`;
+        });
+        acertoMedio.innerHTML = html;
+    </script>
 
 <% include ../partials/footerProfessor %>

@@ -70,9 +70,13 @@ module.exports = (app) => {
             const { sala } = req.body;
             const { professor } = req.session;
             const where = { _id : professor._id, 'salas._id': salaId };
+
+            shortid.worker(1);
+            const codigo = shortid.generate();
+            sala.codigo = codigo;
             const set = { $set: { 'salas.$': sala } };
             Professor.update(where, set)
-                .then( (professor) =>{
+                .then( (professor) => {
                     req.session.sessionFlash = {
                         type: 'success',
                         message: `${mensagemAtualiza}`
