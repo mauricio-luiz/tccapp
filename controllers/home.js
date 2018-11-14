@@ -51,7 +51,7 @@ module.exports = (app) => {
             const { usuario } = req.body;
             const {nome, email, password_confirmation}  = usuario;
             const password = md5(usuario.password);
-            const where = { email, password};
+            const where = { nome, email, password};
             const tipo = 'p';
             const filtro = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
             
@@ -83,14 +83,15 @@ module.exports = (app) => {
             const options = {
                 upsert : true, runValidator :true, new : true
             };
+
             Usuario.findOneAndUpdate(where, set, options)
                 .select('nome email password tipo')
                 .then((usuario) => {
+                    console.log(usuario);
                     const professorDoc = new Professor({ usuario : usuario._id, disciplinas : [] });
                     professorDoc.save( (err, professor) => {
                         req.session.usuario = usuario;
-                        req.session.professor = professor;
-                        console.log('req.session', req.session);
+                        req.session.professor = professor;                       
                         res.redirect('/professor');
                     });
                 })
@@ -108,7 +109,7 @@ module.exports = (app) => {
             const { usuario } = req.body;
             const {nome, email, password_confirmation}  = usuario;
             const password = md5(usuario.password);
-            const where = { email, password};
+            const where = { nome, email, password};
             const tipo = 'a';
             const filtro = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
             

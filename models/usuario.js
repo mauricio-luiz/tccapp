@@ -18,6 +18,9 @@ module.exports = () => {
         tipo : {
             type : String,
             required : true
+        },
+        token : {
+            type: String            
         }
     });
     
