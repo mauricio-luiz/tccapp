@@ -28,8 +28,6 @@ module.exports = (app) => {
                 }
             });
 
-            console.log('Transporter', transporter);
-
             Usuario.findOneAndUpdate({ email : email }, {token : token})
             .select('nome email password tipo')
             .then((usuario) => {
@@ -42,6 +40,7 @@ module.exports = (app) => {
                 };
                 
                 transporter.sendMail(mailOptions, (error, info) => {
+                    console.log('Error', error);
                     if (error) {
                         return console.log(error);
                     }
