@@ -38,6 +38,15 @@ module.exports = (app) => {
                     subject: 'Esqueceu a senha',
                     html: `Esqueceu a sua senha? Não tem problema. <br> Crie uma nova clicando no link abaixo: <br> <a href="${url}">${url}</a>`
                 };
+
+                // verify connection configuration
+                transporter.verify(function(error, success) {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        console.log('Server is ready to take our messages');
+                    }
+                });
                 
                 transporter.sendMail(mailOptions, (error, info) => {
                     console.log('Error', error);
