@@ -24,6 +24,7 @@
     "moment": "^2.22.2",
     "mongoose": "^5.2.9",
     "nodemailer": "^4.6.8",
+    "nodemailer-sparkpost-transport": "^2.2.0",
     "nonblockjs": "^1.0.8",
     "pnotify": "^4.0.0-alpha.4",
     "shortid": "^2.2.13",

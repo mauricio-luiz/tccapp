@@ -1,6 +1,7 @@
 const moment = require('moment');
 const nodemailer = require('nodemailer');
 const querystring = require('querystring');
+const sparkPostTransport = require('nodemailer-sparkpost-transport');
 require('dotenv').config();
 const md5 = require('md5');
 
@@ -18,15 +19,23 @@ module.exports = (app) => {
             const url = process.env.MONGODB_URI || process.env.MONGOHQ_URL ? 
             `https://tcconline.herokuapp.com/${token}/resetar` : `http://192.168.10.10:3000/${token}/resetar`;
 
-            let transporter = nodemailer.createTransport({
-                host: process.env.HOST,
-                port: process.env.PORT,
-                secure: false, 
-                auth: {
-                    user: process.env.EMAIL,
-                    pass: process.env.PASS
-                }
-            });
+            if(process.env.SPARKPOST_API_KEY){
+                console.log('transport com sparkpost');
+                var transporter = nodemailer.createTransport(sparkPostTransport({
+                    'sparkPostApiKey': process.env.SPARKPOST_API_KEY
+                }))
+            }else{
+                console.log('transport com nodemailer')
+                var transporter = nodemailer.createTransport({
+                    host: process.env.HOST,
+                    port: process.env.PORT,
+                    secure: false, 
+                    auth: {
+                        user: process.env.EMAIL,
+                        pass: process.env.PASS
+                    }
+                });
+            }
 
             Usuario.findOneAndUpdate({ email : email }, {token : token})
             .select('nome email password tipo')
@@ -38,16 +47,6 @@ module.exports = (app) => {
                     subject: 'Esqueceu a senha',
                     html: `Esqueceu a sua senha? Não tem problema. <br> Crie uma nova clicando no link abaixo: <br> <a href="${url}">${url}</a>`
                 };
-
-                // verify connection configuration
-                transporter.verify(function(error, success) {
-                    console.log("entrei para validar");
-                    if (error) {
-                        console.log("error SMTP", error);
-                    } else {
-                        console.log('Server is ready to take our messages');
-                    }
-                });
                 
                 transporter.sendMail(mailOptions, (error, info) => {
                     console.log('Error', error);
