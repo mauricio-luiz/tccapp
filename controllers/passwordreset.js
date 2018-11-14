@@ -23,12 +23,13 @@ module.exports = (app) => {
                 console.log('transport com sparkpost');
                 var transporter = nodemailer.createTransport(sparkPostTransport({
                     'sparkPostApiKey': process.env.SPARKPOST_API_KEY,
-                    'sparkPostApiUrl' : process.env.SPARKPOST_API_URL,
-                    'sparkPostSandboxDomain' : process.env.SPARKPOST_SANDBOX_DOMAIN,
-                    'sparkPostSmtpHost' : proccess.env.SPARKPOST_SMTP_HOST,
-                    'sparkPostSmtpPassword' : process.env.SPARKPOST_SMTP_PASSWORD,
-                    'sparkPostSmtpPort' : proccess.env.SPARKPOST_SMTP_PORT,
-                    'sparkPostSmtpUsername' : process.env.SPARKPOST_SMTP_USERNAME
+                    host: process.env.SPARKPOST_SMTP_HOST,
+                    port: process.env.SPARKPOST_SMTP_PORT,
+                    secure: false, 
+                    auth: {
+                        user: process.env.SPARKPOST_SMTP_USERNAME,
+                        pass: process.env.SPARKPOST_SMTP_PASSWORD
+                    }
                 }));
             }else{
                 console.log('transport com nodemailer')
