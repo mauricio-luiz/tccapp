@@ -19,30 +19,16 @@ module.exports = (app) => {
             const url = process.env.MONGODB_URI || process.env.MONGOHQ_URL ? 
             `https://tcconline.herokuapp.com/${token}/resetar` : `http://192.168.10.10:3000/${token}/resetar`;
 
-            if(process.env.SPARKPOST_API_KEY){
-                console.log('transport com sparkpost');
-                var transporter = nodemailer.createTransport(sparkPostTransport({
-                    'sparkPostApiKey': process.env.SPARKPOST_API_KEY,
-                    host: process.env.SPARKPOST_SMTP_HOST,
-                    port: process.env.SPARKPOST_SMTP_PORT,
-                    secure: false, 
-                    auth: {
-                        user: process.env.SPARKPOST_SMTP_USERNAME,
-                        pass: process.env.SPARKPOST_SMTP_PASSWORD
-                    }
-                }));
-            }else{
-                console.log('transport com nodemailer')
-                var transporter = nodemailer.createTransport({
+            var transporter = nodemailer.createTransport({
                     host: process.env.HOST,
                     port: process.env.PORT,
                     secure: false, 
+                    protocol: 'tls',
                     auth: {
                         user: process.env.EMAIL,
                         pass: process.env.PASS
                     }
-                });
-            }
+            });
 
             Usuario.findOneAndUpdate({ email : email }, {token : token})
             .select('nome email password tipo')
