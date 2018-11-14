@@ -22,8 +22,7 @@ module.exports = (app) => {
             var transporter = nodemailer.createTransport({
                     host: process.env.HOST,
                     port: process.env.PORT,
-                    secure: false, 
-                    protocol: 'tls',
+                    secure: process.env.SECURE,
                     auth: {
                         user: process.env.EMAIL,
                         pass: process.env.PASS
