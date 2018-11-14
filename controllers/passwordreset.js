@@ -1,7 +1,8 @@
 const moment = require('moment');
 const nodemailer = require('nodemailer');
 const querystring = require('querystring');
-const sparkPostTransport = require('nodemailer-sparkpost-transport');
+const { google } = require("googleapis");
+const OAuth2 = google.auth.OAuth2;
 require('dotenv').config();
 const md5 = require('md5');
 
@@ -19,14 +20,29 @@ module.exports = (app) => {
             const url = process.env.MONGODB_URI || process.env.MONGOHQ_URL ? 
             `https://tcconline.herokuapp.com/${token}/resetar` : `http://192.168.10.10:3000/${token}/resetar`;
 
-            var transporter = nodemailer.createTransport({
-                    host: process.env.HOST,
-                    port: process.env.PORT,
-                    secure: process.env.SECURE,
-                    auth: {
-                        user: process.env.EMAIL,
-                        pass: process.env.PASS
-                    }
+            const oauth2Client = new OAuth2(
+                "180534864821-abg9ifc63saq63hrfms50lhfc86hhggf.apps.googleusercontent.com", // ClientID
+                "mVbSX7L4Gx5lqx04bdIQrkuD", // Client Secret
+                "https://developers.google.com/oauthplayground" // Redirect URL
+           );
+
+            oauth2Client.setCredentials({
+                refresh_token: "1/oY-EyCGFT21K0u9S_-LIh9pdf1YW7PMo1gSMDhrxybc"
+            });
+
+            const accessToken = oauth2Client.refreshAccessToken()
+            .then(res => res.credentials.access_token);
+
+            const smtpTransport = nodemailer.createTransport({
+                service: "gmail",
+                auth: {
+                        type: "OAuth2",
+                        user: "mauriciojunio@gmail.com", 
+                        clientId: "180534864821-abg9ifc63saq63hrfms50lhfc86hhggf.apps.googleusercontent.com",
+                        clientSecret: "mVbSX7L4Gx5lqx04bdIQrkuD",
+                        refreshToken: "1/oY-EyCGFT21K0u9S_-LIh9pdf1YW7PMo1gSMDhrxybc",
+                        accessToken: accessToken
+                }
             });
 
             Usuario.findOneAndUpdate({ email : email }, {token : token})
@@ -40,13 +56,14 @@ module.exports = (app) => {
                     html: `Esqueceu a sua senha? Não tem problema. <br> Crie uma nova clicando no link abaixo: <br> <a href="${url}">${url}</a>`
                 };
                 
-                transporter.sendMail(mailOptions, (error, info) => {
+                smtpTransport.sendMail(mailOptions, (error, info) => {
                     console.log('Error', error);
                     if (error) {
                         return console.log(error);
                     }
                     console.log('Message sent: %s', info.messageId);
                     console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+                    smtpTransport.close();
                 });
 
                 req.session.sessionFlash = {
