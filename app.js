@@ -11,7 +11,7 @@ const config = require('./config');
 const mongoose = require('mongoose');
 const bluebird = require('bluebird');
 const error = require('./middlewares/error');
-var flash = require('express-flash-messages')
+var flash = require('express-flash-messages');
 
 const app = express();
 const server = http.Server(app);
